@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { Sidebar, Segment, Button, Menu, Image, Icon, Header, Grid } from 'semantic-ui-react';
+import { Segment, Menu, Icon, Grid } from 'semantic-ui-react';
 
 import Head from '../components/Head';
 import Footer from '../components/Footer';
