@@ -9,7 +9,6 @@ const proxy = new SWProxy();
 
 app.on('ready', () => {
   createWindow();
-  win.webContents.openDevTools();
   var plugins = loadPlugins();
 });
 
