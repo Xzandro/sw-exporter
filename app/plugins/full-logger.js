@@ -2,6 +2,10 @@ const fs = require('fs');
 const eol = require('os').EOL;
 
 module.exports = {
+  defaultConfig: {
+    enabled: true
+  },
+  pluginName: 'FullLogger',
   init(proxy) {
     proxy.on('apiCommand', (req, resp) => {
       this.logCommand(req, resp);

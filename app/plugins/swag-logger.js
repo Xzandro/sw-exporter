@@ -1,13 +1,19 @@
 const request = require('request');
 
 module.exports = {
+  defaultConfig: {
+    enabled: true
+  },
+  pluginName: 'SwagLogger',
   log_url: 'https://gw.swop.one/data/upload/',
-  init(proxy) {
+  init(proxy, config) {
     proxy.on('GetGuildWarBattleLogByGuildId', (req, resp) => {
-      this.log(proxy, req, resp);
+      if (config.enabled)
+        this.log(proxy, req, resp);
     });
     proxy.on('GetGuildWarBattleLogByWizardId', (req, resp) => {
-      this.log(proxy, req, resp);
+      if (config.enabled)
+        this.log(proxy, req, resp);
     });
   },
 
@@ -23,9 +29,9 @@ module.exports = {
 
     request(options, (error, response, body) => {
       if (!error && response.statusCode == 200) {
-        proxy.log({ type: 'success', source: 'plugin', name: 'SwagLogger', message: `${command} logged successfully` });
+        proxy.log({ type: 'success', source: 'plugin', name: this.pluginName, message: `${command} logged successfully` });
       } else {
-        proxy.log({ type: 'error', source: 'plugin', name: 'SwagLogger', message: `Error: ${error.message}` });
+        proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: `Error: ${error.message}` });
       }
     });
   }

@@ -2,15 +2,29 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const fs = require('fs');
 const ncp = require('ncp').ncp;
 const path = require('path');
+const storage = require('electron-json-storage');
+const _ = require('lodash');
 const SWProxy = require('./proxy/SWProxy');
 
 let win;
-const proxy = new SWProxy();
+let defaultConfig = {
+  Config: {
+    App: {},
+    Proxy: { port: 8080 },
+    Plugins: {}
+  }
+}
+
+storage.getAll(function(error, data) {
+  if (error) throw error;
+
+  let merged = _.merge(defaultConfig, data);
+  global.config = merged.Config;
+  global.plugins = loadPlugins();
+});
 
 app.on('ready', () => {
   createWindow();
-  win.webContents.openDevTools();
-  var plugins = loadPlugins();
 });
 
 app.on('window-all-closed', () => {
@@ -29,6 +43,8 @@ app.on('activate', () => {
   }
 })
 
+const proxy = new SWProxy();
+
 proxy.on('error', (e) => {
   console.log(e);
 })
@@ -42,17 +58,27 @@ ipcMain.on('proxyIsRunning', (event, arg) => {
 })
 
 ipcMain.on('proxyStart', (event, arg) => {
-  proxy.start();
+  proxy.start(config.Proxy.port);
 })
 
 ipcMain.on('proxyStop', (event, arg) => {
   proxy.stop();
 })
 
+ipcMain.on('logGetEntries', (event, arg) => {
+  event.returnValue = proxy.getLogEntries();
+})
+
+ipcMain.on('updateConfig', (event, arg) => {
+  storage.set('Config', config, function(error) {
+    if (error) throw error;
+  });
+})
+
 function createWindow () {
   win = new BrowserWindow({
-    minWidth: 640,
-    minHeight: 480,
+    minWidth: 800,
+    minHeight: 600,
     acceptFirstMouse: true,
     autoHideMenuBar: true,
     titleBarStyle: 'hidden-inset'
@@ -86,6 +112,9 @@ function loadPlugins() {
 
   // Initialize plugins
   plugins.forEach(function(plug) {
-    plug.init(proxy);
+    config[plug.pluginName] = _.merge(plug.defaultConfig, config[plug.pluginName]);
+    plug.init(proxy, config[plug.pluginName]);
   })
+
+  return plugins;
 }

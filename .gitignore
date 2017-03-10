@@ -4,6 +4,5 @@ dist/
 .vscode/
 npm-debug.log
 *.log.*
-/*.json
 full_log.txt
 bundle.js

@@ -1,3 +1,28 @@
 .capitalize {
   text-transform: capitalize;
 }
+
+#app, .app-wrapper {
+  height: calc(100% - 18px)
+}
+.side-menu, .main-grid {
+  height: 100%;
+}
+.main-grid > .row {
+  padding-bottom: 0 !important;
+}
+.main-grid > .row > .column:first-child {
+  padding-right: 0 !important;
+}
+.ui.menu.main-menu {
+  margin-bottom: 0;
+}
+.ui.segment.app-segment {
+  border-radius: 0;
+  margin-top: 0;
+  border-bottom: none;
+  border-left: none;
+}
+.ui.vertical.menu.side-menu {
+  border-radius: 0;
+}
