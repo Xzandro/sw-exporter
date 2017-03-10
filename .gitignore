@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.idea/
+.vscode/
+*.log.*
+/*.json
+full_log.txt
+bundle.js
