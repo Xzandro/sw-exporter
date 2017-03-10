@@ -9,6 +9,7 @@ class SWProxy extends EventEmitter {
     super();
     this.httpServer = null;
     this.proxy = null;
+    this.logEntries = [];
   }
   start(port) {
     const self = this; // so event callbacks can access this SWProxy class
@@ -83,7 +84,12 @@ class SWProxy extends EventEmitter {
       return;
 
     entry.date = new Date().toLocaleTimeString();
+    this.logEntries.push(entry);
     this.emit('logupdated', entry);
+  }
+
+  getLogEntries() {
+    return this.logEntries;
   }
 }
 

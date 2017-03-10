@@ -2,15 +2,23 @@ const { ipcRenderer } = require('electron')
 
 import React from 'react';
 
-import { Header, Segment, Feed, Divider } from 'semantic-ui-react';
+import { Header, Feed, Divider } from 'semantic-ui-react';
 
 class Logs extends React.Component {
   constructor() {
     super();
-    this.state = { 'entries': [] };
+    this.state = { 'entries': []  };
+  }
+
+  componentDidMount() {
     ipcRenderer.on('logupdated', (event, message) => {
       this.update(message);
     })
+    this.setState({ 'entries': ipcRenderer.sendSync('logGetEntries') });
+  }
+
+  componentWillUnmount () {
+    ipcRenderer.removeAllListeners('logupdated');
   }
 
   update(entry) {
@@ -35,10 +43,8 @@ class Logs extends React.Component {
 
     return (
       <div>
-        <Segment basic>
-          <Header as='h1'>Logs</Header>
-          {Logs}
-        </Segment>
+        <Header as='h1'>Logs</Header>
+        {Logs}
       </div>
     )
   }
