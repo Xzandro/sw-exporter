@@ -1,10 +1,13 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const fs = require('fs');
 const ncp = require('ncp').ncp;
-const path = require('path');
+const request = require('request');
 const storage = require('electron-json-storage');
 const _ = require('lodash');
 const SWProxy = require('./proxy/SWProxy');
+
+const path = require('path');
+const url = require('url');
 
 let win;
 let defaultConfig = {
@@ -83,7 +86,11 @@ function createWindow () {
     autoHideMenuBar: true,
     titleBarStyle: 'hidden-inset'
   });
-  win.loadURL(`file://${__dirname}/index.html`);
+  win.loadURL(url.format({
+    pathname: path.join(__dirname, 'index.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
 }
 
 function loadPlugins() {
@@ -113,7 +120,7 @@ function loadPlugins() {
   // Initialize plugins
   plugins.forEach(function(plug) {
     config[plug.pluginName] = _.merge(plug.defaultConfig, config[plug.pluginName]);
-    plug.init(proxy, config[plug.pluginName]);
+    plug.init(proxy, config[plug.pluginName], request);
   })
 
   return plugins;

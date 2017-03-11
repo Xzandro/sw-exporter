@@ -6,11 +6,13 @@ packager({
   dir: '.',
   out: 'dist',
   //all: true,
-  platform: 'win32,darwin,linux',
+  platform: 'win32',
   arch: 'x64',
   ignore: ['/plugins($|/)'],
   overwrite: true,
-  asar: true,
+  asar: {
+    unpack: '*.node'
+  },
   win32metadata: {
     CompanyName: 'SW Exporter Company',
     FileDescription: 'Summoners War Exporter',
