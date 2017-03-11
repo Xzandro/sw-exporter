@@ -2,7 +2,7 @@ const { ipcRenderer, remote } = require('electron');
 
 import React from 'react';
 
-import { Menu, Button, Input } from 'semantic-ui-react';
+import { Menu, Button, Input, Select } from 'semantic-ui-react';
 
 class Head extends React.Component {
   constructor() {
@@ -28,8 +28,14 @@ class Head extends React.Component {
   }
 
   render () {
+    const interfaces = ipcRenderer.sendSync('proxyGetInterfaces').map((interfaceEntry, i) => {
+      return { "key": i, "text": interfaceEntry, "value": i }
+    }) 
     return (
       <Menu className="main-menu">
+        <Menu.Item>
+          <Select label='Interfaces' options={interfaces} defaultValue={0} />
+        </Menu.Item>
         <Menu.Item>
           <Input label='Port' defaultValue={this.config.Proxy.port} onChange={this.changePort.bind(this)} />
         </Menu.Item>

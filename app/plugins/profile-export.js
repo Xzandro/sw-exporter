@@ -6,7 +6,7 @@ module.exports = {
     enabled: true
   },
   pluginName: 'ProfileExport',
-  init(proxy) {
+  init(proxy, config) {
     proxy.on('HubUserLogin', (req, resp) => {
       if (config.enabled)
         this.writeProfileToFile(proxy, req, resp);

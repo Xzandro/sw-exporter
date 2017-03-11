@@ -60,6 +60,10 @@ ipcMain.on('proxyIsRunning', (event, arg) => {
   event.returnValue = proxy.isRunning();
 })
 
+ipcMain.on('proxyGetInterfaces', (event, arg) => {
+  event.returnValue = proxy.getInterfaces();
+})
+
 ipcMain.on('proxyStart', (event, arg) => {
   proxy.start(config.Proxy.port);
 })

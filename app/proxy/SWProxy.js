@@ -1,6 +1,7 @@
 const EventEmitter = require('events');
 const http = require('http')
 const httpProxy = require('http-proxy');
+const os = require('os');
 
 const {decrypt_request, decrypt_response} = require('./smon_decryptor');
 
@@ -10,6 +11,7 @@ class SWProxy extends EventEmitter {
     this.httpServer = null;
     this.proxy = null;
     this.logEntries = [];
+    this.addresses = [];
   }
   start(port) {
     const self = this; // so event callbacks can access this SWProxy class
@@ -62,7 +64,6 @@ class SWProxy extends EventEmitter {
 
       this.proxy.web(req, resp, { target: req.url, prependPath: false });
     }).listen(port);
-
     this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` })
   }
 
@@ -70,6 +71,19 @@ class SWProxy extends EventEmitter {
     this.proxy.close();
     this.httpServer.close();
     this.log({ type: 'info', source: 'proxy', message: `Proxy stopped` })
+  }
+
+  getInterfaces() {
+    let interfaces = os.networkInterfaces();
+    for (let k in interfaces) {
+        for (let k2 in interfaces[k]) {
+            let address = interfaces[k][k2];
+            if (address.family === 'IPv4' && !address.internal) {
+                this.addresses.push(address.address);
+            }
+        }
+    }
+    return this.addresses;
   }
 
   isRunning() {
