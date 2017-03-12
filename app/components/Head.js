@@ -24,7 +24,7 @@ class Head extends React.Component {
   changePort(e) {
     const port = Number(e.target.value);
     this.config.Proxy.port = port;
-    ipcRenderer.send('updateConfig')
+    ipcRenderer.send('updateConfig');
   }
 
   render () {

@@ -1,4 +1,4 @@
-.capitalize {
+.capitalize, .setting label {
   text-transform: capitalize;
 }
 

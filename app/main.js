@@ -123,8 +123,8 @@ function loadPlugins() {
 
   // Initialize plugins
   plugins.forEach(function(plug) {
-    config[plug.pluginName] = _.merge(plug.defaultConfig, config[plug.pluginName]);
-    plug.init(proxy, config[plug.pluginName], request);
+    config.Plugins[plug.pluginName] = _.merge(plug.defaultConfig, config.Plugins[plug.pluginName]);
+    plug.init(proxy, config.Plugins[plug.pluginName], request);
   })
 
   return plugins;

@@ -45,6 +45,15 @@ class SWProxy extends EventEmitter {
       }
     });
 
+    this.proxy.on('error', function (error, req, resp) {
+      resp.writeHead(500, {
+        'Content-Type': 'text/plain'
+      });
+
+      this.log({ type: 'error', source: 'proxy', message: `Something went wrong: ${error.message}` })
+      resp.end('Something went wrong.');
+    });
+
     this.httpServer = http.createServer((req, resp) => {
       // Request has been intercepted from game client
       let req_chunks = [];
@@ -64,7 +73,7 @@ class SWProxy extends EventEmitter {
 
       this.proxy.web(req, resp, { target: req.url, prependPath: false });
     }).listen(port);
-    this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` })
+    this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
   }
 
   stop() {
