@@ -50,7 +50,7 @@ class SWProxy extends EventEmitter {
         'Content-Type': 'text/plain'
       });
 
-      this.log({ type: 'error', source: 'proxy', message: `Something went wrong: ${error.message}` })
+      self.log({ type: 'error', source: 'proxy', message: `Something went wrong: ${error.message}` })
       resp.end('Something went wrong.');
     });
 
