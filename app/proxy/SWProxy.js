@@ -86,9 +86,13 @@ class SWProxy extends EventEmitter {
         srvSocket.pipe(socket);
         socket.pipe(srvSocket);
       });
-      
+
       srvSocket.on('error', (error) => {
         console.log('Caught server socket error.');
+      });
+
+      socket.on('error', (error) => {
+        console.log('Caught client socket error.');
       });
     });
 

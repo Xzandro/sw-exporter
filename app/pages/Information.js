@@ -1,11 +1,24 @@
+const { ipcRenderer } = require('electron');
+
 import React from 'react';
 
-import { Header } from 'semantic-ui-react';
+import { Divider, Header, Input, Segment } from 'semantic-ui-react';
 
 class Information extends React.Component {
   render () {
+    const folderLocations = ipcRenderer.sendSync('getFolderLocations');
     return (
-      <h1>Information</h1>
+      <div>
+        <h1>Information</h1>
+        <Header as='h4' attached='top'>
+          Locations
+        </Header>
+        <Segment attached>
+          <Input label='Settings' defaultValue={folderLocations.settings} fluid readOnly />
+          <Divider hidden />
+          <Input label='Plugins' defaultValue={folderLocations.plugins} fluid readOnly />
+        </Segment>
+      </div>
     )
   }
 }

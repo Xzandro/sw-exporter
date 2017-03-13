@@ -17,13 +17,14 @@ let defaultConfig = {
     Plugins: {}
   }
 }
+global.plugins = [];
 
 storage.getAll(function(error, data) {
   if (error) throw error;
 
   let merged = _.merge(defaultConfig, data);
   global.config = merged.Config;
-  global.plugins = loadPlugins();
+  initPlugins();
 });
 
 app.on('ready', () => {
@@ -82,6 +83,13 @@ ipcMain.on('updateConfig', (event, arg) => {
   });
 })
 
+ipcMain.on('getFolderLocations', (event, arg) => {
+  event.returnValue = {
+    settings: app.getPath('userData'),
+    plugins: path.join(path.dirname(app.getPath('exe')), 'plugins') 
+  };
+})
+
 function createWindow () {
   win = new BrowserWindow({
     minWidth: 800,
@@ -97,24 +105,28 @@ function createWindow () {
   }))
 }
 
-function loadPlugins() {
-  // Initialize Plugins
-  let plugins = [];
+function initPlugins() {
   const pluginDir = path.join(path.dirname(app.getPath('exe')), 'plugins');
 
   // Check plugin folder existence
-  try {
-    fs.readdirSync(pluginDir);
-  } catch (err) {
-    if (err.code === 'ENOENT') {
+  fs.readdir(pluginDir, (error, files) => {
+    if (error && error.code === 'ENOENT') {
+      console.log(error)
       // Create the folder by copying default plugins
       ncp(path.join(__dirname, 'plugins'), pluginDir, err => {
-        console.error(err);
+        global.plugins = loadPlugins();
       });
     } else {
-      throw(err);
+      global.plugins = loadPlugins();
     }
-  }
+  });
+}
+
+function loadPlugins() {
+  // Initialize Plugins
+  let plugins = [];
+
+  const pluginDir = path.join(path.dirname(app.getPath('exe')), 'plugins');
 
   // Load each plugin module in the folder
   fs.readdirSync(pluginDir).forEach(function (file) {
