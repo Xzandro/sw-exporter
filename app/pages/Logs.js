@@ -1,8 +1,8 @@
 const { ipcRenderer } = require('electron')
 
 import React from 'react';
-
-import { Header, Feed, Divider } from 'semantic-ui-react';
+import { Header, Feed, Divider, Label } from 'semantic-ui-react';
+import { capitalize } from 'lodash/string';
 
 class Logs extends React.Component {
   constructor() {
@@ -27,13 +27,15 @@ class Logs extends React.Component {
   
   render () {
     const Logs = this.state.entries.slice(0).reverse().map((entry, i) => {
-      return <Feed key={i} className='log'>
+      return <Feed key={i} className='log' size="small">
       <Feed.Event>
         <Feed.Content>
-          <Feed.Date>{entry.date}</Feed.Date>
-          <Feed.Summary content={`${entry.source}${entry.name ? ' - ' + entry.name : ''}`} className="capitalize" />
+          <Feed.Summary>
+            <Label size="mini">{capitalize(entry.type)}</Label> 
+            {capitalize(entry.source)} {entry.name ? ' - ' + entry.name : ''} <Feed.Date>{entry.date}</Feed.Date>
+          </Feed.Summary>
           <Feed.Extra>
-            <span className="capitalize">{entry.type}:</span> {entry.message}
+            {entry.message}
           </Feed.Extra>
         </Feed.Content>
       </Feed.Event>

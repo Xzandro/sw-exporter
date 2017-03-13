@@ -19,33 +19,25 @@ class Layout extends React.Component {
 
   render () {
     return (
-      <div className="app-wrapper">
+      <div>
         <Head />
-        <Grid className="main-grid">
-          <Grid.Row>
-            <Grid.Column width={3}>
-              <Menu width='thin' className="side-menu" vertical inverted fluid>
-                <Menu.Item name='logs' link={true} active={this.state.activeItem === 'logs'} data-path="/" onClick={this.navigate.bind(this)}>
-                  <Icon name='home' />
-                  Logs
-                </Menu.Item>
-                <Menu.Item name='settings' link={true} active={this.state.activeItem === 'settings'} data-path="settings" onClick={this.navigate.bind(this)}>
-                  <Icon name='settings' />
-                  Settings
-                </Menu.Item>
-                <Menu.Item name='information' link={true} active={this.state.activeItem === 'information'} data-path="information" onClick={this.navigate.bind(this)}>
-                  <Icon name='info' />
-                  Information
-                </Menu.Item>
-              </Menu>
-            </Grid.Column>
-            <Grid.Column width={13}>
-              <Segment basic className="main-content">
-                {this.props.children} 
-              </Segment>
-              </Grid.Column>
-          </Grid.Row>
-        </Grid>
+        <Menu fixed="left" vertical inverted width='thin' className="side-menu">
+          <Menu.Item name='logs' link={true} active={this.state.activeItem === 'logs'} data-path="/" onClick={this.navigate.bind(this)}>
+            <Icon name='home' />
+            Logs
+          </Menu.Item>
+          <Menu.Item name='settings' link={true} active={this.state.activeItem === 'settings'} data-path="settings" onClick={this.navigate.bind(this)}>
+            <Icon name='settings' />
+            Settings
+          </Menu.Item>
+          <Menu.Item name='information' link={true} active={this.state.activeItem === 'information'} data-path="information" onClick={this.navigate.bind(this)}>
+            <Icon name='info' />
+            Information
+          </Menu.Item>
+        </Menu>
+        <Segment basic className="main-content">
+          {this.props.children} 
+        </Segment>
       </div>
     )
   }
