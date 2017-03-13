@@ -25,6 +25,8 @@ storage.getAll(function(error, data) {
   let merged = _.merge(defaultConfig, data);
   global.config = merged.Config;
 
+  fs.ensureDirSync(gloabl.config.App.filesPath);
+  
   global.plugins = loadPlugins();
 });
 
