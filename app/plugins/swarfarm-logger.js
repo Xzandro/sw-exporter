@@ -22,7 +22,7 @@ module.exports = {
       }
     });
     proxy.on('apiCommand', (req, resp) => {
-      if (config.enabled)
+      if (config.Plugins[this.pluginName].enabled)
         this.log(proxy, req, resp, request);
     });
   },

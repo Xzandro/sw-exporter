@@ -1,6 +1,5 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
-const fs = require('fs');
-const ncp = require('ncp').ncp;
+const fs = require('fs-extra');
 const request = require('request');
 const storage = require('electron-json-storage');
 const _ = require('lodash');
@@ -10,9 +9,10 @@ const path = require('path');
 const url = require('url');
 
 let win;
+let defaultFilePath = path.join(app.getPath('desktop'), app.getName() + ' Files');
 let defaultConfig = {
   Config: {
-    App: {},
+    App: { filesPath: defaultFilePath },
     Proxy: { port: 8080 },
     Plugins: {}
   }
@@ -24,6 +24,8 @@ storage.getAll(function(error, data) {
 
   let merged = _.merge(defaultConfig, data);
   global.config = merged.Config;
+  // make sure that the all folder are available
+  fs.ensureDirSync(global.config.App.filesPath);
   initPlugins();
 });
 
@@ -113,7 +115,7 @@ function initPlugins() {
     if (error && error.code === 'ENOENT') {
       console.log(error)
       // Create the folder by copying default plugins
-      ncp(path.join(__dirname, 'plugins'), pluginDir, err => {
+      fs.copy(path.join(__dirname, 'plugins'), pluginDir, err => {
         global.plugins = loadPlugins();
       });
     } else {
@@ -136,7 +138,7 @@ function loadPlugins() {
   // Initialize plugins
   plugins.forEach(function(plug) {
     config.Plugins[plug.pluginName] = _.merge(plug.defaultConfig, config.Plugins[plug.pluginName]);
-    plug.init(proxy, config.Plugins[plug.pluginName], request);
+    plug.init(proxy, config, request);
   })
 
   return plugins;

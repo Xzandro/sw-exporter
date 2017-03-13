@@ -1,12 +1,15 @@
 const fs = require('fs');
+const path = require('path');
 const eol = require('os').EOL;
 
 module.exports = {
   defaultConfig: {
     enabled: true
   },
+  config : {},
   pluginName: 'FullLogger',
-  init(proxy) {
+  init(proxy, config) {
+    this.config = config;
     proxy.on('apiCommand', (req, resp) => {
       this.logCommand(req, resp);
     });
@@ -15,7 +18,7 @@ module.exports = {
     const {command} = req;
 
     var logfile = fs.createWriteStream(
-      'full_log.txt', {
+        path.join(config.App.filesPath, 'full_log.txt'), {
         flags: 'a',
         autoClose: true
       }

@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const eol = require('os').EOL;
 
 module.exports = {
@@ -8,7 +9,7 @@ module.exports = {
   pluginName: 'ProfileExport',
   init(proxy, config) {
     proxy.on('HubUserLogin', (req, resp) => {
-      if (config.enabled)
+      if (config.Plugins[this.pluginName].enabled)
         this.writeProfileToFile(proxy, req, resp);
     });
   },
@@ -17,7 +18,7 @@ module.exports = {
     const filename = wizard_id.toString().concat('.json');
 
     var outFile = fs.createWriteStream(
-      filename, {
+      path.join(config.App.filesPath, filename), {
         flags: 'w',
         autoClose: true
       }

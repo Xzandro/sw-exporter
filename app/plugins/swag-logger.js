@@ -6,11 +6,11 @@ module.exports = {
   log_url: 'https://gw.swop.one/data/upload/',
   init(proxy, config, request) {
     proxy.on('GetGuildWarBattleLogByGuildId', (req, resp) => {
-      if (config.enabled)
+      if (config.Plugins[this.pluginName].enabled)
         this.log(proxy, req, resp, request);
     });
     proxy.on('GetGuildWarBattleLogByWizardId', (req, resp) => {
-      if (config.enabled)
+      if (config.Plugins[this.pluginName].enabled)
         this.log(proxy, req, resp, request);
     });
   },
