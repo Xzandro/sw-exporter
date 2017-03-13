@@ -24,9 +24,8 @@ storage.getAll(function(error, data) {
 
   let merged = _.merge(defaultConfig, data);
   global.config = merged.Config;
-  // make sure that the all folder are available
-  fs.ensureDirSync(global.config.App.filesPath);
-  initPlugins();
+
+  global.plugins = loadPlugins();
 });
 
 app.on('ready', () => {
@@ -128,7 +127,7 @@ function loadPlugins() {
   // Initialize Plugins
   let plugins = [];
 
-  const pluginDir = path.join(path.dirname(app.getPath('exe')), 'plugins');
+  const pluginDir = path.join(__dirname, 'plugins');
 
   // Load each plugin module in the folder
   fs.readdirSync(pluginDir).forEach(function (file) {
