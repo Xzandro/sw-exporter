@@ -2,6 +2,8 @@ const EventEmitter = require('events');
 const http = require('http')
 const httpProxy = require('http-proxy');
 const os = require('os');
+const net = require('net');
+const url = require('url');
 
 const {decrypt_request, decrypt_response} = require('./smon_decryptor');
 
@@ -73,6 +75,23 @@ class SWProxy extends EventEmitter {
 
       this.proxy.web(req, resp, { target: req.url, prependPath: false });
     }).listen(port);
+
+    this.httpServer.on('connect', function (req, socket) {
+      let serverUrl = url.parse('https://' + req.url);
+
+      let srvSocket = net.connect(serverUrl.port, serverUrl.hostname, function() {
+        socket.write('HTTP/1.1 200 Connection Established\r\n' +
+        'Proxy-agent: Node-Proxy\r\n' +
+        '\r\n');
+        srvSocket.pipe(socket);
+        socket.pipe(srvSocket);
+      });
+      
+      srvSocket.on('error', (error) => {
+        console.log('Caught server socket error.');
+      });
+    });
+
     this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
   }
 
