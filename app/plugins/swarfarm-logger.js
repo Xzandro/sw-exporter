@@ -13,7 +13,7 @@ module.exports = {
         method: 'get',
         uri: this.commands_url,
       };
-      proxy.log({ type: 'info', source: 'plugin', name: this.pluginName, message: 'Retrieving list of accepted log types from SWARFARM...' });
+      proxy.log({ type: 'debug', source: 'plugin', name: this.pluginName, message: 'Retrieving list of accepted log types from SWARFARM...' });
       request(options, (error, response, body) => {
         if (!error && response.statusCode == 200) {
           this.accepted_commands = JSON.parse(body);
