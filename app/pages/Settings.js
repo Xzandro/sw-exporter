@@ -6,14 +6,13 @@ let config = remote.getGlobal('config');
 
 import React from 'react';
 
-import { Button, Grid, Header, Form, Input, Segment, Checkbox } from 'semantic-ui-react';
+import { Button, Grid, Header, Form, Input, Segment, Checkbox, Select } from 'semantic-ui-react';
 
 class Settings extends React.Component {
   constructor() {
     super();
     this.state = {
-      'filesPath': config.App.filesPath,
-      'showDebug': config.App.debug
+      'filesPath': config.App.filesPath
     };
   }
 
@@ -30,17 +29,11 @@ class Settings extends React.Component {
     );
   }
 
-  toggleDebug(e, element) {
-    config.App.debug = element.checked;
-    this.setState({'showDebug': element.checked});
-    ipcRenderer.send('updateConfig');
-  }
-
   render () {
     const pluginSettings = plugins.map((plugin, i) => {
       return <Grid.Column key={i}>
         <Header as='h5'>{plugin.pluginName}</Header>
-        <SettingsGenerator pluginConfig={config.Plugins[plugin.pluginName]} />
+        <SettingsPlugins pluginConfig={config.Plugins[plugin.pluginName]} />
       </Grid.Column>
     });
     return (
@@ -55,7 +48,11 @@ class Settings extends React.Component {
               <Input label='Files Path' action={<Button content='Change' onClick={this.openDialog.bind(this)} />} value={this.state.filesPath} readOnly fluid />
             </Form.Field>
             <Form.Field>
-              <Checkbox label='Show Debug Messages' defaultChecked={this.state.showDebug} onChange={this.toggleDebug.bind(this)}/>
+              <SettingsItem
+                section='App'
+                setting='debug'
+                Input={<Checkbox label='Show Debug Messages' />}
+              />
             </Form.Field>
           </Form>
         </Segment>
@@ -72,7 +69,7 @@ class Settings extends React.Component {
 
 module.exports = Settings;
 
-class SettingsGenerator extends React.Component {
+class SettingsPlugins extends React.Component {
   changeSetting(e, element) {
     this.props.pluginConfig[element['label']] = element.checked;
     ipcRenderer.send('updateConfig');
@@ -85,6 +82,39 @@ class SettingsGenerator extends React.Component {
     return (
       <div className="setting">
         {pluginConfig}
+      </div>
+    )
+  }
+}
+
+class SettingsItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { value : config[this.props.section][this.props.setting]};
+    this.Input = this.props.Input;
+  }
+
+  changeSetting(e, element) {
+    config[this.props.section][this.props.setting] = element.checked;
+    this.setState({'value': element.checked});
+    ipcRenderer.send('updateConfig');
+  }
+
+  setInput() {
+    switch (this.Input.type.name) {
+      case 'Checkbox':
+        return <Checkbox {...this.Input.props} checked={this.state.value} onChange={this.changeSetting.bind(this)} />
+      case 'Select':
+        return <Select {...this.Input.props} value={this.state.value} onChange={this.changeSetting.bind(this)} />
+      default:
+        return <Input {...this.Input.props} value={this.state.value} onChange={this.changeSetting.bind(this)} />
+    }
+  }
+
+  render () {
+    return (
+      <div>
+        {this.setInput()}
       </div>
     )
   }
