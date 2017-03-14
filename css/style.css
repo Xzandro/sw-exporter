@@ -10,6 +10,7 @@ body {
 }
 .ui.menu.side-menu {
   top: 65px;
+  z-index: 1;
 }
 .ui.segment.main-content {
   margin-top: 65px;
