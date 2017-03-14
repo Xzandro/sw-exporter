@@ -7,24 +7,27 @@ module.exports = {
   log_url: 'https://swarfarm.com/data/log/upload/',
   accepted_commands: false,
   init(proxy, config, request) {
-    this.proxy = proxy;
-    let options = {
-      method: 'get',
-      uri: this.commands_url,
-    };
-    proxy.log({ type: 'info', source: 'plugin', name: this.pluginName, message: 'Retrieving list of accepted log types from SWARFARM...' });
-    request(options, (error, response, body) => {
-      if (!error && response.statusCode == 200) {
-        this.accepted_commands = JSON.parse(body);
-        proxy.log({ type: 'info', source: 'plugin', name: this.pluginName, message: `Looking for the following commands to log: ${Object.keys(this.accepted_commands).join(', ')}` });
-      } else {
-        proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: 'Unable to retrieve accepted log types. SWARFARM logging is disabled.' });
-      }
-    });
-    proxy.on('apiCommand', (req, resp) => {
-      if (config.Plugins[this.pluginName].enabled)
-        this.log(proxy, req, resp, request);
-    });
+    if (config.Plugins[this.pluginName].enabled) {
+      this.proxy = proxy;
+      let options = {
+        method: 'get',
+        uri: this.commands_url,
+      };
+      proxy.log({ type: 'info', source: 'plugin', name: this.pluginName, message: 'Retrieving list of accepted log types from SWARFARM...' });
+      request(options, (error, response, body) => {
+        if (!error && response.statusCode == 200) {
+          this.accepted_commands = JSON.parse(body);
+          proxy.log({ type: 'success', source: 'plugin', name: this.pluginName, message: `Looking for the following commands to log: ${Object.keys(this.accepted_commands).join(', ')}` });
+        } else {
+          proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: 'Unable to retrieve accepted log types. SWARFARM logging is disabled.' });
+          config.Plugins[this.pluginName].enabled = false;
+        }
+      });
+      proxy.on('apiCommand', (req, resp) => {
+        if (config.Plugins[this.pluginName].enabled)
+          this.log(proxy, req, resp, request);
+      });
+    }
   },
 
   log(proxy, req, resp, request) {
@@ -46,7 +49,7 @@ module.exports = {
 
     request.post({url: this.log_url, form: { data: JSON.stringify(result_data)} },  (error, response, body) => {
       if (!error && response.statusCode == 200) {
-        proxy.log({ type: 'Success', source: 'plugin', name: this.pluginName, message: `${command} logged successfully` });
+        proxy.log({ type: 'success', source: 'plugin', name: this.pluginName, message: `${command} logged successfully` });
       } else {
         proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: `Error: ${error.message}` });
       }
