@@ -33,7 +33,7 @@ class Settings extends React.Component {
     const pluginSettings = plugins.map((plugin, i) => {
       return <Grid.Column key={i}>
         <Header as='h5'>{plugin.pluginName}</Header>
-        <SettingsPlugins pluginConfig={config.Plugins[plugin.pluginName]} />
+        <SettingsPlugin pluginName={plugin.pluginName} />
       </Grid.Column>
     });
     return (
@@ -69,15 +69,16 @@ class Settings extends React.Component {
 
 module.exports = Settings;
 
-class SettingsPlugins extends React.Component {
-  changeSetting(e, element) {
-    this.props.pluginConfig[element['label']] = element.checked;
-    ipcRenderer.send('updateConfig');
-  }
-
+class SettingsPlugin extends React.Component {
   render () {
-    const pluginConfig = Object.keys(this.props.pluginConfig).map((key, i) => {
-      return <Checkbox key={i} label={key} defaultChecked={this.props.pluginConfig[key]} onChange={this.changeSetting.bind(this)}/>;
+    const pluginConfig = Object.keys(config.Plugins[this.props.pluginName]).map((key, i) => {
+      return <SettingsItem
+        key={i}
+        section='Plugins'
+        pluginName={this.props.pluginName}
+        setting={key}
+        Input={<Checkbox label={key} />}
+      />
     });
     return (
       <div className="setting">
@@ -90,12 +91,23 @@ class SettingsPlugins extends React.Component {
 class SettingsItem extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value : config[this.props.section][this.props.setting]};
+    if (this.props.section === 'Plugins') {
+      this.state = { value : config[this.props.section][this.props.pluginName][this.props.setting]};
+    } else {
+      this.state = { value : config[this.props.section][this.props.setting]};
+    }
+    
     this.Input = this.props.Input;
   }
 
   changeSetting(e, element) {
-    config[this.props.section][this.props.setting] = element.checked;
+    const value = element.type === 'checkbox' ? element.checked : element.value;
+    if (this.props.section === 'Plugins') {
+      config[this.props.section][this.props.pluginName][this.props.setting] = value;
+    } else {
+      config[this.props.section][this.props.setting] = value;
+    }
+    
     this.setState({'value': element.checked});
     ipcRenderer.send('updateConfig');
   }
@@ -112,10 +124,9 @@ class SettingsItem extends React.Component {
   }
 
   render () {
+    const element = this.setInput();
     return (
-      <div>
-        {this.setInput()}
-      </div>
+      element
     )
   }
 }
