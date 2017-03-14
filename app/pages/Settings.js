@@ -1,26 +1,48 @@
 const { ipcRenderer, remote } = require('electron');
+const dialog = remote.dialog;
+const plugins = remote.getGlobal('plugins');
+let config = remote.getGlobal('config');
+
 
 import React from 'react';
 
-import { Grid, Header, Form, Segment } from 'semantic-ui-react';
+import { Button, Grid, Header, Form, Input, Segment } from 'semantic-ui-react';
 
 class Settings extends React.Component {
   constructor() {
     super();
-    this.config = remote.getGlobal('config');
-    this.plugins = remote.getGlobal('plugins');
+    this.state = { 'filesPath': config.App.filesPath  };
+  }
+
+  openDialog() {
+    self = this;
+    dialog.showOpenDialog({ 
+      properties: [ 'openDirectory' ] }, function (dirName) {
+        if (dirName) {
+          self.setState({ 'filesPath': dirName.toString()  });
+          config.App.filesPath = dirName.toString();
+          ipcRenderer.send('updateConfig');
+        }
+      }
+    );
   }
 
   render () {
-    const pluginSettings = this.plugins.map((plugin, i) => {
+    const pluginSettings = plugins.map((plugin, i) => {
       return <Grid.Column key={i}>
         <Header as='h5'>{plugin.pluginName}</Header>
-        <SettingsGenerator pluginConfig={this.config.Plugins[plugin.pluginName]} />
+        <SettingsGenerator pluginConfig={config.Plugins[plugin.pluginName]} />
       </Grid.Column>
     });
     return (
       <div>
         <Header as='h1'>Settings</Header>
+        <Header as='h4' attached='top'>
+          App
+        </Header>
+        <Segment attached>
+          <Input label='Files Path' action={<Button content='Change' onClick={this.openDialog.bind(this)} />} value={this.state.filesPath} readOnly fluid />
+        </Segment>
         <Header as='h4' attached='top'>
           Plugins
         </Header>

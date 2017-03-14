@@ -1,4 +1,5 @@
 const { ipcRenderer, remote } = require('electron');
+let config = remote.getGlobal('config');
 
 import React from 'react';
 
@@ -8,7 +9,6 @@ class Head extends React.Component {
   constructor() {
     super();
     this.state = { 'proxyRunning': ipcRenderer.sendSync('proxyIsRunning') };
-    this.config = remote.getGlobal('config');
   }
 
   toggleProxy(e) {
@@ -23,7 +23,7 @@ class Head extends React.Component {
 
   changePort(e) {
     const port = Number(e.target.value);
-    this.config.Proxy.port = port;
+    config.Proxy.port = port;
     ipcRenderer.send('updateConfig');
   }
 
@@ -37,7 +37,7 @@ class Head extends React.Component {
           <Select label='Interfaces' options={interfaces} defaultValue={0} />
         </Menu.Item>
         <Menu.Item>
-          <Input label='Port' defaultValue={this.config.Proxy.port} onChange={this.changePort.bind(this)} />
+          <Input label='Port' defaultValue={config.Proxy.port} onChange={this.changePort.bind(this)} />
         </Menu.Item>
         <Menu.Item position='right'>
           <Button content={this.state.proxyRunning ? 'Stop Proxy' : 'Start Proxy'} icon={this.state.proxyRunning ? 'stop' : 'play'} labelPosition='right' onClick={this.toggleProxy.bind(this)} />
