@@ -32,7 +32,7 @@ class Head extends React.Component {
       return { "key": i, "text": interfaceEntry, "value": i }
     }) 
     return (
-      <Menu className="main-menu">
+      <Menu className="main-menu" fixed="top">
         <Menu.Item>
           <Select label='Interfaces' options={interfaces} defaultValue={0} />
         </Menu.Item>

@@ -1,8 +1,8 @@
 const { ipcRenderer } = require('electron')
 
 import React from 'react';
-
-import { Header, Feed, Divider } from 'semantic-ui-react';
+import { Header, Feed, Divider, Label } from 'semantic-ui-react';
+import { capitalize, toLower } from 'lodash/string';
 
 class Logs extends React.Component {
   constructor() {
@@ -24,16 +24,33 @@ class Logs extends React.Component {
   update(entry) {
     this.setState({ 'entries': this.state.entries.concat([entry]) });
   }
+
+  labelColor(log_type) {
+    switch (toLower(log_type)) {
+      case 'info':
+        return 'blue';
+      case 'success':
+        return 'green';
+      case 'warning':
+        return 'yellow';
+      case 'error':
+        return 'red';
+      default:
+        return 'grey';
+    }
+  }
   
   render () {
     const Logs = this.state.entries.slice(0).reverse().map((entry, i) => {
-      return <Feed key={i} className='log'>
+      return <Feed key={i} className='log' size="small">
       <Feed.Event>
         <Feed.Content>
-          <Feed.Date>{entry.date}</Feed.Date>
-          <Feed.Summary content={`${entry.source}${entry.name ? ' - ' + entry.name : ''}`} className="capitalize" />
+          <Feed.Summary>
+            <Label size="mini" color={this.labelColor(entry.type)}>{capitalize(entry.type)}</Label> 
+            {capitalize(entry.source)} {entry.name ? ' - ' + entry.name : ''} <Feed.Date>{entry.date}</Feed.Date>
+          </Feed.Summary>
           <Feed.Extra>
-            <span className="capitalize">{entry.type}:</span> {entry.message}
+            {entry.message}
           </Feed.Extra>
         </Feed.Content>
       </Feed.Event>
