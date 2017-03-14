@@ -52,7 +52,6 @@ class SWProxy extends EventEmitter {
         'Content-Type': 'text/plain'
       });
 
-      self.log({ type: 'error', source: 'proxy', message: `Something went wrong: ${error.message}` })
       resp.end('Something went wrong.');
     });
 
@@ -74,7 +73,15 @@ class SWProxy extends EventEmitter {
       }
 
       this.proxy.web(req, resp, { target: req.url, prependPath: false });
-    }).listen(port);
+    }).listen(port, () => {
+      this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
+    });
+
+    this.httpServer.on('error', (e) => {
+      if (e.code == 'EADDRINUSE') {
+        self.log({ type: 'warning', source: 'proxy', message: 'Port is in use from another process. Try another port.' })
+      }
+    });
 
     this.httpServer.on('connect', function (req, socket) {
       let serverUrl = url.parse('https://' + req.url);
@@ -95,8 +102,6 @@ class SWProxy extends EventEmitter {
         console.log('Caught client socket error.');
       });
     });
-
-    this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
   }
 
   stop() {
