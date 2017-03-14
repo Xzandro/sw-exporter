@@ -11,7 +11,9 @@ module.exports = {
   init(proxy, config) {
     this.config = config;
     proxy.on('apiCommand', (req, resp) => {
-      this.logCommand(req, resp);
+      if (config.Plugins[this.pluginName].enabled) {
+        this.logCommand(req, resp);
+      }
     });
   },
   logCommand(req, resp) {
