@@ -112,7 +112,7 @@ class SettingsItem extends React.Component {
     ipcRenderer.send('updateConfig');
   }
 
-  setInput() {
+  getInputElement() {
     switch (this.Input.type.name) {
       case 'Checkbox':
         return <Checkbox {...this.Input.props} checked={this.state.value} onChange={this.changeSetting.bind(this)} />
@@ -124,7 +124,7 @@ class SettingsItem extends React.Component {
   }
 
   render () {
-    const element = this.setInput();
+    const element = this.getInputElement();
     return (
       element
     )
