@@ -108,7 +108,7 @@ class SettingsItem extends React.Component {
       config[this.props.section][this.props.setting] = value;
     }
     
-    this.setState({'value': element.checked});
+    this.setState({'value': value});
     ipcRenderer.send('updateConfig');
   }
 
