@@ -12,7 +12,7 @@ let win;
 let defaultFilePath = path.join(app.getPath('desktop'), app.getName() + ' Files');
 let defaultConfig = {
   Config: {
-    App: { filesPath: defaultFilePath },
+    App: { filesPath: defaultFilePath, debug: false },
     Proxy: { port: 8080 },
     Plugins: {}
   }

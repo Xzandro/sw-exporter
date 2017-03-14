@@ -31,7 +31,15 @@ class SWProxy extends EventEmitter {
         });
 
         proxyResp.on('end', () => {
-          const resp_data = decrypt_response(resp_chunks.join());
+          try {
+            const resp_data = decrypt_response(resp_chunks.join());
+          }
+          catch(e) {
+            // Error decrypting the data, log and do not fire an event
+            self.log({ type: 'debug', source:'proxy', message: `Error decrypting response data - ignoring. ${e}`});
+            return;
+          }
+          
           const {command} = resp_data;
 
           if (parsed_requests[command]) {
@@ -64,7 +72,14 @@ class SWProxy extends EventEmitter {
         });
         req.on('end', () => {
           // Parse the request
-          const req_data = decrypt_request(req_chunks.join());
+          try {
+            const req_data = decrypt_request(req_chunks.join());
+          }
+          catch(e) {
+            // Error decrypting the data, log and do not fire an event
+            self.log({ type: 'debug', source:'proxy', message: `Error decrypting request data - ignoring. ${e}`});
+            return;
+          }
           const {command} = req_data;
 
           // Add command request to an object so we can handle multiple requests at a time

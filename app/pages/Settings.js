@@ -11,7 +11,10 @@ import { Button, Grid, Header, Form, Input, Segment } from 'semantic-ui-react';
 class Settings extends React.Component {
   constructor() {
     super();
-    this.state = { 'filesPath': config.App.filesPath  };
+    this.state = {
+      'filesPath': config.App.filesPath,
+      'showDebug': config.App.debug
+    };
   }
 
   openDialog() {
@@ -25,6 +28,12 @@ class Settings extends React.Component {
         }
       }
     );
+  }
+
+  toggleDebug(e, element) {
+    config.App.debug = element.checked;
+    self.setState({'showDebug': element.checked});
+    ipcRenderer.send('updateConfig');
   }
 
   render () {
@@ -42,6 +51,7 @@ class Settings extends React.Component {
         </Header>
         <Segment attached>
           <Input label='Files Path' action={<Button content='Change' onClick={this.openDialog.bind(this)} />} value={this.state.filesPath} readOnly fluid />
+          <Form.Checkbox label='Show Debug Messages' defaultChecked={this.state.showDebug} onChange={this.toggleDebug.bind(this)} value={this.state.showDebug}/>
         </Segment>
         <Header as='h4' attached='top'>
           Plugins
