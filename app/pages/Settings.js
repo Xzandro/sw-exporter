@@ -6,7 +6,7 @@ let config = remote.getGlobal('config');
 
 import React from 'react';
 
-import { Button, Grid, Header, Form, Input, Segment, Checkbox, Select } from 'semantic-ui-react';
+import { Button, Checkbox, Grid, Header, Form, Input, Segment } from 'semantic-ui-react';
 
 class Settings extends React.Component {
   constructor() {
