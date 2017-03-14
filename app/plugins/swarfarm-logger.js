@@ -48,10 +48,15 @@ module.exports = {
     });
 
     request.post({url: this.log_url, form: { data: JSON.stringify(result_data)} },  (error, response, body) => {
-      if (!error && response.statusCode == 200) {
+      if (error) {
+        proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: `Error: ${error.message}` });
+        return;
+      }
+
+      if (response.statusCode === 200) {
         proxy.log({ type: 'success', source: 'plugin', name: this.pluginName, message: `${command} logged successfully` });
       } else {
-        proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: `Error: ${error.message}` });
+        proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: `Request failed: Server responded with code: ${response.statusCode}` });
       }
     });
   }
