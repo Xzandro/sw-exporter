@@ -69,7 +69,7 @@ module.exports = {
 
     // sort runes on monsters
     for (let monster of data['unit_list']) {
-      // make sure that runes is actually an object (thanks com2us)
+      // make sure that runes is actually an array (thanks com2us)
       if (monster['runes'] === Object(monster['runes']))
         monster['runes'] = Object.values(monster['runes']);
 
@@ -81,7 +81,7 @@ module.exports = {
       });
     }
 
-    // make sure that runes is actually an object (thanks again com2us)
+    // make sure that runes is actually an array (thanks again com2us)
       if (data['runes'] === Object(data['runes']))
         data['runes'] = Object.values(data['runes']);
 
