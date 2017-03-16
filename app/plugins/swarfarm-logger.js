@@ -7,7 +7,7 @@ module.exports = {
   log_url: 'https://swarfarm.com/data/log/upload/',
   accepted_commands: false,
   init(proxy, config, request) {
-    if (config.Plugins[this.pluginName].enabled) {
+    if (config.Config.Plugins[this.pluginName].enabled) {
       this.proxy = proxy;
       let options = {
         method: 'get',
@@ -20,11 +20,11 @@ module.exports = {
           proxy.log({ type: 'success', source: 'plugin', name: this.pluginName, message: `Looking for the following commands to log: ${Object.keys(this.accepted_commands).join(', ')}` });
         } else {
           proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: 'Unable to retrieve accepted log types. SWARFARM logging is disabled.' });
-          config.Plugins[this.pluginName].enabled = false;
+          config.Config.Plugins[this.pluginName].enabled = false;
         }
       });
       proxy.on('apiCommand', (req, resp) => {
-        if (config.Plugins[this.pluginName].enabled)
+        if (config.Config.Plugins[this.pluginName].enabled)
           this.log(proxy, req, resp, request);
       });
     }

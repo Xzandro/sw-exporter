@@ -9,7 +9,7 @@ module.exports = {
   pluginName: 'ProfileExport',
   init(proxy, config) {
     proxy.on('HubUserLogin', (req, resp) => {
-      if (config.Plugins[this.pluginName].enabled)
+      if (config.Config.Plugins[this.pluginName].enabled)
         this.writeProfileToFile(proxy, req, resp);
     });
   },
@@ -18,7 +18,7 @@ module.exports = {
     const filename = wizard_id.toString().concat('.json');
 
     var outFile = fs.createWriteStream(
-      path.join(config.App.filesPath, filename), {
+      path.join(config.Config.App.filesPath, filename), {
         flags: 'w',
         autoClose: true
       }

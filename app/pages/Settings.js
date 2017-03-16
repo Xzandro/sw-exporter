@@ -12,7 +12,7 @@ class Settings extends React.Component {
   constructor() {
     super();
     this.state = {
-      'filesPath': config.App.filesPath
+      'filesPath': config.Config.App.filesPath
     };
   }
 
@@ -22,7 +22,7 @@ class Settings extends React.Component {
       properties: [ 'openDirectory' ] }, function (dirName) {
         if (dirName) {
           self.setState({ 'filesPath': dirName.toString()  });
-          config.App.filesPath = dirName.toString();
+          config.Config.App.filesPath = dirName.toString();
           ipcRenderer.send('updateConfig');
         }
       }
@@ -71,7 +71,7 @@ module.exports = Settings;
 
 class SettingsPlugin extends React.Component {
   render () {
-    const pluginConfig = Object.keys(config.Plugins[this.props.pluginName]).map((key, i) => {
+    const pluginConfig = Object.keys(config.Config.Plugins[this.props.pluginName]).map((key, i) => {
       return <SettingsItem
         key={i}
         section='Plugins'
@@ -92,9 +92,9 @@ class SettingsItem extends React.Component {
   constructor(props) {
     super(props);
     if (this.props.section === 'Plugins') {
-      this.state = { value : config[this.props.section][this.props.pluginName][this.props.setting]};
+      this.state = { value : config.Config[this.props.section][this.props.pluginName][this.props.setting]};
     } else {
-      this.state = { value : config[this.props.section][this.props.setting]};
+      this.state = { value : config.Config[this.props.section][this.props.setting]};
     }
     
     this.Input = this.props.Input;
@@ -103,9 +103,9 @@ class SettingsItem extends React.Component {
   changeSetting(e, element) {
     const value = element.type === 'checkbox' ? element.checked : element.value;
     if (this.props.section === 'Plugins') {
-      config[this.props.section][this.props.pluginName][this.props.setting] = value;
+      config.Config[this.props.section][this.props.pluginName][this.props.setting] = value;
     } else {
-      config[this.props.section][this.props.setting] = value;
+      config.Config[this.props.section][this.props.setting] = value;
     }
     
     this.setState({'value': value});

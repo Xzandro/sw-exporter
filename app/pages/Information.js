@@ -15,7 +15,7 @@ class Information extends React.Component {
           Locations
         </Header>
         <Segment attached>
-          <Input label='Files' defaultValue={config.App.filesPath} fluid readOnly />
+          <Input label='Files' defaultValue={config.Config.App.filesPath} fluid readOnly />
           <Divider hidden />
           <Input label='Settings' defaultValue={folderLocations.settings} fluid readOnly />
         </Segment>

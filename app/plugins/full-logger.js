@@ -6,12 +6,10 @@ module.exports = {
   defaultConfig: {
     enabled: true
   },
-  config : {},
   pluginName: 'FullLogger',
   init(proxy, config) {
-    this.config = config;
     proxy.on('apiCommand', (req, resp) => {
-      if (config.Plugins[this.pluginName].enabled) {
+      if (config.Config.Plugins[this.pluginName].enabled) {
         this.logCommand(req, resp);
       }
     });
@@ -20,7 +18,7 @@ module.exports = {
     const {command} = req;
 
     var logfile = fs.createWriteStream(
-        path.join(config.App.filesPath, 'full_log.txt'), {
+        path.join(config.Config.App.filesPath, 'full_log.txt'), {
         flags: 'a',
         autoClose: true
       }
