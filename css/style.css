@@ -2,9 +2,6 @@ body {
   height: calc(100% - 65px);
 }
 
-.setting label {
-  text-transform: capitalize;
-}
 .ui.menu.main-menu {
   margin-bottom: 0;
 }

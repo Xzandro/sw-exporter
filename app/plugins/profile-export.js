@@ -4,7 +4,11 @@ const eol = require('os').EOL;
 
 module.exports = {
   defaultConfig: {
-    enabled: true
+    enabled: true,
+    sortData: true
+  },
+  defaultConfigDetails: {
+    sortData: { label: 'Sort data like ingame' }
   },
   pluginName: 'ProfileExport',
   init(proxy, config) {

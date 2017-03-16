@@ -19,7 +19,7 @@ let defaultConfig = {
 }
 let defaultConfigDetails = {
   ConfigDetails: {
-    App: {},
+    App: { debug: { label: 'Show Debug Messages' } },
     Proxy: {},
     Plugins: {}
   }
@@ -146,6 +146,7 @@ function loadPlugins() {
   // Initialize plugins
   plugins.forEach(function(plug) {
     config.Config.Plugins[plug.pluginName] = _.merge(plug.defaultConfig, config.Config.Plugins[plug.pluginName]);
+    config.ConfigDetails.Plugins[plug.pluginName] = plug.defaultConfigDetails || {};
     plug.init(proxy, config, request);
   })
 

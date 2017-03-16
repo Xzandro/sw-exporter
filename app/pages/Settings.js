@@ -3,8 +3,8 @@ const dialog = remote.dialog;
 const plugins = remote.getGlobal('plugins');
 let config = remote.getGlobal('config');
 
-
 import React from 'react';
+import { capitalize } from 'lodash/string';
 
 import { Button, Checkbox, Grid, Header, Form, Input, Segment } from 'semantic-ui-react';
 
@@ -51,7 +51,7 @@ class Settings extends React.Component {
               <SettingsItem
                 section='App'
                 setting='debug'
-                Input={<Checkbox label='Show Debug Messages' />}
+                Input={<Checkbox />}
               />
             </Form.Field>
           </Form>
@@ -72,18 +72,17 @@ module.exports = Settings;
 class SettingsPlugin extends React.Component {
   render () {
     const pluginConfig = Object.keys(config.Config.Plugins[this.props.pluginName]).map((key, i) => {
-      return <SettingsItem
-        key={i}
+      return <Form.Field key={i}><SettingsItem
         section='Plugins'
         pluginName={this.props.pluginName}
         setting={key}
-        Input={<Checkbox label={key} />}
-      />
+        Input={<Checkbox />}
+      /></Form.Field>
     });
     return (
-      <div className="setting">
+      <Form>
         {pluginConfig}
-      </div>
+      </Form>
     )
   }
 }
@@ -98,6 +97,16 @@ class SettingsItem extends React.Component {
     }
     
     this.Input = this.props.Input;
+  }
+
+  getLabel() {
+    if (this.props.section === 'Plugins') {
+      var customLabel = (config.ConfigDetails[this.props.section][this.props.pluginName][this.props.setting] && config.ConfigDetails[this.props.section][this.props.pluginName][this.props.setting].label);
+    } else {
+      var customLabel = (config.ConfigDetails[this.props.section][this.props.setting] && config.ConfigDetails[this.props.section][this.props.setting].label);
+    }
+    
+    return (customLabel) ? customLabel : capitalize(this.props.setting);
   }
 
   changeSetting(e, element) {
@@ -115,7 +124,7 @@ class SettingsItem extends React.Component {
   getInputElement() {
     switch (this.Input.type.name) {
       case 'Checkbox':
-        return <Checkbox {...this.Input.props} checked={this.state.value} onChange={this.changeSetting.bind(this)} />
+        return <Checkbox {...this.Input.props} label={this.getLabel()} checked={this.state.value} onChange={this.changeSetting.bind(this)} />
       case 'Select':
         return <Select {...this.Input.props} value={this.state.value} onChange={this.changeSetting.bind(this)} />
       default:
