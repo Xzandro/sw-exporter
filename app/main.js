@@ -17,15 +17,22 @@ let defaultConfig = {
     Plugins: {}
   }
 }
+let defaultConfigDetails = {
+  ConfigDetails: {
+    App: { debug: { label: 'Show Debug Messages' } },
+    Proxy: {},
+    Plugins: {}
+  }
+}
 global.plugins = [];
 
 storage.getAll(function(error, data) {
   if (error) throw error;
 
-  let merged = _.merge(defaultConfig, data);
-  global.config = merged.Config;
+  global.config = _.merge(defaultConfig, data);
+  global.config.ConfigDetails = defaultConfigDetails.ConfigDetails;
 
-  fs.ensureDirSync(global.config.App.filesPath);
+  fs.ensureDirSync(global.config.Config.App.filesPath);
 
   global.plugins = loadPlugins();
 });
@@ -69,7 +76,7 @@ ipcMain.on('proxyGetInterfaces', (event, arg) => {
 })
 
 ipcMain.on('proxyStart', (event, arg) => {
-  proxy.start(config.Proxy.port);
+  proxy.start(config.Config.Proxy.port);
 })
 
 ipcMain.on('proxyStop', (event, arg) => {
@@ -81,7 +88,7 @@ ipcMain.on('logGetEntries', (event, arg) => {
 })
 
 ipcMain.on('updateConfig', (event, arg) => {
-  storage.set('Config', config, function(error) {
+  storage.set('Config', config.Config, function(error) {
     if (error) throw error;
   });
 })
@@ -138,7 +145,8 @@ function loadPlugins() {
 
   // Initialize plugins
   plugins.forEach(function(plug) {
-    config.Plugins[plug.pluginName] = _.merge(plug.defaultConfig, config.Plugins[plug.pluginName]);
+    config.Config.Plugins[plug.pluginName] = _.merge(plug.defaultConfig, config.Config.Plugins[plug.pluginName]);
+    config.ConfigDetails.Plugins[plug.pluginName] = plug.defaultConfigDetails || {};
     plug.init(proxy, config, request);
   })
 

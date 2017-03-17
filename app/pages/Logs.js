@@ -45,7 +45,7 @@ class Logs extends React.Component {
   
   render () {
     const Logs = this.state.entries.slice(0).reverse().map((entry, i) => {
-      if (entry.type !== 'debug' || config.App.debug) {
+      if (entry.type !== 'debug' || config.Config.App.debug) {
         return <Feed key={i} className='log' size="small">
         <Feed.Event>
           <Feed.Content>

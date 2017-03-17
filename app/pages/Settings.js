@@ -3,8 +3,8 @@ const dialog = remote.dialog;
 const plugins = remote.getGlobal('plugins');
 let config = remote.getGlobal('config');
 
-
 import React from 'react';
+import { capitalize } from 'lodash/string';
 
 import { Button, Checkbox, Grid, Header, Form, Input, Segment } from 'semantic-ui-react';
 
@@ -12,7 +12,7 @@ class Settings extends React.Component {
   constructor() {
     super();
     this.state = {
-      'filesPath': config.App.filesPath
+      'filesPath': config.Config.App.filesPath
     };
   }
 
@@ -22,7 +22,7 @@ class Settings extends React.Component {
       properties: [ 'openDirectory' ] }, function (dirName) {
         if (dirName) {
           self.setState({ 'filesPath': dirName.toString()  });
-          config.App.filesPath = dirName.toString();
+          config.Config.App.filesPath = dirName.toString();
           ipcRenderer.send('updateConfig');
         }
       }
@@ -51,7 +51,7 @@ class Settings extends React.Component {
               <SettingsItem
                 section='App'
                 setting='debug'
-                Input={<Checkbox label='Show Debug Messages' />}
+                Input={<Checkbox />}
               />
             </Form.Field>
           </Form>
@@ -71,19 +71,18 @@ module.exports = Settings;
 
 class SettingsPlugin extends React.Component {
   render () {
-    const pluginConfig = Object.keys(config.Plugins[this.props.pluginName]).map((key, i) => {
-      return <SettingsItem
-        key={i}
+    const pluginConfig = Object.keys(config.Config.Plugins[this.props.pluginName]).map((key, i) => {
+      return <Form.Field key={i}><SettingsItem
         section='Plugins'
         pluginName={this.props.pluginName}
         setting={key}
-        Input={<Checkbox label={key} />}
-      />
+        Input={<Checkbox />}
+      /></Form.Field>
     });
     return (
-      <div className="setting">
+      <Form>
         {pluginConfig}
-      </div>
+      </Form>
     )
   }
 }
@@ -92,20 +91,30 @@ class SettingsItem extends React.Component {
   constructor(props) {
     super(props);
     if (this.props.section === 'Plugins') {
-      this.state = { value : config[this.props.section][this.props.pluginName][this.props.setting]};
+      this.state = { value : config.Config[this.props.section][this.props.pluginName][this.props.setting]};
     } else {
-      this.state = { value : config[this.props.section][this.props.setting]};
+      this.state = { value : config.Config[this.props.section][this.props.setting]};
     }
     
     this.Input = this.props.Input;
   }
 
+  getLabel() {
+    if (this.props.section === 'Plugins') {
+      var customLabel = (config.ConfigDetails[this.props.section][this.props.pluginName][this.props.setting] && config.ConfigDetails[this.props.section][this.props.pluginName][this.props.setting].label);
+    } else {
+      var customLabel = (config.ConfigDetails[this.props.section][this.props.setting] && config.ConfigDetails[this.props.section][this.props.setting].label);
+    }
+    
+    return (customLabel) ? customLabel : capitalize(this.props.setting);
+  }
+
   changeSetting(e, element) {
     const value = element.type === 'checkbox' ? element.checked : element.value;
     if (this.props.section === 'Plugins') {
-      config[this.props.section][this.props.pluginName][this.props.setting] = value;
+      config.Config[this.props.section][this.props.pluginName][this.props.setting] = value;
     } else {
-      config[this.props.section][this.props.setting] = value;
+      config.Config[this.props.section][this.props.setting] = value;
     }
     
     this.setState({'value': value});
@@ -115,7 +124,7 @@ class SettingsItem extends React.Component {
   getInputElement() {
     switch (this.Input.type.name) {
       case 'Checkbox':
-        return <Checkbox {...this.Input.props} checked={this.state.value} onChange={this.changeSetting.bind(this)} />
+        return <Checkbox {...this.Input.props} label={this.getLabel()} checked={this.state.value} onChange={this.changeSetting.bind(this)} />
       case 'Select':
         return <Select {...this.Input.props} value={this.state.value} onChange={this.changeSetting.bind(this)} />
       default:
