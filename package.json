@@ -24,6 +24,11 @@
   "keywords": [],
   "author": "porksmash & Xzandro",
   "license": "Apache-2.0",
+  "bugs": "https://github.com/Xzandro/sw-exporter/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Xzandro/sw-exporter.git"
+  },
   "devDependencies": {
     "babel": "^6.23.0",
     "babel-core": "^6.23.1",
