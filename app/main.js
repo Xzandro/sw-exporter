@@ -105,8 +105,7 @@ function createWindow () {
     minWidth: 800,
     minHeight: 600,
     acceptFirstMouse: true,
-    autoHideMenuBar: true,
-    titleBarStyle: 'hidden-inset'
+    autoHideMenuBar: true
   });
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
