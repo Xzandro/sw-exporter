@@ -57,6 +57,20 @@ class Settings extends React.Component {
           </Form>
         </Segment>
         <Header as='h4' attached='top'>
+          Proxy
+        </Header>
+        <Segment attached>
+          <Form>
+            <Form.Field>
+              <SettingsItem
+                section='Proxy'
+                setting='autoStart'
+                Input={<Checkbox />}
+              />
+            </Form.Field>
+          </Form>
+        </Segment>
+        <Header as='h4' attached='top'>
           Plugins
         </Header>
         <Segment attached>
@@ -126,9 +140,9 @@ class SettingsItem extends React.Component {
       case 'Checkbox':
         return <Checkbox {...this.Input.props} label={this.getLabel()} checked={this.state.value} onChange={this.changeSetting.bind(this)} />
       case 'Select':
-        return <Select {...this.Input.props} value={this.state.value} onChange={this.changeSetting.bind(this)} />
+        return <Select {...this.Input.props} label={this.getLabel()} value={this.state.value} onChange={this.changeSetting.bind(this)} />
       default:
-        return <Input {...this.Input.props} value={this.state.value} onChange={this.changeSetting.bind(this)} />
+        return <Input {...this.Input.props} label={this.getLabel()} value={this.state.value} onChange={this.changeSetting.bind(this)} />
     }
   }
 
