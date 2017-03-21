@@ -47,27 +47,22 @@ class Settings extends React.Component {
             <Form.Field>
               <Input label='Files Path' action={<Button content='Change' onClick={this.openDialog.bind(this)} />} value={this.state.filesPath} readOnly fluid />
             </Form.Field>
-            <Form.Field>
-              <SettingsItem
-                section='App'
-                setting='debug'
-                Input={<Checkbox />}
-              />
-            </Form.Field>
-          </Form>
-        </Segment>
-        <Header as='h4' attached='top'>
-          Proxy
-        </Header>
-        <Segment attached>
-          <Form>
-            <Form.Field>
-              <SettingsItem
-                section='Proxy'
-                setting='autoStart'
-                Input={<Checkbox />}
-              />
-            </Form.Field>
+            <Form.Group widths='equal'>
+              <Form.Field>
+                <SettingsItem
+                  section='App'
+                  setting='debug'
+                  Input={<Checkbox />}
+                />
+              </Form.Field>
+              <Form.Field>
+                <SettingsItem
+                  section='Proxy'
+                  setting='autoStart'
+                  Input={<Checkbox />}
+                />
+              </Form.Field>
+            </Form.Group>
           </Form>
         </Segment>
         <Header as='h4' attached='top'>
