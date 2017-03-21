@@ -1,6 +1,6 @@
 module.exports = {
   defaultConfig: {
-    enabled: true
+    enabled: false
   },
   pluginName: 'ExamplePlugin',
   init(proxy, config) {

@@ -1,21 +1,23 @@
+const request = require('request');
+
 module.exports = {
   defaultConfig: {
     enabled: true
   },
   pluginName: 'SwagLogger',
   log_url: 'https://gw.swop.one/data/upload/',
-  init(proxy, config, request) {
+  init(proxy, config) {
     proxy.on('GetGuildWarBattleLogByGuildId', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled)
-        this.log(proxy, req, resp, request);
+        this.log(proxy, req, resp);
     });
     proxy.on('GetGuildWarBattleLogByWizardId', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled)
-        this.log(proxy, req, resp, request);
+        this.log(proxy, req, resp);
     });
   },
 
-  log(proxy, req, resp, request) {
+  log(proxy, req, resp) {
     const {command} = req;
 
     let options = {

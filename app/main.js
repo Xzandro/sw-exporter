@@ -1,6 +1,5 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const fs = require('fs-extra');
-const request = require('request');
 const storage = require('electron-json-storage');
 const _ = require('lodash');
 const SWProxy = require('./proxy/SWProxy');
@@ -148,7 +147,7 @@ function loadPlugins() {
   plugins.forEach(function(plug) {
     config.Config.Plugins[plug.pluginName] = _.merge(plug.defaultConfig, config.Config.Plugins[plug.pluginName]);
     config.ConfigDetails.Plugins[plug.pluginName] = plug.defaultConfigDetails || {};
-    plug.init(proxy, config, request);
+    plug.init(proxy, config);
   })
 
   return plugins;

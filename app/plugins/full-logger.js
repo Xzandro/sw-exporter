@@ -4,7 +4,7 @@ const eol = require('os').EOL;
 
 module.exports = {
   defaultConfig: {
-    enabled: true
+    enabled: false
   },
   pluginName: 'FullLogger',
   init(proxy, config) {

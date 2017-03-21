@@ -1,3 +1,5 @@
+const request = require('request');
+
 module.exports = {
   defaultConfig: {
     enabled: true
@@ -6,7 +8,7 @@ module.exports = {
   commands_url: 'https://swarfarm.com/data/log/accepted_commands/',
   log_url: 'https://swarfarm.com/data/log/upload/',
   accepted_commands: false,
-  init(proxy, config, request) {
+  init(proxy, config) {
     if (config.Config.Plugins[this.pluginName].enabled) {
       this.proxy = proxy;
       let options = {
@@ -25,12 +27,12 @@ module.exports = {
       });
       proxy.on('apiCommand', (req, resp) => {
         if (config.Config.Plugins[this.pluginName].enabled)
-          this.log(proxy, req, resp, request);
+          this.log(proxy, req, resp);
       });
     }
   },
 
-  log(proxy, req, resp, request) {
+  log(proxy, req, resp) {
     const {command} = req;
 
     if (!this.accepted_commands || !this.accepted_commands[command])
