@@ -11,6 +11,7 @@ module.exports = {
     sortData: { label: 'Sort data like ingame' }
   },
   pluginName: 'ProfileExport',
+  pluginDescription: 'Exports your monster and rune data.',
   init(proxy, config) {
     proxy.on('HubUserLogin', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {

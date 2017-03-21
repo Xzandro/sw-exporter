@@ -6,7 +6,7 @@ let config = remote.getGlobal('config');
 import React from 'react';
 import { capitalize } from 'lodash/string';
 
-import { Button, Checkbox, Grid, Header, Form, Input, Segment } from 'semantic-ui-react';
+import { Button, Checkbox, Grid, Header, Form, Input, Icon, Popup, Segment } from 'semantic-ui-react';
 
 class Settings extends React.Component {
   constructor() {
@@ -31,8 +31,16 @@ class Settings extends React.Component {
 
   render () {
     const pluginSettings = plugins.map((plugin, i) => {
+      let description = plugin.pluginDescription ? <Popup
+        trigger={<Icon name='info circle' />}
+        content={plugin.pluginDescription}
+        size='small'
+      /> : '';
+
       return <Grid.Column key={i}>
-        <Header as='h5'>{plugin.pluginName}</Header>
+        <Header as='h5'>{plugin.pluginName}
+          {description}
+        </Header>
         <SettingsPlugin pluginName={plugin.pluginName} />
       </Grid.Column>
     });
@@ -68,7 +76,7 @@ class Settings extends React.Component {
         <Header as='h4' attached='top'>
           Plugins
         </Header>
-        <Segment attached>
+        <Segment className="settings-plugins" attached>
           <Grid divided columns={2}>{pluginSettings}</Grid>
         </Segment>
       </div>

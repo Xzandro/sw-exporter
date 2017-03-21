@@ -19,3 +19,9 @@ body {
   border-bottom: none;
   border-left: none;
 }
+
+.settings-plugins .icon {
+  font-size: 16px !important;
+  margin-top: -5px;
+  margin-left: 5px;
+}

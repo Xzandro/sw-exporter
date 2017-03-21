@@ -5,6 +5,7 @@ module.exports = {
     enabled: true
   },
   pluginName: 'SwagLogger',
+  pluginDescription: 'Transfers your Guild War data to gw.swop.one automatically.',
   log_url: 'https://gw.swop.one/data/upload/',
   init(proxy, config) {
     proxy.on('GetGuildWarBattleLogByGuildId', (req, resp) => {

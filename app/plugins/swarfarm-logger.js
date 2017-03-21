@@ -5,6 +5,7 @@ module.exports = {
     enabled: true
   },
   pluginName: 'SwarfarmLogger',
+  pluginDescription: 'Transfers your Dungeon Run data to swarfarm.com automatically.',
   commands_url: 'https://swarfarm.com/data/log/accepted_commands/',
   log_url: 'https://swarfarm.com/data/log/upload/',
   accepted_commands: false,

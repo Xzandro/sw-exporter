@@ -2,7 +2,9 @@ module.exports = {
   defaultConfig: {
     enabled: false
   },
+  // plugin meta data to better describe your plugin
   pluginName: 'ExamplePlugin',
+  pluginDescription: 'This plugin shows you all API events in the log.',
   init(proxy, config) {
     // Subscribe to api command events from the proxy here.
     // You can subscribe to specifc API commands. Event name is the same as the command string

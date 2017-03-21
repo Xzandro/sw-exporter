@@ -7,6 +7,7 @@ module.exports = {
     enabled: false
   },
   pluginName: 'FullLogger',
+  pluginDescription: 'Dumps data for every API event into a file.',
   init(proxy, config) {
     proxy.on('apiCommand', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {
