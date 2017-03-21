@@ -93,6 +93,7 @@ class SWProxy extends EventEmitter {
       this.proxy.web(req, resp, { target: req.url, prependPath: false });
     }).listen(port, () => {
       this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
+      win.webContents.send('proxyStarted');
     });
 
     this.httpServer.on('error', (e) => {
@@ -125,7 +126,9 @@ class SWProxy extends EventEmitter {
   stop() {
     this.proxy.close();
     this.httpServer.close();
-    this.log({ type: 'info', source: 'proxy', message: `Proxy stopped` })
+
+    win.webContents.send('proxyStopped');
+    this.log({ type: 'info', source: 'proxy', message: `Proxy stopped` });
   }
 
   getInterfaces() {
@@ -155,7 +158,8 @@ class SWProxy extends EventEmitter {
 
     entry.date = new Date().toLocaleTimeString();
     this.logEntries.push(entry);
-    this.emit('logupdated', entry);
+
+    win.webContents.send('logupdated', entry)
   }
 
   getLogEntries() {

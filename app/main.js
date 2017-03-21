@@ -8,37 +8,42 @@ const SWProxy = require('./proxy/SWProxy');
 const path = require('path');
 const url = require('url');
 
-let win;
+global.win;
 let defaultFilePath = path.join(app.getPath('desktop'), app.getName() + ' Files');
 let defaultConfig = {
   Config: {
     App: { filesPath: defaultFilePath, debug: false },
-    Proxy: { port: 8080 },
+    Proxy: { port: 8080, autoStart: false },
     Plugins: {}
   }
 }
 let defaultConfigDetails = {
   ConfigDetails: {
     App: { debug: { label: 'Show Debug Messages' } },
-    Proxy: {},
+    Proxy: { autoStart: { label: 'Start proxy automatically' } },
     Plugins: {}
   }
 }
+
 global.plugins = [];
-
-storage.getAll(function(error, data) {
-  if (error) throw error;
-
-  global.config = _.merge(defaultConfig, data);
-  global.config.ConfigDetails = defaultConfigDetails.ConfigDetails;
-
-  fs.ensureDirSync(global.config.Config.App.filesPath);
-
-  global.plugins = loadPlugins();
-});
 
 app.on('ready', () => {
   createWindow();
+
+  storage.getAll(function (error, data) {
+    if (error) throw error;
+
+    global.config = _.merge(defaultConfig, data);
+    global.config.ConfigDetails = defaultConfigDetails.ConfigDetails;
+
+    fs.ensureDirSync(global.config.Config.App.filesPath);
+
+    global.plugins = loadPlugins();
+
+    if (global.config.Config.Proxy.autoStart) {
+      proxy.start();
+    }
+  });
 });
 
 app.on('window-all-closed', () => {
@@ -61,10 +66,6 @@ const proxy = new SWProxy();
 
 proxy.on('error', (e) => {
   console.log(e);
-})
-
-proxy.on('logupdated', (entry) => {
-  win.webContents.send('logupdated', entry)
 })
 
 ipcMain.on('proxyIsRunning', (event, arg) => {
@@ -107,11 +108,12 @@ function createWindow () {
     acceptFirstMouse: true,
     autoHideMenuBar: true
   });
+  global.mainWindowId = win.id;
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true
-  }))
+  }));
 }
 
 function initPlugins() {

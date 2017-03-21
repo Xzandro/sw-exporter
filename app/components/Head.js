@@ -11,12 +11,25 @@ class Head extends React.Component {
     this.state = { 'proxyRunning': ipcRenderer.sendSync('proxyIsRunning') };
   }
 
+  componentDidMount() {
+    ipcRenderer.on('proxyStarted', (event, message) => {
+      this.setState({ 'proxyRunning': true });
+    });
+
+    ipcRenderer.on('proxyStopped', (event, message) => {
+      this.setState({ 'proxyRunning': false });
+    });
+  }
+
+  componentWillUnmount() {
+    ipcRenderer.removeAllListeners('proxyStarted');
+    ipcRenderer.removeAllListeners('proxyStopped');
+  }
+
   toggleProxy(e) {
     if(ipcRenderer.sendSync('proxyIsRunning')) {
-      this.setState({ 'proxyRunning': false });
       ipcRenderer.send('proxyStop');
     } else {
-      this.setState({ 'proxyRunning': true });
       ipcRenderer.send('proxyStart');
     }
   }

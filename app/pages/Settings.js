@@ -47,13 +47,22 @@ class Settings extends React.Component {
             <Form.Field>
               <Input label='Files Path' action={<Button content='Change' onClick={this.openDialog.bind(this)} />} value={this.state.filesPath} readOnly fluid />
             </Form.Field>
-            <Form.Field>
-              <SettingsItem
-                section='App'
-                setting='debug'
-                Input={<Checkbox />}
-              />
-            </Form.Field>
+            <Form.Group widths='equal'>
+              <Form.Field>
+                <SettingsItem
+                  section='App'
+                  setting='debug'
+                  Input={<Checkbox />}
+                />
+              </Form.Field>
+              <Form.Field>
+                <SettingsItem
+                  section='Proxy'
+                  setting='autoStart'
+                  Input={<Checkbox />}
+                />
+              </Form.Field>
+            </Form.Group>
           </Form>
         </Segment>
         <Header as='h4' attached='top'>
@@ -126,9 +135,9 @@ class SettingsItem extends React.Component {
       case 'Checkbox':
         return <Checkbox {...this.Input.props} label={this.getLabel()} checked={this.state.value} onChange={this.changeSetting.bind(this)} />
       case 'Select':
-        return <Select {...this.Input.props} value={this.state.value} onChange={this.changeSetting.bind(this)} />
+        return <Select {...this.Input.props} label={this.getLabel()} value={this.state.value} onChange={this.changeSetting.bind(this)} />
       default:
-        return <Input {...this.Input.props} value={this.state.value} onChange={this.changeSetting.bind(this)} />
+        return <Input {...this.Input.props} label={this.getLabel()} value={this.state.value} onChange={this.changeSetting.bind(this)} />
     }
   }
 
