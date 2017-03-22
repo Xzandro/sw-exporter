@@ -35,7 +35,7 @@ module.exports = {
 
     outFile.write(JSON.stringify(resp, true, 2));
     outFile.end();
-    proxy.log({ type: 'success', source: 'plugin', name: this.pluginName, message: `Saved profile data of friend ${wizard_name} to file ${filename}` });
+    proxy.log({ type: 'success', source: 'plugin', name: this.pluginName, message: `Saved profile data of friend to file ${filename}` });
   },
   sortUserData(data) {
     // get storage building id
