@@ -24,7 +24,7 @@ module.exports = {
   writeProfileToFile(proxy, req, resp) {
     const wizard_id = resp.friend.wizard_id;
     const wizard_name = resp.friend.wizard_name;
-    const filename = 'friend-' + wizard_id.toString().concat('.json');
+    const filename = `${wizard_name}-${wizard_id}-visit.json`;
 
     var outFile = fs.createWriteStream(
       path.join(config.Config.App.filesPath, filename), {
