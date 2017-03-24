@@ -22,8 +22,15 @@ class Logs extends React.Component {
     ipcRenderer.removeAllListeners('logupdated');
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.entries.length === nextState.entries.length)
+      return false;
+
+    return true;
+  }
+
   update(entry) {
-    this.setState({ 'entries': this.state.entries.concat([entry]) });
+    this.setState({ 'entries': [...this.state.entries, entry] });
   }
 
   labelColor(log_type) {
