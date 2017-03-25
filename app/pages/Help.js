@@ -62,7 +62,7 @@ class Help extends React.Component {
           
           <Accordion.Title><Icon name='dropdown' />How can I contribute?</Accordion.Title>
           <Accordion.Content>
-            <p>If you can code, check out the repository on <a href="https://github.com/Xzandro/sw-exporter" target="_blank"><Icon name="github square" />Github</a> and submit a pull request! Or you can buy <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HCGNZJSHCJWF2" target="_blank">Xzandro</a> or <a href="https://www.paypal.com/donate/?token=-971A6Jhi8L7ySVkxGMk8RfOn1FCOWgq9HlY7vpBrItVsNQhAE2llrewaSyV0lXcBtNup0" target="_blank">Porksmash</a> a beer to support continued development.</p>
+            <p>If you can code, check out the repository on <a href="https://github.com/Xzandro/sw-exporter" target="_blank"><Icon name="github square" />Github</a> and submit a pull request! Or you can buy <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HCGNZJSHCJWF2" target="_blank">Xzandro</a> or <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8BEPKLJMLJ2YS" target="_blank">Porksmash</a> a beer to support continued development.</p>
           </Accordion.Content>
         </Accordion>
       </div>
