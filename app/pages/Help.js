@@ -23,7 +23,7 @@ class Help extends React.Component {
           <li>Long press on your connected Wi-Fi network and select Modify Network</li>
           <li>Expand Advanced Options</li>
           <li>Set Proxy to Manual</li>
-          <li>Enter your computer's IP address in the <kbd>Proxy hostnam</kbd> field</li>
+          <li>Enter your computer's IP address in the <kbd>Proxy hostname</kbd> field</li>
           <li>Enter the port number in the <kbd>Proxy port</kbd> field</li>
           <li>Save changes and exit settings</li>
         </ol>
