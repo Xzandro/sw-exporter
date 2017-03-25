@@ -6,7 +6,7 @@ let config = remote.getGlobal('config');
 import React from 'react';
 import { capitalize } from 'lodash/string';
 
-import { Button, Checkbox, Grid, Header, Form, Input, Icon, Popup, Segment } from 'semantic-ui-react';
+import { Button, Checkbox, Grid, Header, Form, Input, Icon, Popup, Segment, Divider } from 'semantic-ui-react';
 
 class Settings extends React.Component {
   constructor() {
@@ -30,6 +30,7 @@ class Settings extends React.Component {
   }
 
   render () {
+    const folderLocations = ipcRenderer.sendSync('getFolderLocations');
     const pluginSettings = plugins.map((plugin, i) => {
       let description = plugin.pluginDescription ? <Popup
         trigger={<Icon name='info circle' />}
@@ -55,6 +56,9 @@ class Settings extends React.Component {
             <Form.Field>
               <Input label='Files Path' action={<Button content='Change' onClick={this.openDialog.bind(this)} />} value={this.state.filesPath} readOnly fluid />
             </Form.Field>
+            <Form.Field>
+              <Input label='Settings folderLocations' defaultValue={folderLocations.settings} fluid readOnly />
+            </Form.Field>
             <Form.Group widths='equal'>
               <Form.Field>
                 <SettingsItem
@@ -73,6 +77,7 @@ class Settings extends React.Component {
             </Form.Group>
           </Form>
         </Segment>
+
         <Header as='h4' attached='top'>
           Plugins
         </Header>

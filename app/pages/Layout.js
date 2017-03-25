@@ -30,9 +30,9 @@ class Layout extends React.Component {
             <Icon name='settings' />
             Settings
           </Menu.Item>
-          <Menu.Item name='information' link={true} active={this.state.activeItem === 'information'} data-path="information" onClick={this.navigate.bind(this)}>
-            <Icon name='info' />
-            Information
+          <Menu.Item name='help' link={true} active={this.state.activeItem === 'help'} data-path="help" onClick={this.navigate.bind(this)}>
+            <Icon name='help circle' />
+            Help
           </Menu.Item>
         </Menu>
         <Segment basic className="main-content">
