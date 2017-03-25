@@ -2,15 +2,6 @@ import React from 'react';
 import { Image, Accordion, Icon } from 'semantic-ui-react';
 
 class Help extends React.Component {
-  // Dunno why these are required. If I put shell.openExternal() directly in onClick, electron opens ALL pages right when you open help section
-  link_swarfarm() {shell.openExternal('https://swarfarm.com')}
-  link_swop() {shell.openExternal('https://tool.swop.one')}
-  link_gw() {shell.openExternal('https://gw.swop.one')}
-  link_github() {shell.openExternal('https://github.com/Xzandro/sw-exporter')}
-  link_xzandro_paypal() {shell.openExternal('https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HCGNZJSHCJWF2')}
-  link_porksmash_paypal() {shell.openExternal('https://www.paypal.com/donate/?token=-971A6Jhi8L7ySVkxGMk8RfOn1FCOWgq9HlY7vpBrItVsNQhAE2llrewaSyV0lXcBtNup0')}
-
-
   render () {
     return (
       <div>
