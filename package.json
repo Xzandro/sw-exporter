@@ -17,7 +17,7 @@
     "appId": "com.electron.sw-exporter",
     "win": {
       "target": [
-        "dir"
+        "zip", "portable"
       ]
     }
   },
@@ -35,7 +35,7 @@
     "babel-loader": "^6.4.1",
     "babel-preset-es2015": "^6.24.0",
     "babel-preset-react": "^6.23.0",
-    "electron": "^1.6.2",
+    "electron": "1.6.2",
     "electron-builder": "^16.0.1",
     "electron-packager": "^8.6.0",
     "electron-rebuild": "^1.5.7",
