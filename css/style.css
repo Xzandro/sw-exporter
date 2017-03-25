@@ -25,3 +25,10 @@ body {
   margin-top: -5px;
   margin-left: 5px;
 }
+
+#version {
+  bottom: 68px;
+  position: absolute;
+  left: 5px;
+  color: #ffffff;
+}

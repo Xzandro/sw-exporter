@@ -1,3 +1,5 @@
+const appVersion = require('electron').remote.app.getVersion();
+
 import React from 'react';
 import { Link } from 'react-router';
 
@@ -34,6 +36,7 @@ class Layout extends React.Component {
             <Icon name='help circle' />
             Help
           </Menu.Item>
+          <span id="version">v{appVersion}</span>
         </Menu>
         <Segment basic className="main-content">
           {this.props.children} 
