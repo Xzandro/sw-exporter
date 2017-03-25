@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const fs = require('fs-extra');
 const storage = require('electron-json-storage');
 const _ = require('lodash');
@@ -107,12 +107,19 @@ function createWindow () {
     acceptFirstMouse: true,
     autoHideMenuBar: true
   });
+
   global.mainWindowId = win.id;
+
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true
   }));
+
+  win.webContents.on('new-window', (e, url) => {
+    e.preventDefault();
+    shell.openExternal(url);
+  })
 }
 
 function initPlugins() {

@@ -1,9 +1,7 @@
 import React from 'react';
-import { shell } from 'electron';
 import { Image, Accordion, Icon } from 'semantic-ui-react';
 
 class Help extends React.Component {
-
   // Dunno why these are required. If I put shell.openExternal() directly in onClick, electron opens ALL pages right when you open help section
   link_swarfarm() {shell.openExternal('https://swarfarm.com')}
   link_swop() {shell.openExternal('https://tool.swop.one')}
@@ -11,6 +9,7 @@ class Help extends React.Component {
   link_github() {shell.openExternal('https://github.com/Xzandro/sw-exporter')}
   link_xzandro_paypal() {shell.openExternal('https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HCGNZJSHCJWF2')}
   link_porksmash_paypal() {shell.openExternal('https://www.paypal.com/donate/?token=-971A6Jhi8L7ySVkxGMk8RfOn1FCOWgq9HlY7vpBrItVsNQhAE2llrewaSyV0lXcBtNup0')}
+
 
   render () {
     return (
@@ -53,10 +52,10 @@ class Help extends React.Component {
 
         <h1>What do I do with this stuff?</h1>
         <ul>
-          <li>Use the <a onClick={this.link_swop}>SWOP Rune Optimizer</a></li>
-          <li>Upload your profile to <a onClick={this.link_swarfarm}>SWARFARM</a> to share your monsters, runes, and teams</li>
-          <li>Log your runs, summons, and more to <a onClick={this.link_swarfarm}>SWARFARM</a> just by playing the game while connected to the proxy.</li>
-          <li>Log your guild war battles to <a onClick={this.link_gw}>SWOP Guild War logs</a></li>
+          <li>Use the <a href="https://tool.swop.one" target="_blank">SWOP Rune Optimizer</a></li>
+          <li>Upload your profile to <a href="https://swarfarm.com" target="_blank">SWARFARM</a> to share your monsters, runes, and teams</li>
+          <li>Log your runs, summons, and more to <a href="https://swarfarm.com" target="_blank">SWARFARM</a> just by playing the game while connected to the proxy.</li>
+          <li>Log your guild war battles to <a href="https://gw.swop.one" target="_blank">SWOP Guild War logs</a></li>
         </ul>
 
         <h1>FAQ</h1>
@@ -68,11 +67,11 @@ class Help extends React.Component {
           <Accordion.Content>SWProxy suffered from a few issues - difficulty releasing on mac and linux, proxy causing broken event pages, etc. SW Exporter was developed on a new code platform trying to address these issues from the start.</Accordion.Content>
           
           <Accordion.Title><Icon name='dropdown' />What if I find an issue?</Accordion.Title>
-          <Accordion.Content>Please <a onClick={this.link_github}>report it on <Icon name="github square" />Github</a>.</Accordion.Content>
+          <Accordion.Content>Please <a href="https://github.com/Xzandro/sw-exporter" target="_blank">report it on <Icon name="github square" />Github</a>.</Accordion.Content>
           
           <Accordion.Title><Icon name='dropdown' />How can I contribute?</Accordion.Title>
           <Accordion.Content>
-              <p>If you can code, check out the repository on <a onClick={this.link_github}><Icon name="github square" />Github</a> and submit a pull request! Or you can buy <a onClick={this.link_xzandro_paypal}>Xzandro</a> or <a onClick={this.link_porksmash_paypal}>Porksmash</a> a beer to support continued development.</p>
+            <p>If you can code, check out the repository on <a href="https://github.com/Xzandro/sw-exporter" target="_blank"><Icon name="github square" />Github</a> and submit a pull request! Or you can buy <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HCGNZJSHCJWF2" target="_blank">Xzandro</a> or <a href="https://www.paypal.com/donate/?token=-971A6Jhi8L7ySVkxGMk8RfOn1FCOWgq9HlY7vpBrItVsNQhAE2llrewaSyV0lXcBtNup0" target="_blank">Porksmash</a> a beer to support continued development.</p>
           </Accordion.Content>
         </Accordion>
       </div>
