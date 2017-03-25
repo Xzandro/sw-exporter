@@ -57,7 +57,7 @@ class Settings extends React.Component {
               <Input label='Files Path' action={<Button content='Change' onClick={this.openDialog.bind(this)} />} value={this.state.filesPath} readOnly fluid />
             </Form.Field>
             <Form.Field>
-              <Input label='Settings folderLocations' defaultValue={folderLocations.settings} fluid readOnly />
+              <Input label='Settings Path' defaultValue={folderLocations.settings} fluid readOnly />
             </Form.Field>
             <Form.Group widths='equal'>
               <Form.Field>
