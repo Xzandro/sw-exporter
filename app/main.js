@@ -40,7 +40,7 @@ app.on('ready', () => {
     global.plugins = loadPlugins();
 
     if (global.config.Config.Proxy.autoStart) {
-      proxy.start();
+      proxy.start(config.Config.Proxy.port);
     }
   });
 });
