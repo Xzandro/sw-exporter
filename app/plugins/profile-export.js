@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const eol = require('os').EOL;
+const sanitize = require("sanitize-filename");
 
 module.exports = {
   defaultConfig: {
@@ -24,7 +25,7 @@ module.exports = {
   writeProfileToFile(proxy, req, resp) {
     const wizard_id = resp.wizard_info.wizard_id;
     const wizard_name = resp.wizard_info.wizard_name;
-    const filename = `${wizard_name}-${wizard_id}.json`;
+    const filename = sanitize(`${wizard_name}-${wizard_id}`).concat('.json');
 
     var outFile = fs.createWriteStream(
       path.join(config.Config.App.filesPath, filename), {
