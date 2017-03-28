@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const zlib = require('zlib');
-const encryptkey = require('./key');
+const encryptkey = require(`./key-${process.platform}-${process.arch}`);
 
 module.exports = {
   decrypt_request: (text) => {
