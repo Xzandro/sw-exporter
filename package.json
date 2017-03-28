@@ -7,19 +7,27 @@
   "scripts": {
     "start": "electron .",
     "rebuild": "electron-rebuild -f -w sw-exporter",
-    "distribute": "node packager.js",
     "pack": "build --dir",
-    "dist": "build",
+    "dist:win64": "build --x64",
+    "dist:win32": "build --ia32",
+    "dist:mac": "build",
+    "dist:linux": "build",
     "dev": "webpack --watch"
   },
   "build": {
     "productName": "Summoners War Exporter",
     "appId": "com.electron.sw-exporter",
+    "artifactName": "${productName}-${version}-${os}.${ext}",
     "win": {
       "target": [
-        "zip",
-        "portable"
+        "nsis"
       ]
+    },
+    "nsis": {
+      "artifactName": "${productName}-Setup-${version}-${os}.${ext}"
+    },
+    "portable": {
+      "artifactName": "${productName}-Portable-${version}-${os}.${ext}"
     }
   },
   "keywords": [],
@@ -37,8 +45,7 @@
     "babel-preset-es2015": "^6.24.0",
     "babel-preset-react": "^6.23.0",
     "electron": "1.6.2",
-    "electron-builder": "^16.0.1",
-    "electron-packager": "^8.6.0",
+    "electron-builder": "^16.4.2",
     "electron-rebuild": "^1.5.7",
     "webpack": "^2.3.0"
   },
