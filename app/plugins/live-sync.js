@@ -134,19 +134,16 @@ module.exports = {
     const winOrLost = resp.win_lose == 1 ? 'Win' : 'Lost';
 
     if (winOrLost === 'Win') {
-      let index = 0;
-      for (let reward in resp.battle_reward_list) {
-        if (wizard_id != reward.wizard_id) {
-          index += 1;
-        } else {
-          break;
+      for (let reward_id in resp.battle_reward_list) {
+        if (wizard_id == resp.battle_reward_list[reward_id].wizard_id) {
+          let reward = resp.battle_reward_list[reward_id].reward_list[0] || {};
+          
+          if (reward.item_master_type == 27) {
+            const craft_info = resp.reward.crate.runecraft_info;
+            this.saveAction(proxy, wizard_id, resp.tvalue, 'new_craft', { craft: craft_info });
+            break;
+          }
         }
-      }
-
-      const reward = resp.battle_reward_list[index].reward_list[0];
-      if (reward.item_master_type == 27) {
-        const craft_info = resp.reward.crate.runecraft_info;
-        this.saveAction(proxy, wizard_id, resp.tvalue, 'new_craft', { craft: craft_info });
       }
     }
   }
