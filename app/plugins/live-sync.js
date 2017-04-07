@@ -97,7 +97,7 @@ module.exports = {
 
   logCraftRune(proxy, req, resp) {
     if (resp.reward && resp.reward.crate && resp.reward.crate.runes) {
-      this.saveAction(proxy, req.wizard_id, resp.tvalue, 'new_rune', { rune: reward.crate.runes[0] });
+      this.saveAction(proxy, req.wizard_id, resp.tvalue, 'new_rune', { rune: resp.reward.crate.runes[0] });
     }
   },
 
