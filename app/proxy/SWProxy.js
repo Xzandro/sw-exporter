@@ -82,7 +82,7 @@ class SWProxy extends EventEmitter {
             self.log({ type: 'debug', source:'proxy', message: `Error decrypting request data - ignoring. ${e}`});
             return;
           }
-          
+
           const {command} = req_data;
 
           // Add command request to an object so we can handle multiple requests at a time
@@ -164,6 +164,11 @@ class SWProxy extends EventEmitter {
 
   getLogEntries() {
     return this.logEntries;
+  }
+
+  clearLogs() {
+    this.log({ type: 'warning', source: 'proxy', message: 'clearLogEntries ran.' })
+    // this.logEntries = [];
   }
 }
 

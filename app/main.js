@@ -87,6 +87,10 @@ ipcMain.on('logGetEntries', (event, arg) => {
   event.returnValue = proxy.getLogEntries();
 })
 
+ipcMain.on('clearLogEntries', (event, arg) => {
+  event.returnValue = proxy.clearLogs();
+})
+
 ipcMain.on('updateConfig', (event, arg) => {
   storage.set('Config', config.Config, function(error) {
     if (error) throw error;

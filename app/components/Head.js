@@ -34,6 +34,10 @@ class Head extends React.Component {
     }
   }
 
+  clearLogs(){
+      ipcRenderer.send('clearLogEntries');
+  }
+
   changePort(e) {
     const port = Number(e.target.value);
     config.Config.Proxy.port = port;
@@ -43,7 +47,7 @@ class Head extends React.Component {
   render () {
     const interfaces = ipcRenderer.sendSync('proxyGetInterfaces').map((interfaceEntry, i) => {
       return { "key": i, "text": interfaceEntry, "value": i }
-    }) 
+    })
     return (
       <Menu className="main-menu" fixed="top">
         <Menu.Item>
@@ -51,6 +55,9 @@ class Head extends React.Component {
         </Menu.Item>
         <Menu.Item>
           <Input label='Port' defaultValue={config.Config.Proxy.port} onChange={this.changePort.bind(this)} />
+        </Menu.Item>
+        <Menu.Item>
+          <Button content={'Clear Logs'} icon={'info'} labelPosition='right' onClick={this.clearLogs()} />
         </Menu.Item>
         <Menu.Item position='right'>
           <Button content={this.state.proxyRunning ? 'Stop Proxy' : 'Start Proxy'} icon={this.state.proxyRunning ? 'stop' : 'play'} labelPosition='right' onClick={this.toggleProxy.bind(this)} />
