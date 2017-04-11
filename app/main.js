@@ -11,14 +11,14 @@ global.win;
 let defaultFilePath = path.join(app.getPath('desktop'), app.getName() + ' Files');
 let defaultConfig = {
   Config: {
-    App: { filesPath: defaultFilePath, debug: false },
+    App: { filesPath: defaultFilePath, debug: false, clearLogOnLogin: false },
     Proxy: { port: 8080, autoStart: false },
     Plugins: {}
   }
 }
 let defaultConfigDetails = {
   ConfigDetails: {
-    App: { debug: { label: 'Show Debug Messages' } },
+    App: { debug: { label: 'Show Debug Messages' }, clearLogOnLogin: { label: 'Clear Log on every login'} },
     Proxy: { autoStart: { label: 'Start proxy automatically' } },
     Plugins: {}
   }

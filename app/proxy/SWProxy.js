@@ -47,6 +47,9 @@ class SWProxy extends EventEmitter {
             // We have a complete request/response pair
             const req_data = parsed_requests[command];
 
+            if (config.Config.App.clearLogOnLogin && command === 'HubUserLogin')
+              self.clearLogs();
+
             // Emit events, one for the specific API command and one for all commands
             self.emit(command, req_data, resp_data);
             self.emit('apiCommand', req_data, resp_data);
@@ -157,13 +160,18 @@ class SWProxy extends EventEmitter {
       return;
 
     entry.date = new Date().toLocaleTimeString();
-    this.logEntries.push(entry);
+    this.logEntries = [entry, ...this.logEntries];
 
-    win.webContents.send('logupdated', entry)
+    win.webContents.send('logupdated', this.logEntries);
   }
 
   getLogEntries() {
     return this.logEntries;
+  }
+
+  clearLogs() {
+    this.logEntries = [];
+    win.webContents.send('logupdated', this.logEntries);
   }
 }
 

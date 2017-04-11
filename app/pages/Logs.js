@@ -29,8 +29,8 @@ class Logs extends React.Component {
     return true;
   }
 
-  update(entry) {
-    this.setState({ 'entries': [...this.state.entries, entry] });
+  update(entries) {
+    this.setState({ 'entries': entries });
   }
 
   labelColor(log_type) {
@@ -51,7 +51,7 @@ class Logs extends React.Component {
   }
   
   render () {
-    const Logs = this.state.entries.slice(0).reverse().map((entry, i) => {
+    const Logs = this.state.entries.map((entry, i) => {
       if (entry.type !== 'debug' || config.Config.App.debug) {
         return <Feed key={i} className='log' size="small">
         <Feed.Event>

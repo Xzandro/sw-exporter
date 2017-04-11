@@ -59,7 +59,14 @@ class Settings extends React.Component {
             <Form.Field>
               <Input label='Settings Path' defaultValue={folderLocations.settings} fluid readOnly />
             </Form.Field>
-            <Form.Group widths='equal'>
+            <Form.Group widths={2}>
+              <Form.Field>
+                <SettingsItem
+                  section='Proxy'
+                  setting='autoStart'
+                  Input={<Checkbox />}
+                />
+              </Form.Field>
               <Form.Field>
                 <SettingsItem
                   section='App'
@@ -67,10 +74,12 @@ class Settings extends React.Component {
                   Input={<Checkbox />}
                 />
               </Form.Field>
+            </Form.Group>
+            <Form.Group widths={2}>
               <Form.Field>
                 <SettingsItem
-                  section='Proxy'
-                  setting='autoStart'
+                  section='App'
+                  setting='clearLogOnLogin'
                   Input={<Checkbox />}
                 />
               </Form.Field>
