@@ -16,7 +16,8 @@ class Settings extends React.Component {
     };
   }
 
-  openDialog() {
+  openDialog(e) {
+    e.preventDefault();
     self = this;
     dialog.showOpenDialog({ 
       properties: [ 'openDirectory' ] }, function (dirName) {
