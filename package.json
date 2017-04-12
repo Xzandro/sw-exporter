@@ -20,7 +20,7 @@
     "artifactName": "${productName}-${version}-${os}.${ext}",
     "win": {
       "target": [
-        "nsis"
+        "portable"
       ]
     },
     "nsis": {

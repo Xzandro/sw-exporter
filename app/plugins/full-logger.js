@@ -1,10 +1,15 @@
+const { app } = require('electron');
 const fs = require('fs');
 const path = require('path');
 const eol = require('os').EOL;
 
 module.exports = {
   defaultConfig: {
-    enabled: false
+    enabled: false,
+    deleteFileOnQuit: false
+  },
+  defaultConfigDetails: {
+    deleteFileOnQuit: { label: 'Delete log file before quitting app' }
   },
   pluginName: 'FullLogger',
   pluginDescription: 'Dumps data for every API event into a file.',
@@ -13,6 +18,10 @@ module.exports = {
       if (config.Config.Plugins[this.pluginName].enabled) {
         this.logCommand(req, resp);
       }
+    });
+    app.on('will-quit', () => {
+      if (config.Config.Plugins[this.pluginName].deleteFileOnQuit)
+        fs.unlinkSync(path.join(config.Config.App.filesPath, 'full_log.txt'));
     });
   },
   logCommand(req, resp) {
