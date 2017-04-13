@@ -2,6 +2,7 @@ const fs = require('fs-extra');
 const csv = require('fast-csv');
 const path = require('path');
 const eol = require('os').EOL;
+const sanitize = require('sanitize-filename');
 
 module.exports = {
   defaultConfig: {
@@ -29,7 +30,7 @@ module.exports = {
   },
   log(req, resp) {
     const { command } = req;
-    const wizard_id = resp.wizard_info.wizard_id;
+    const { wizard_id, wizard_name } = resp.wizard_info;
 
     let entry = {};
 
@@ -90,15 +91,20 @@ module.exports = {
 
     let csvData = [];
     const headers = ['date', 'dungeon', 'result', 'time', 'mana', 'crystal', 'energy', 'drop', 'grade', 'value',
-      'set', 'eff', 'slot', 'rarity', 'main_stat', 'prefix_stat', 'sub1', 'sub2', 'sub3', 'sub4', 'team1', 'team2', 'team3', 'team4', 'team5']
+      'set', 'eff', 'slot', 'rarity', 'main_stat', 'prefix_stat', 'sub1', 'sub2', 'sub3', 'sub4', 'team1', 'team2', 'team3', 'team4', 'team5'];
 
-    csv.fromPath(path.join(config.Config.App.filesPath, 'mycsv.csv'), { ignoreEmpty: true, headers: headers, renameHeaders: true }).on('data', function (data) {
-      csvData.push(data);
-    }).on('end', function () {
-      csvData.push(entry);
-      csv.writeToPath(path.join(config.Config.App.filesPath, 'mycsv.csv'), csvData, { headers: headers }).on("finish", function () {
+    const filename = sanitize(`${wizard_name}-${wizard_id}-runs.csv`);
+    
+    fs.ensureFile(path.join(config.Config.App.filesPath, filename), err => {
+      csv.fromPath(path.join(config.Config.App.filesPath, filename), { ignoreEmpty: true, headers: headers, renameHeaders: true }).on('data', function (data) {
+        csvData.push(data);
+      }).on('end', function () {
+        csvData.push(entry);
+        csv.writeToPath(path.join(config.Config.App.filesPath, filename), csvData, { headers: headers }).on("finish", function () {
 
+        });
       });
-    });
+    })
+    
   }
 }
