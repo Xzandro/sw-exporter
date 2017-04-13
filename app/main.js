@@ -7,6 +7,8 @@ const SWProxy = require('./proxy/SWProxy');
 const path = require('path');
 const url = require('url');
 
+global.gMapping = require('./mapping');
+
 global.win;
 let defaultFilePath = path.join(app.getPath('desktop'), app.getName() + ' Files');
 let defaultConfig = {

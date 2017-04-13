@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "electron-json-storage": "^3.0.1",
+    "fast-csv": "^2.4.0",
     "fs-extra": "^2.1.2",
     "http-proxy": "^1.16.2",
     "lodash": "^4.17.4",
