@@ -66,7 +66,7 @@ module.exports = {
 
     // innate stat
     if (rune.prefix_eff && rune.prefix_eff[0] > 0) {
-      ratio += rune.prefix_eff[1] / gMapping.rune.substat[rune.prefix_eff[i][0]].max[6]
+      ratio += rune.prefix_eff[1] / gMapping.rune.substat[rune.prefix_eff[0]].max[6]
     }
 
     return (ratio / 2.8 * 100).toFixed(2);
