@@ -1,5 +1,6 @@
 const fs = require('fs-extra');
 const csv = require('fast-csv');
+const dateFormat = require('dateformat');
 const path = require('path');
 const eol = require('os').EOL;
 const sanitize = require('sanitize-filename');
@@ -92,7 +93,7 @@ module.exports = {
     if (winLost === 'Lost' && !config.Config.Plugins[this.pluginName].logWipes)
       return;
 
-    entry.date = new Date().toLocaleString();
+    entry.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM');
     entry.result = winLost;
 
     let reward = resp.reward ? resp.reward : {};

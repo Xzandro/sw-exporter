@@ -50,6 +50,7 @@
     "webpack": "^2.3.0"
   },
   "dependencies": {
+    "dateformat": "^2.0.0",
     "electron-json-storage": "^3.0.1",
     "fast-csv": "^2.4.0",
     "fs-extra": "^2.1.2",
