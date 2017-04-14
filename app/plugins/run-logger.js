@@ -53,25 +53,6 @@ module.exports = {
 
     return 'Unknown Drop';
   },
-  getEfficiency(rune) {
-    let ratio = 0.0;
-
-    // main stat
-    ratio += gMapping.rune.mainstat[rune.pri_eff[0]].max[rune.class] / gMapping.rune.mainstat[rune.pri_eff[0]].max[6];
-
-    // sub stats
-    rune.sec_eff.forEach(stat => {
-      let value = (stat[3] && stat[3] > 0) ? stat[1] + stat[3] : stat[1];
-      ratio += value / gMapping.rune.substat[stat[0]].max[6];
-    });
-
-    // innate stat
-    if (rune.prefix_eff && rune.prefix_eff[0] > 0) {
-      ratio += rune.prefix_eff[1] / gMapping.rune.substat[rune.prefix_eff[0]].max[6]
-    }
-
-    return (ratio / 2.8 * 100).toFixed(2);
-  },
   log(req, resp) {
     const { command } = req;
     const { wizard_id, wizard_name } = resp.wizard_info;
@@ -101,7 +82,8 @@ module.exports = {
     entry.energy = reward.energy ? reward.energy : 0;
     entry.crystal = reward.crystal ? reward.crystal : 0;
 
-    let time = [Math.floor(req.clear_time / 1000 / 60), Math.floor(req.clear_time / 1000 % 60)];
+    let seconds = Math.floor(resp.clear_time.current_time / 1000 % 60) < 10 ? '0' + Math.floor(resp.clear_time.current_time / 1000 % 60) : Math.floor(resp.clear_time.current_time / 1000 % 60);
+    let time = [Math.floor(resp.clear_time.current_time / 1000 / 60), seconds];
     entry.time = `${time[0]}:${time[1]}`;
 
     if (reward.crate) {
@@ -116,7 +98,7 @@ module.exports = {
         entry.sell_value = rune.sell_value;
         entry.set = gMapping.rune.sets[rune.set_id];
         entry.slot = rune.slot_no;
-        entry.efficiency = this.getEfficiency(rune);
+        entry.efficiency = gMapping.getRuneEfficiency(rune).current;
         entry.rarity = gMapping.rune.class[rune.sec_eff.length];
         entry.main_stat = gMapping.getRuneEffect(rune.pri_eff);
         entry.prefix_stat = gMapping.getRuneEffect(rune.prefix_eff);
