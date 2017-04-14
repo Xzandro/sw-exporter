@@ -10,6 +10,9 @@ module.exports = {
     enabled: false,
     logWipes: false
   },
+  defaultConfigDetails: {
+    logWipes: { label: 'Log Wipes' }
+  },
   pluginName: 'RunLogger',
   pluginDescription: 'Creates a local csv file and saves data of every dungeon and scenario run in there.',
   temp: {},
