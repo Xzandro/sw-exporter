@@ -28,7 +28,7 @@ module.exports = {
           this.temp[wizard_id].stage = gMapping.scenario[req.region_id] ? `${gMapping.scenario[req.region_id]} ${gMapping.difficulty[req.difficulty]} - ${req.stage_no}` : 'Unknown';
 
         if (command === 'BattleScenarioResult' || command === 'BattleDungeonResult')
-          this.log(req, resp);
+          this.log(proxy, req, resp);
       }
     });
   },
@@ -56,7 +56,7 @@ module.exports = {
 
     return 'Unknown Drop';
   },
-  log(req, resp) {
+  log(proxy ,req, resp) {
     const { command } = req;
     const { wizard_id, wizard_name } = resp.wizard_info;
 
@@ -128,6 +128,7 @@ module.exports = {
       'set', 'efficiency', 'slot', 'rarity', 'main_stat', 'prefix_stat', 'sub1', 'sub2', 'sub3', 'sub4', 'team1', 'team2', 'team3', 'team4', 'team5'];
 
     const filename = sanitize(`${wizard_name}-${wizard_id}-runs.csv`);
+    const self = this;
 
     fs.ensureFile(path.join(config.Config.App.filesPath, filename), err => {
       csv.fromPath(path.join(config.Config.App.filesPath, filename), { ignoreEmpty: true, headers: headers, renameHeaders: true }).on('data', function (data) {
@@ -135,7 +136,7 @@ module.exports = {
       }).on('end', function () {
         csvData.push(entry);
         csv.writeToPath(path.join(config.Config.App.filesPath, filename), csvData, { headers: headers }).on("finish", function () {
-
+          proxy.log({ type: 'success', source: 'plugin', name: self.pluginName, message: `Saved run data to ${filename}` });
         });
       });
     })
