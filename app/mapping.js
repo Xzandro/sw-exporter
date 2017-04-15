@@ -1018,6 +1018,26 @@ module.exports = {
       3: 'High'
     }
   },
+  craftMaterial: {
+    1001: 'Hard Wood',
+    1002: 'Tough Leather',
+    1003: 'Solid Rock',
+    1004: 'Solid Iron Ore',
+    1005: 'Shining Mithril',
+    1006: 'Thick Cloth',
+    2001: 'Rune Piece',
+    3001: 'Magic Dust',
+    4001: 'Symbol of Harmony',
+    4002: 'Symbol of Transcendance',
+    4003: 'Symbol of Chaos',
+    5001: 'Frozen Water Crystal',
+    5002: 'Flaming Fire Crystal',
+    5003: 'Whirling Wind Crystal',
+    5004: 'Shiny Light Crystal',
+    5005: 'Pitch-black Dark Crystal',
+    6001: 'Condensed Magic Crystal',
+    7001: 'Pure Magic Crystal',
+  },
   getMonsterName(id) {
     if (id) {
       if (this.monster.names[id]) {

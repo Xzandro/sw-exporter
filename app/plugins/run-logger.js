@@ -51,6 +51,8 @@ module.exports = {
       let grade = Number(id.slice(0, -4));
       return `Essence of ${gMapping.essence.attribute[attribute]}(${gMapping.essence.grade[grade]}) x${crate.material.item_quantity}`;
     }
+    if (crate.craft_stuff && gMapping.craftMaterial[crate.craft_stuff.item_master_id])
+      return `${gMapping.craftMaterial[crate.craft_stuff.item_master_id]} x${crate.craft_stuff.item_quantity}`;
     if (crate.summon_pieces)
       return `Summoning Piece ${gMapping.getMonsterName(crate.summon_pieces.item_master_id)} x${crate.summon_pieces.item_quantity}`;
 
