@@ -48,7 +48,7 @@ module.exports = {
     if (crate.material) {
       let id = crate.material.item_master_id.toString();
       let attribute = Number(id.slice(-1));
-      let grade = Number(id.slice(0, -4));
+      let grade = Number(id.slice(1, -3));
       return `Essence of ${gMapping.essence.attribute[attribute]}(${gMapping.essence.grade[grade]}) x${crate.material.item_quantity}`;
     }
     if (crate.craft_stuff && gMapping.craftMaterial[crate.craft_stuff.item_master_id])
