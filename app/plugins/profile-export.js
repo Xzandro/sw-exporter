@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const eol = require('os').EOL;
-const sanitize = require("sanitize-filename");
+const sanitize = require('sanitize-filename');
 
 module.exports = {
   defaultConfig: {
