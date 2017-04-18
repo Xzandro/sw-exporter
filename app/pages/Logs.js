@@ -61,7 +61,7 @@ class Logs extends React.Component {
               {capitalize(entry.source)} {entry.name ? ' - ' + entry.name : ''} <Feed.Date>{entry.date}</Feed.Date>
             </Feed.Summary>
             <Feed.Extra>
-              {entry.message}
+              <div dangerouslySetInnerHTML={{__html: entry.message}} />
             </Feed.Extra>
           </Feed.Content>
         </Feed.Event>
