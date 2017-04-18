@@ -43,18 +43,20 @@ module.exports = {
         break;
 
       case 'BuyBlackMarketItem':
-        rune_info = this.logRuneDrop(resp.runes[0]);
+        if (resp.runes && resp.runes.length === 1)
+          rune_info = this.logRuneDrop(resp.runes[0]);
         break;
 
       case 'BuyShopItem':
-        rune_info = this.logRuneDrop(resp.reward.crate.runes[0]);
+        if (resp.reward && resp.reward.crate && resp.reward.crate.runes)
+          rune_info = this.logRuneDrop(resp.reward.crate.runes[0]);
         break;
 
       default:
         break;
     }
 
-    if (rune_info !== undefined) {
+    if (rune_info) {
       proxy.log({
         type: 'info',
         source: 'plugin',
@@ -85,7 +87,7 @@ module.exports = {
         break;
     }
 
-    return `<div class="ui image ${color !== undefined ? color : '' } label">
+    return `<div class="ui image ${color ? color : '' } label">
               <img src="../assets/runes/${gMapping.rune.sets[rune.set_id]}.png" />
               + ${rune.upgrade_curr} ${gMapping.rune.sets[rune.set_id]} Rune
             </div>
