@@ -78,7 +78,7 @@ module.exports = {
       case 'Hero':
         color = 'purple';
         break;
-      case 'Legendary':
+      case 'Legend':
         color = 'orange';
         break;
       default:
