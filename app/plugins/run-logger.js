@@ -2,7 +2,6 @@ const fs = require('fs-extra');
 const csv = require('fast-csv');
 const dateFormat = require('dateformat');
 const path = require('path');
-const eol = require('os').EOL;
 const sanitize = require('sanitize-filename');
 
 module.exports = {
