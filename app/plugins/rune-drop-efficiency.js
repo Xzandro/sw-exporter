@@ -90,35 +90,6 @@ module.exports = {
               + ${rune.upgrade_curr} ${gMapping.rune.sets[rune.set_id]} Rune
             </div>
             Efficiency: ${efficiency.current}%. ${rune.upgrade_curr < 12 ? 'Max: ' + efficiency.max + '%': ''}
-            `
-  },
-  calculateEfficiency(rune, getMaxEfficiency=false) {
-    var running_sum = 0;
-
-    if (getMaxEfficiency) {
-      // Setting this to 0.8 simulates getting perfect substat rolls each upgrade
-      running_sum = 0.8;
-    }
-
-    // Main stat
-    const main_stat_lv15 = gMapping.rune.mainstat[rune.pri_eff[0]].max[rune.class];
-    const main_stat_max = gMapping.rune.mainstat[rune.pri_eff[0]].max[6];
-    running_sum += main_stat_lv15 / main_stat_max;
-
-    // Innate stat
-    const innate_stat = rune.prefix_eff[1];
-    if (innate_stat) {
-      const innate_stat_max = gMapping.rune.substat[rune.sec_eff[0]].max[6];
-      running_sum += innate_stat / innate_stat_max;
-    }
-
-    // Substats
-    rune.sec_eff.forEach(function(substat) {
-      const substat_value = substat[1] + substat[3];
-      const max_substat_value = gMapping.rune.substat[substat[0]].max[6];
-      running_sum += substat_value / max_substat_value;
-    });
-
-    return running_sum / 2.8 * 100;
+            `;
   }
 }
