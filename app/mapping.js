@@ -1047,7 +1047,7 @@ module.exports = {
 
         if (this.monster.names[family]) {
           var attribute = Number(id.toString().slice(-1));
-          return this.monster.names[family] + ' (' + this.monster.attribute[attribute] + ')';
+          return this.monster.names[family] + ' (' + this.monster.attributes[attribute] + ')';
         } else {
           return 'Unknown Monster';
         }
