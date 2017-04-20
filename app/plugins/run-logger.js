@@ -86,9 +86,11 @@ module.exports = {
     entry.energy = reward.energy ? reward.energy : 0;
     entry.crystal = reward.crystal ? reward.crystal : 0;
 
-    let seconds = Math.floor(resp.clear_time.current_time / 1000 % 60) < 10 ? '0' + Math.floor(resp.clear_time.current_time / 1000 % 60) : Math.floor(resp.clear_time.current_time / 1000 % 60);
-    let time = [Math.floor(resp.clear_time.current_time / 1000 / 60), seconds];
-    entry.time = `${time[0]}:${time[1]}`;
+    if (req.clear_time) {
+      let seconds = Math.floor(req.clear_time / 1000 % 60) < 10 ? '0' + Math.floor(req.clear_time / 1000 % 60) : Math.floor(req.clear_time / 1000 % 60);
+      let time = [Math.floor(req.clear_time / 1000 / 60), seconds];
+      entry.time = `${time[0]}:${time[1]}`;
+    }
 
     if (reward.crate) {
       entry.mana = reward.crate.mana ? entry.mana + reward.crate.mana : entry.mana;
