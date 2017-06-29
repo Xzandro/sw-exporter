@@ -800,9 +800,12 @@ module.exports = {
       "15105": "Devilmon",
       "14314": "Rainbowmon",
 
-      "1000111": "Homunculus (Water)",
-      "1000112": "Homunculus (Fire)",
-      "1000113": "Homunculus (Wind)"
+      "1000111": "Homunculus - Attack (Water)",
+      "1000112": "Homunculus - Attack (Fire)",
+      "1000113": "Homunculus - Attack (Wind)",
+
+      "1000214": "Homunculus - Support (Light)",
+      "1000215": "Homunculus - Support (Dark)"
     }
   },
   rune: {
