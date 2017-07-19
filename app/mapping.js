@@ -1,5 +1,3 @@
-Mapping:
-
 module.exports = {
   monster: {
     attributes: {

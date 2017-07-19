@@ -1,5 +1,3 @@
-Run Logger:
-
 const fs = require('fs-extra');
 const csv = require('fast-csv');
 const dateFormat = require('dateformat');
