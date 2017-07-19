@@ -20,6 +20,10 @@ body {
   border-left: none;
 }
 
+.rune + .rune {
+  margin-top: 10px;
+}
+
 .settings-plugins .icon {
   font-size: 16px !important;
   margin-top: -5px;
