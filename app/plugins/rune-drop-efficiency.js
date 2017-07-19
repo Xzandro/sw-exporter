@@ -13,7 +13,7 @@ module.exports = {
   },
   processCommand(proxy, req, resp) {
     const { command }  = req;
-    var rune_info;
+    var runes_info = [];
 
     // Extract the rune and display it's efficiency stats.
     switch (command) {
@@ -23,7 +23,7 @@ module.exports = {
           const reward = resp.reward ? resp.reward : {};
 
           if (reward.crate && reward.crate.rune) {
-            rune_info = this.logRuneDrop(reward.crate.rune);
+            runes_info.push(this.logRuneDrop(reward.crate.rune));
           }
         }
         break;
@@ -34,35 +34,52 @@ module.exports = {
 
         // Only log if we hit a substat upgrade level and it was successful
         if (new_level > original_level && new_level % 3 == 0 && new_level <= 12){
-          rune_info = this.logRuneDrop(resp.rune);
+          runes_info.push(this.logRuneDrop(resp.rune));
         }
         break;
+
       case 'AmplifyRune':
       case 'ConfirmRune':
-        rune_info = this.logRuneDrop(resp.rune);
+        runes_info.push(this.logRuneDrop(resp.rune));
         break;
 
       case 'BuyBlackMarketItem':
         if (resp.runes && resp.runes.length === 1)
-          rune_info = this.logRuneDrop(resp.runes[0]);
+          runes_info.push(this.logRuneDrop(resp.runes[0]));
         break;
 
       case 'BuyShopItem':
         if (resp.reward && resp.reward.crate && resp.reward.crate.runes)
-          rune_info = this.logRuneDrop(resp.reward.crate.runes[0]);
+          runes_info.push(this.logRuneDrop(resp.reward.crate.runes[0]));
         break;
 
+      case 'GetBlackMarketList':
+        resp.market_list.forEach((item, i) => {
+          if (item.item_master_type == 8) {
+            runes_info.push(this.logRuneDrop(item.runes[0]));
+          }
+        });
+        break;
+        
       default:
         break;
     }
 
-    if (rune_info) {
-      proxy.log({
-        type: 'info',
-        source: 'plugin',
-        name: this.pluginName,
-        message: rune_info
+    if (runes_info) {
+      var message = '';
+      
+      runes_info.forEach((rune, i) => {
+        message = message.concat(rune);   
       });
+
+      if (message) {
+        proxy.log({
+          type: 'info',
+          source: 'plugin',
+          name: this.pluginName,
+          message: message
+        });
+      }
     }
   },
 
@@ -87,11 +104,25 @@ module.exports = {
         break;
     }
 
-    return `<div class="ui image ${color ? color : '' } label">
-              <img src="../assets/runes/${gMapping.rune.sets[rune.set_id]}.png" />
-              + ${rune.upgrade_curr} ${gMapping.rune.sets[rune.set_id]} Rune
-            </div>
-            Efficiency: ${efficiency.current}%. ${rune.upgrade_curr < 12 ? 'Max: ' + efficiency.max + '%': ''}
-            `;
+    var starCount = 0;
+    var starType = rune.upgrade_curr == rune.upgrade_limit ? 'awakened' : 'unawakened';
+    var starLine = '<div class="star-line">';
+
+    while (starCount < rune.class) {
+      starLine = starLine.concat('<span class="star"><img src="../assets/icons/star-'+ starType +'.png" /></span>');
+      starCount++;
+    }
+
+    starLine = starLine.concat('</div>');
+
+    return `<div class="rune">
+              ${starLine}
+
+              <div class="ui image ${color ? color : '' } label">
+                <img src="../assets/runes/${gMapping.rune.sets[rune.set_id]}.png" />+${rune.upgrade_curr} ${gMapping.rune.sets[rune.set_id]} Rune (${rune.slot_no}) ${gMapping.rune.effectTypes[rune.pri_eff[0]]}
+              </div>
+
+              <div class="efficiency">Efficiency: ${efficiency.current}%. ${rune.upgrade_curr < 12 ? 'Max: ' + efficiency.max + '%': ''}</div>
+            </div>`;
   }
 }

@@ -20,6 +20,28 @@ body {
   border-left: none;
 }
 
+.rune {
+  margin-top: 10px;
+  position: relative;
+}
+
+.rune .star-line {
+  left: 30px;
+  position: absolute;
+  top: -8px;
+  z-index: 99;
+}
+
+.rune .star-line .star img {
+  width: 11px;
+}
+
+.rune .efficiency {
+  display: inline-block;
+  color: #333;
+  vertical-align: middle;
+}
+
 .settings-plugins .icon {
   font-size: 16px !important;
   margin-top: -5px;
