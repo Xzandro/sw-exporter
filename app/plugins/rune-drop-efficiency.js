@@ -37,6 +37,7 @@ module.exports = {
           runes_info.push(this.logRuneDrop(resp.rune));
         }
         break;
+
       case 'AmplifyRune':
       case 'ConfirmRune':
         runes_info.push(this.logRuneDrop(resp.rune));
@@ -103,12 +104,25 @@ module.exports = {
         break;
     }
 
+    var starCount = 0;
+    var starType = rune.upgrade_curr == rune.upgrade_limit ? 'awakened' : 'unawakened';
+    var starLine = '<div class="star-line">';
+
+    while (starCount < rune.class) {
+      starLine = starLine.concat('<span class="star"><img src="../assets/icons/star-'+ starType +'.png" /></span>');
+      starCount++;
+    }
+
+    starLine = starLine.concat('</div>');
+
     return `<div class="rune">
+              ${starLine}
+
               <div class="ui image ${color ? color : '' } label">
-                <img src="../assets/runes/${gMapping.rune.sets[rune.set_id]}.png" />
-                + ${rune.upgrade_curr} ${gMapping.rune.sets[rune.set_id]} Rune
+                <img src="../assets/runes/${gMapping.rune.sets[rune.set_id]}.png" />+${rune.upgrade_curr} ${gMapping.rune.sets[rune.set_id]} Rune (${rune.slot_no}) ${gMapping.rune.effectTypes[rune.pri_eff[0]]}
               </div>
-              Efficiency: ${efficiency.current}%. ${rune.upgrade_curr < 12 ? 'Max: ' + efficiency.max + '%': ''}
+
+              <div class="efficiency">Efficiency: ${efficiency.current}%. ${rune.upgrade_curr < 12 ? 'Max: ' + efficiency.max + '%': ''}</div>
             </div>`;
   }
 }
