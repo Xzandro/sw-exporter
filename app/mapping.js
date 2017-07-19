@@ -1,3 +1,5 @@
+Mapping:
+
 module.exports = {
   monster: {
     attributes: {
@@ -886,7 +888,7 @@ module.exports = {
           1: 54, 2: 74, 3: 93, 4: 113, 5: 135, 6: 160
         }
       },
-      6: {
+      6: { // Defense
         max: {
           1: 18, 2: 20, 3: 38, 4: 43, 5: 51, 6: 63
         }
@@ -975,6 +977,122 @@ module.exports = {
       }
     }
   },
+
+  grindstone:{
+    1:{
+      range: {
+        0: '80-120', 1: '100-200', 2: '180-250', 3: '230-450', 4: '430-550'
+      }
+    },
+    2:{
+      range: {
+        0: '1-3', 1: '2-5', 2: '3-6', 3: '4-7', 4: '5-10'
+      }
+    },
+    3:{
+      range: {
+        0: '4-8', 1: '6-12', 2: '10-18', 3: '12-22', 4: '18-30'
+      }
+    },
+    4:{
+      range: {
+        0: '1-3', 1: '2-5', 2: '3-6', 3: '4-7', 4: '5-10'
+      }
+    },
+    5:{
+      range: {
+        0: '4-8', 1: '6-12', 2: '10-18', 3: '12-22', 4: '18-30'
+      }
+    },
+    6:{
+      range: {
+        0: '1-3', 1: '2-5', 2: '3-6', 3: '4-7', 4: '5-10'
+      }
+    },
+    8:{
+      range: {
+        0: '1-2', 1: '1-2', 2: '2-3', 3: '3-4', 4: '4-5'
+      }
+    },
+    9:{
+      range: {
+        0: '1-2', 1: '1-3', 2: '2-4', 3: '3-5', 4: '4-6'
+      }
+    },
+    10:{
+      range: {
+        0: '1-3', 1: '2-4', 2: '2-5', 3: '3-7', 4: '4-8'
+      }
+    },
+    11:{
+      range: {
+        0: '1-3', 1: '2-4', 2: '2-5', 3: '3-7', 4: '4-8'
+      }
+    },
+    12:{
+      range: {
+        0: '1-3', 1: '2-4', 2: '2-5', 3: '3-7', 4: '4-8'
+      }
+    }
+  },
+  
+  enchanted_gem:{
+    1:{
+      range: {
+        0: '100-150', 1: '130-220', 2: '200-310', 3: '290-420', 4: '400-580'
+      }
+    },
+    2:{
+      range: {
+        0: '2-4', 1: '3-7', 2: '5-9', 3: '7-11', 4: '9-13'
+      }
+    },
+    3:{
+      range: {
+        0: '8-12', 1: '10-16', 2: '15-23', 3: '20-30', 4: '28-40'
+      }
+    },
+    4:{
+      range: {
+        0: '2-4', 1: '3-7', 2: '5-9', 3: '7-11', 4: '9-13'
+      }
+    },
+    5:{
+      range: {
+        0: '8-12', 1: '10-16', 2: '15-23', 3: '20-30', 4: '28-40'
+      }
+    },
+    6:{
+      range: {
+        0: '2-4', 1: '3-7', 2: '5-9', 3: '7-11', 4: '9-13'
+      }
+    },
+    8:{
+      range: {
+        0: '1-3', 1: '2-4', 2: '3-6', 3: '5-8', 4: '7-10'
+      }
+    },
+    9:{
+      range: {
+        0: '1-3', 1: '2-4', 2: '3-5', 3: '4-7', 4: '6-9'
+      }
+    },
+    10:{
+      range: {
+        0: '1-3', 1: '2-4', 2: '3-6', 3: '5-8', 4: '7-10'
+      }
+    },
+    11:{
+      range: {
+        0: '2-4', 1: '3-6', 2: '5-8', 3: '6-9', 4: '8-11'
+      }
+    },
+    12:{
+      range: {
+        0: '2-4', 1: '3-6', 2: '5-8', 3: '6-9', 4: '8-11'
+      }
+    }
+  },
   scenario: {
     1: 'Garen Forest',
     2: 'Mt. Siz',
@@ -1000,6 +1118,20 @@ module.exports = {
     7001: "Hall of Light",
     8001: "Giant's Keep",
     9001: "Dragon's Lair"
+  },
+  elemental_rift_dungeon: {
+    1001: 'Rift Dungeon - Ice Beast',
+    2001: 'Rift Dungeon - Fire Beast',
+    3001: 'Rift Dungeon - Wind Beast',
+    4001: 'Rift Dungeon - Light Beast',
+    5001: 'Rift Dungeon - Dark Beast'
+  },
+  raid_rift_dungeon: {
+      1: 'Rift of worlds- level 1' ,
+      2: 'Rift of worlds- level 2',
+      3: 'Rift of worlds- level 3',
+      4: 'Rift of worlds- level 4',
+      5: 'Rift of worlds- level 5'
   },
   difficulty: {
     1: 'Normal',
@@ -1041,6 +1173,16 @@ module.exports = {
     6001: 'Condensed Magic Crystal',
     7001: 'Pure Magic Crystal',
   },
+  elemental_rift_dungeon_item:{
+    5001: 'Frozen Water Crystal',
+    5002: 'Flaming Fire Crystal',
+    5003: 'Whirling Wind Crystal',
+    5004: 'Shiny Light Crystal',
+    5005: 'Pitch-black Dark Crystal',
+    6001: 'Condensed Magic Crystal',
+    7001: 'Pure Magic Crystal'
+  },
+
   getMonsterName(id) {
     if (id) {
       if (this.monster.names[id]) {
@@ -1064,6 +1206,7 @@ module.exports = {
     let ratio = 0.0;
 
     // main stat
+    console.log(JSON.stringify(rune));
     ratio += this.rune.mainstat[rune.pri_eff[0]].max[rune.class] / this.rune.mainstat[rune.pri_eff[0]].max[6];
 
     // sub stats
@@ -1101,5 +1244,23 @@ module.exports = {
     }
 
     return effectTypeStrings[type];
+  },
+
+  grindVals(craft_id) {
+    var map = {};
+    map.set =  this.sets[Number(craft_id.slice(0, -4))];
+    map.stat = this.grindstone[Number(craft_id.slice(-4, -2))];
+    map.grade = this.class[Number(craft_id.slice(-1))];
+    map.range = this.grindstone[map.stat].range[map.grade];
+    return map;
+  },
+
+  gemVals(craft_id){
+    var map = {};
+    map.set =  this.sets[Number(craft_id.slice(0, -4))];
+    map.stat = this.enchanted_gem[Number(craft_id.slice(-4, -2))];
+    map.grade = this.class[Number(craft_id.slice(-1))];
+    map.range = this.enchanted_gem[map.stat].range[map.grade];
+    return map;
   }
 }
