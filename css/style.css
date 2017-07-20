@@ -20,6 +20,29 @@ body {
   border-left: none;
 }
 
+.rune .content .star-line .star img {
+  width: 11px;
+}
+
+.rune .ui.image.label {
+  padding: 2px 0 0 6px;
+  text-align: center;
+}
+
+.rune .ui.image.label>img {
+  margin: 0 auto;
+}
+
+.rune .ui.image.label span.upgrade {
+  background: rgba(0,0,0,.15);
+  border-radius: 0 0 2px 2px;
+  bottom: 0;
+  padding: 0 2px;
+  position: absolute;
+  right: 0;
+  width: 100%;
+}
+
 .settings-plugins .icon {
   font-size: 16px !important;
   margin-top: -5px;
