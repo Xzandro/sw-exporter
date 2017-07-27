@@ -53,6 +53,8 @@ module.exports = {
       case 'ConfirmRune':
         this.logReappraiseRune(proxy, req, resp)
         break;
+      case 'EquipRuneList':
+        this.logEquipRuneList(proxy, req, resp)
       default:
         break;
     }
@@ -115,6 +117,9 @@ module.exports = {
 
   logUnequipRune(proxy, req, resp) {
     this.saveAction(proxy, req.wizard_id, resp.tvalue, 'unequip_rune', { rune_id: req.rune_id });
+  },
+  logEquipRuneList(proxy, req, resp) {
+    this.saveAction(proxy, req.wizard_id, resp.tvalue, 'equip_rune_list', { equip: resp.equip_rune_id_list, unequip: resp.unequip_rune_id_list })
   },
 
   logUpgradeRune(proxy, req, resp) {
