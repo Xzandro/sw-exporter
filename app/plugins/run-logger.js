@@ -202,23 +202,25 @@ module.exports = {
       isElemental = true;
     }
 
-    let winLost = req.win_lose == 1 ? 'Win' : 'Did not kill';
+    let winLost = resp.win_lose === 1 ? 'Win' : 'Did not kill';
 
     entry.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM');
     entry.result = winLost;
 
-
-    if(winLost && !reward.crate in resp){
+    let reward = resp.reward ? resp.reward : {};
+    
+    if(winLost < 1 && resp.reward.crate === 'undefined'){
         entry.drop = "Mana"
     }
-    else if(reward.crate.rune){
-      entry = getItemRift(reward.crate.rune, entry);
+    if(reward.crate.runecraft_info){
+      let item = {};
+      item["info"] = {};
+      item.info["craft_type"] = reward.crate.runecraft_info.craft_type;
+      item.info["craft_type_id"] = reward.crate.runecraft_info.craft_type_id;
+      entry = this.getItemRift(item, entry);
     }
-    else if(reward.crate.runecraft_info){
-      item = {};
-      item.craft_type = reward.crate.runecraft_info.craft_type;
-      item.craft_type_id = reward.crate.runecraft_info.craft_type_id;
-      entry = getItemRift(item, entry);
+    if(reward.crate.rune){
+      entry = this.getItemRift(reward.crate.rune, entry);
     }
     else{
       entry.drop = this.getItem(reward.crate);
