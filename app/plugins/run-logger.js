@@ -62,15 +62,6 @@ module.exports = {
     if (crate.summon_pieces)
       return `Summoning Piece ${gMapping.getMonsterName(crate.summon_pieces.item_master_id)} x${crate.summon_pieces.item_quantity}`;
       return 'Unknown Drop';
-    if(crate.info.craft_type_id){
-      enhancement = gMapping.getVals(item.info.craft_type_id, item.info.craft_type);
-      entry.drop = enhancement.drop;
-      entry.sell_value = item.sell_value;
-      entry.set = enhancement.set;
-      entry.main_stat = enhancement.type;
-      entry.sub1 = enhancement.min;
-      entry.sub2 = enhancement.max;
-    }
   },
 
   getItemRift(item, entry){
