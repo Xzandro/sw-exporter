@@ -62,12 +62,44 @@ module.exports = {
     if (crate.summon_pieces)
       return `Summoning Piece ${gMapping.getMonsterName(crate.summon_pieces.item_master_id)} x${crate.summon_pieces.item_quantity}`;
       return 'Unknown Drop';
+    if(crate.info.craft_type_id){
+      enhancement = gMapping.getVals(item.info.craft_type_id, item.info.craft_type);
+      entry.drop = enhancement.drop;
+      entry.sell_value = item.sell_value;
+      entry.set = enhancement.set;
+      entry.main_stat = enhancement.type;
+      entry.sub1 = enhancement.min;
+      entry.sub2 = enhancement.max;
+    }
   },
 
-  getItemRift(item){
-    if(item.id == 2){
-      return "Mystical Scroll"
+  getItemRift(item, entry){
+    if(item.type === 8){
+      let rune = item.info;
+      entry.drop = 'Rune';
+      entry.grade = `${rune.class}*`;
+      entry.sell_value = rune.sell_value;
+      entry.set = gMapping.rune.sets[rune.set_id];
+      entry.slot = rune.slot_no;
+      entry.efficiency = gMapping.getRuneEfficiency(rune).current;
+      entry.rarity = gMapping.rune.class[rune.sec_eff.length];
+      entry.main_stat = gMapping.getRuneEffect(rune.pri_eff);
+      entry.prefix_stat = gMapping.getRuneEffect(rune.prefix_eff);
+
+      rune.sec_eff.forEach((substat, i) => {
+        entry['sub' + (i + 1)] = gMapping.getRuneEffect(substat);
+      });
     }
+    else if(item.info.craft_type_id){
+      enhancement = gMapping.getVals(item.info.craft_type_id, item.info.craft_type);
+      entry.drop = enhancement.drop;
+      entry.sell_value = item.sell_value;
+      entry.set = enhancement.set;
+      entry.main_stat = enhancement.type;
+      entry.sub1 = enhancement.min;
+      entry.sub2 = enhancement.max;
+    }
+    return entry;
   },
 
   log(proxy ,req, resp) {
@@ -159,8 +191,7 @@ module.exports = {
     })
   },
 
-
-  //This shit doesn't even sorta work yet, but it will eventually
+  //This might actually work...
   log_raid_rift(proxy, req, resp){
     const { command } = req;
     const { wizard_id, wizard_name } = resp.wizard_info;
@@ -171,66 +202,33 @@ module.exports = {
       isElemental = true;
     }
 
-    let winLost = req.battle_result == 1 ? 'Win' : 'Did not kill';
+    let winLost = req.win_lose == 1 ? 'Win' : 'Did not kill';
 
     entry.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM');
     entry.result = winLost;
 
 
-    if(resp.item_list && resp.item_list.length >0){
-      resp.item_list.forEach((item, i) => {
-        console.log(JSON.stringify(item));
-        if(!item.is_boxing){
-          entry['item' + (i+1)] = `${gMapping.elemental_rift_dungeon_item[item.id]}` + 'x ' + item.quantity;
-          
-        }
-        else{
-          if(item.type === 8){
-            let rune = item.info;
-            entry.drop = 'Rune';
-            entry.grade = `${rune.class}*`;
-            entry.sell_value = rune.sell_value;
-            entry.set = gMapping.rune.sets[rune.set_id];
-            entry.slot = rune.slot_no;
-            entry.efficiency = gMapping.getRuneEfficiency(rune).current;
-            entry.rarity = gMapping.rune.class[rune.sec_eff.length];
-            entry.main_stat = gMapping.getRuneEffect(rune.pri_eff);
-            entry.prefix_stat = gMapping.getRuneEffect(rune.prefix_eff);
-
-            rune.sec_eff.forEach((substat, i) => {
-              entry['sub' + (i + 1)] = gMapping.getRuneEffect(substat);
-            });
-          }
-          else if(item.type === 27 && item.info.craft_type === 2){
-            grind = gMapping.grindVals(item.info.craft_type_id);
-            console.log("Grind after return: \n" + JSON.stringify(grind));
-            entry.drop = 'GrindStone';
-            entry.sell_value = item.sell_value;
-            entry.set = grind.set;
-            entry.main_stat = grind.stat + " - " + grind.range;
-          }
-          else if(item.type === 27 && item.info.craft_type === 1){
-            gem = gMapping.grindVals(item.info.craft_type_id);
-            console.log("Gem after return: \n" + JSON.stringify(grind));
-            entry.drop = 'Enchanted Gem';
-            entry.sell_value = item.sell_value;
-            entry.set = grind.set;
-            entry.main_stat = grind.stat + " - " + grind.range;
-          }
-          else{
-            
-          }
-        }
-      }
-    )
-  }
-
-    if (resp.unit_list && resp.unit_list.length > 0) {
-      resp.unit_list.forEach((unit, i) => {
-        entry['team' + (i + 1)] = gMapping.getMonsterName(unit.unit_master_id);
-      });
+    if(winLost && !reward.crate in resp){
+        entry.drop = "Mana"
+    }
+    else if(reward.crate.rune){
+      entry = getItemRift(reward.crate.rune, entry);
+    }
+    else if(reward.crate.runecraft_info){
+      item = {};
+      item.craft_type = reward.crate.runecraft_info.craft_type;
+      item.craft_type_id = reward.crate.runecraft_info.craft_type_id;
+      entry = getItemRift(item, entry);
+    }
+    else{
+      entry.drop = this.getItem(reward.crate);
     }
 
+  if (resp.unit_list && resp.unit_list.length > 0) {
+    resp.unit_list.forEach((unit, i) => {
+      entry['team' + (i + 1)] = gMapping.getMonsterName(unit.unit_master_id);
+    });
+  }
     let csvData = [];
     const headers = ['date', 'dungeon', 'result', 'time', 'item1', 'item2', 'item3', 'drop', 'grade', 'sell_value',
       'set', 'efficiency', 'slot', 'rarity', 'main_stat', 'prefix_stat', 'sub1', 'sub2', 'sub3', 'sub4', 'team1', 'team2', 'team3', 'team4', 'team5'];
@@ -269,57 +267,29 @@ module.exports = {
     if(resp.item_list && resp.item_list.length >0){
       resp.item_list.forEach((item, i) => {
         console.log(JSON.stringify(item));
-        if(!item.is_boxing){
-          entry['item' + (i+1)] = `${gMapping.elemental_rift_dungeon_item[item.id]}` + 'x ' + item.quantity;
-          
+        if(!item.is_boxing || item.id === 2001){
+          entry['item' + (i+1)] = `${gMapping.craftMaterial[item.id]}` + 'x ' + item.quantity; 
         }
         else{
-          if(item.type === 8){
-            let rune = item.info;
-            entry.drop = 'Rune';
-            entry.grade = `${rune.class}*`;
-            entry.sell_value = rune.sell_value;
-            entry.set = gMapping.rune.sets[rune.set_id];
-            entry.slot = rune.slot_no;
-            entry.efficiency = gMapping.getRuneEfficiency(rune).current;
-            entry.rarity = gMapping.rune.class[rune.sec_eff.length];
-            entry.main_stat = gMapping.getRuneEffect(rune.pri_eff);
-            entry.prefix_stat = gMapping.getRuneEffect(rune.prefix_eff);
-
-            rune.sec_eff.forEach((substat, i) => {
-              entry['sub' + (i + 1)] = gMapping.getRuneEffect(substat);
-            });
+          if(item.id === 2)
+            entry.drop = "Mystical Scroll"
+          if(item.id === 8)
+            entry.drop = `Summoning Stones x${item.item_quantity}`;
+          if(item.info.unit_master_id > 0){
+              entry.drop = `${gMapping.getMonsterName(item.unit_master_id)} ${item.class}`;
           }
-          else if(item.type === 27 && item.info.craft_type === 2){
-            grind = gMapping.grindVals(item.info.craft_type_id);
-            console.log("Grind after return: \n" + JSON.stringify(grind));
-            entry.drop = 'GrindStone';
-            entry.sell_value = item.sell_value;
-            entry.set = grind.set;
-            entry.main_stat = grind.stat + " - " + grind.range;
-          }
-          else if(item.type === 27 && item.info.craft_type === 1){
-            gem = gMapping.grindVals(item.info.craft_type_id);
-            console.log("Gem after return: \n" + JSON.stringify(grind));
-            entry.drop = 'Enchanted Gem';
-            entry.sell_value = item.sell_value;
-            entry.set = grind.set;
-            entry.main_stat = grind.stat + " - " + grind.range;
-          }
-          else{
-
+          if(item.craft_type_id || item.type === 8){
+            entry = this.getItemRift(item, entry); 
           }
         }
-      }
-    )
+      })
   }
 
-    if (resp.unit_list && resp.unit_list.length > 0) {
-      resp.unit_list.forEach((unit, i) => {
-        entry['team' + (i + 1)] = gMapping.getMonsterName(unit.unit_master_id);
-      });
-    }
-
+  if (resp.unit_list && resp.unit_list.length > 0) {
+    resp.unit_list.forEach((unit, i) => {
+      entry['team' + (i + 1)] = gMapping.getMonsterName(unit.unit_master_id);
+    });
+  }
     let csvData = [];
     const headers = ['date', 'dungeon', 'result', 'time', 'item1', 'item2', 'item3', 'drop', 'grade', 'sell_value',
       'set', 'efficiency', 'slot', 'rarity', 'main_stat', 'prefix_stat', 'sub1', 'sub2', 'sub3', 'sub4', 'team1', 'team2', 'team3', 'team4', 'team5'];

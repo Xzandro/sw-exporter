@@ -979,118 +979,207 @@ module.exports = {
   grindstone:{
     1:{
       range: {
-        0: '80-120', 1: '100-200', 2: '180-250', 3: '230-450', 4: '430-550'
+        0: {min: 80 , max: 120}, 
+        1: {min: 100, max: 200}, 
+        2: {min: 180, max: 250}, 
+        3: {min: 230, max: 450}, 
+        4: {min: 430, max: 550}
       }
     },
     2:{
       range: {
-        0: '1-3', 1: '2-5', 2: '3-6', 3: '4-7', 4: '5-10'
+        0: {min: 1, max: 3}, 
+        1: {min: 2, max: 5}, 
+        2: {min: 3, max: 6}, 
+        3: {min: 4, max: 7}, 
+        4: {min: 5, max: 10}
       }
     },
     3:{
       range: {
-        0: '4-8', 1: '6-12', 2: '10-18', 3: '12-22', 4: '18-30'
+        0: { min: 4 , max: 8},
+        1: { min: 6 , max: 12}, 
+        2: { min: 10, max: 18},
+        3: { min: 12, max: 22},
+        4: { min: 18, max: 30}
       }
     },
     4:{
       range: {
-        0: '1-3', 1: '2-5', 2: '3-6', 3: '4-7', 4: '5-10'
+        0: {min: 1, max: 3}, 
+        1: {min: 2, max: 5}, 
+        2: {min: 3, max: 6}, 
+        3: {min: 4, max: 7}, 
+        4: {min: 5, max: 10}
       }
     },
     5:{
       range: {
-        0: '4-8', 1: '6-12', 2: '10-18', 3: '12-22', 4: '18-30'
+        0: { min: 4 , max: 8}, 
+        1: { min: 6 , max: 12}, 
+        2: { min: 10, max: 18}, 
+        3: { min: 12, max: 22}, 
+        4: { min: 18, max: 30}
       }
     },
     6:{
       range: {
-        0: '1-3', 1: '2-5', 2: '3-6', 3: '4-7', 4: '5-10'
+        0: {min: 1, max: 3}, 
+        1: {min: 2, max: 5}, 
+        2: {min: 3, max: 6}, 
+        3: {min: 4, max: 7}, 
+        4: {min: 5, max: 10}
       }
     },
     8:{
       range: {
-        0: '1-2', 1: '1-2', 2: '2-3', 3: '3-4', 4: '4-5'
+        0: { min: 1, max: 2}, 
+        1: { min: 1, max: 2}, 
+        2: { min: 2, max: 3}, 
+        3: { min: 3, max: 4}, 
+        4: { min: 4, max: 5}
       }
     },
     9:{
       range: {
-        0: '1-2', 1: '1-3', 2: '2-4', 3: '3-5', 4: '4-6'
+        0: { min: 1, max: 2}, 
+        1: { min: 1, max: 3}, 
+        2: { min: 2, max: 4}, 
+        3: { min: 3, max: 5}, 
+        4: { min: 4, max: 6}
       }
     },
     10:{
       range: {
-        0: '1-3', 1: '2-4', 2: '2-5', 3: '3-7', 4: '4-8'
+        0: {min: 1, max: 3}, 
+        1: {min: 2, max: 4}, 
+        2: {min: 2, max: 5}, 
+        3: {min: 4, max: 7}, 
+        4: {min: 5, max: 10}
       }
     },
     11:{
       range: {
-        0: '1-3', 1: '2-4', 2: '2-5', 3: '3-7', 4: '4-8'
+        0: {min: 1, max: 3}, 
+        1: {min: 2, max: 4}, 
+        2: {min: 2, max: 5}, 
+        3: {min: 4, max: 7}, 
+        4: {min: 5, max: 10}
       }
     },
     12:{
       range: {
-        0: '1-3', 1: '2-4', 2: '2-5', 3: '3-7', 4: '4-8'
+        0: {min: 1, max: 3}, 
+        1: {min: 2, max: 4}, 
+        2: {min: 2, max: 5}, 
+        3: {min: 4, max: 7}, 
+        4: {min: 5, max: 10}
       }
     }
   },
-  
+
   enchanted_gem:{
     1:{
       range: {
-        0: '100-150', 1: '130-220', 2: '200-310', 3: '290-420', 4: '400-580'
+        0: {min: 100, max: 150}, 
+        1: {min: 130, max: 220}, 
+        2: {min: 200, max: 310}, 
+        3: {min: 290, max: 420}, 
+        4: {min: 400, max: 580}
       }
     },
     2:{
       range: {
-        0: '2-4', 1: '3-7', 2: '5-9', 3: '7-11', 4: '9-13'
+        0: {min: 2, max: 4},
+        1: {min: 3, max: 7},
+        2: {min: 5, max: 9},
+        3: {min: 7, max: 11}, 
+        4: {min: 9, max: 13}
       }
     },
     3:{
       range: {
-        0: '8-12', 1: '10-16', 2: '15-23', 3: '20-30', 4: '28-40'
+        0: {min:8 , max: 12}, 
+        1: {min:10, max: 16}, 
+        2: {min:15, max: 23}, 
+        3: {min:20, max: 30}, 
+        4: {min:28, max: 40}
       }
     },
     4:{
       range: {
-        0: '2-4', 1: '3-7', 2: '5-9', 3: '7-11', 4: '9-13'
+        0: {min: 2, max: 4},
+        1: {min: 3, max: 7},
+        2: {min: 5, max: 9},
+        3: {min: 7, max: 11}, 
+        4: {min: 9, max: 13}
       }
     },
     5:{
       range: {
-        0: '8-12', 1: '10-16', 2: '15-23', 3: '20-30', 4: '28-40'
+        0: {min:8 , max: 12}, 
+        1: {min:10, max: 16}, 
+        2: {min:15, max: 23}, 
+        3: {min:20, max: 30}, 
+        4: {min:28, max: 40}
       }
     },
     6:{
       range: {
-        0: '2-4', 1: '3-7', 2: '5-9', 3: '7-11', 4: '9-13'
+        0: {min: 2, max: 4},
+        1: {min: 3, max: 7},
+        2: {min: 5, max: 9},
+        3: {min: 7, max: 11}, 
+        4: {min: 9, max: 13}
       }
     },
     8:{
       range: {
-        0: '1-3', 1: '2-4', 2: '3-6', 3: '5-8', 4: '7-10'
+        0: {min: 1, max: 3},
+        1: {min: 2, max: 4},
+        2: {min: 3, max: 6}, 
+        3: {min: 5, max: 8}, 
+        4: {min: 7, max: 10}
       }
     },
     9:{
       range: {
-        0: '1-3', 1: '2-4', 2: '3-5', 3: '4-7', 4: '6-9'
+        0: {min: 1, max: 3}, 
+        1: {min: 2, max: 4}, 
+        2: {min: 3, max: 5}, 
+        3: {min: 4, max: 7}, 
+        4: {min: 6, max: 9}
       }
     },
     10:{
       range: {
-        0: '1-3', 1: '2-4', 2: '3-6', 3: '5-8', 4: '7-10'
+        0: {min: 1, max: 3}, 
+        1: {min: 2, max: 4}, 
+        2: {min: 3, max: 6}, 
+        3: {min: 5, max: 8}, 
+        4: {min: 7, max: 10}
       }
     },
     11:{
       range: {
-        0: '2-4', 1: '3-6', 2: '5-8', 3: '6-9', 4: '8-11'
+        0: {min: 2, max: 4}, 
+        1: {min: 3, max: 6}, 
+        2: {min: 5, max: 8}, 
+        3: {min: 6, max: 9}, 
+        4: {min: 8, max: 11},
       }
     },
     12:{
       range: {
-        0: '2-4', 1: '3-6', 2: '5-8', 3: '6-9', 4: '8-11'
+        0: {min: 2, max: 4}, 
+        1: {min: 3, max: 6}, 
+        2: {min: 5, max: 8}, 
+        3: {min: 6, max: 9}, 
+        4: {min: 8, max: 11}
       }
     }
   },
+
   scenario: {
     1: 'Garen Forest',
     2: 'Mt. Siz',
@@ -1169,15 +1258,6 @@ module.exports = {
     5004: 'Shiny Light Crystal',
     5005: 'Pitch-black Dark Crystal',
     6001: 'Condensed Magic Crystal',
-    7001: 'Pure Magic Crystal',
-  },
-  elemental_rift_dungeon_item:{
-    5001: 'Frozen Water Crystal',
-    5002: 'Flaming Fire Crystal',
-    5003: 'Whirling Wind Crystal',
-    5004: 'Shiny Light Crystal',
-    5005: 'Pitch-black Dark Crystal',
-    6001: 'Condensed Magic Crystal',
     7001: 'Pure Magic Crystal'
   },
 
@@ -1244,21 +1324,23 @@ module.exports = {
     return effectTypeStrings[type];
   },
 
-  grindVals(craft_id) {
+  getVals(craft_id, craft_type) {
     var map = {};
-    map.set =  this.sets[Number(craft_id.slice(0, -4))];
-    map.stat = this.grindstone[Number(craft_id.slice(-4, -2))];
-    map.grade = this.class[Number(craft_id.slice(-1))];
-    map.range = this.grindstone[map.stat].range[map.grade];
-    return map;
-  },
-
-  gemVals(craft_id){
-    var map = {};
-    map.set =  this.sets[Number(craft_id.slice(0, -4))];
-    map.stat = this.enchanted_gem[Number(craft_id.slice(-4, -2))];
-    map.grade = this.class[Number(craft_id.slice(-1))];
-    map.range = this.enchanted_gem[map.stat].range[map.grade];
+    var enhance = this.rune;
+    var typeNumber = Number(craft_id.toString().slice(-4, -2))
+    map.set =  enhance.sets[Number(craft_id.toString().slice(0, -4))];
+    map.grade = enhance.quality[Number(craft_id.toString().slice(-1))];
+    map.type = enhance.effectTypes [typeNumber];
+    if(craft_type == 2){
+      map.min = this.grindstone[typeNumber].range[Number(craft_id.toString().slice(-1))].min;
+      map.max = this.grindstone[typeNumber].range[Number(craft_id.toString().slice(-1))].max;
+      map.drop = "Grindstone";
+    }
+    else{
+      map.min = this.enchanted_gem[typeNumber].range[Number(craft_id.toString().slice(-1))].min;
+      map.max = this.enchanted_gem[typeNumber].range[Number(craft_id.toString().slice(-1))].max;
+      map.drop = "Enchanted Gem";
+    }
     return map;
   }
 }
