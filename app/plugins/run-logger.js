@@ -65,7 +65,7 @@ module.exports = {
   },
 
   getItemRift(item, entry){
-    if(item.type === 8){
+    if (item.type === 8){
       let rune = item.info;
       entry.drop = 'Rune';
       entry.grade = `${rune.class}*`;
@@ -81,7 +81,7 @@ module.exports = {
         entry['sub' + (i + 1)] = gMapping.getRuneEffect(substat);
       });
     }
-    if(item.info.craft_type_id){
+    if (item.info.craft_type_id){
       enhancement = gMapping.getVals(item.info.craft_type_id, item.info.craft_type);
       entry.drop = enhancement.drop;
       entry.sell_value = item.sell_value;
@@ -122,11 +122,11 @@ module.exports = {
       }
     }
 
-    if(command === 'BattleScenarioResult')
+    if (command === 'BattleScenarioResult')
       entry.dungeon = this.temp[wizard_id].stage ? this.temp[wizard_id].stage : 'Unknown';
 
     let winLost = resp.win_lose == 1 ? 'Win' : 'Lost';
-    if(winLost === 'Lost' && !config.Config.Plugins[this.pluginName].logWipes)
+    if (winLost === 'Lost' && !config.Config.Plugins[this.pluginName].logWipes)
       return;
 
     entry.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM');
@@ -137,18 +137,18 @@ module.exports = {
     entry.energy = reward.energy ? reward.energy : 0;
     entry.crystal = reward.crystal ? reward.crystal : 0;
 
-    if(req.clear_time) {
+    if (req.clear_time) {
       let seconds = Math.floor(req.clear_time / 1000 % 60) < 10 ? '0' + Math.floor(req.clear_time / 1000 % 60) : Math.floor(req.clear_time / 1000 % 60);
       let time = [Math.floor(req.clear_time / 1000 / 60), seconds];
       entry.time = `${time[0]}:${time[1]}`;
     }
 
-    if(reward.crate) {
+    if (reward.crate) {
       entry.mana = reward.crate.mana ? entry.mana + reward.crate.mana : entry.mana;
       entry.energy = reward.crate.energy ? entry.energy + reward.crate.energy : entry.energy;
       entry.crystal = reward.crate.crystal ? entry.crystal + reward.crate.crystal : entry.crystal;
 
-      if(reward.crate.rune) {
+      if (reward.crate.rune) {
         let rune = reward.crate.rune;
         entry.drop = 'Rune';
         entry.grade = `${rune.class}*`;
@@ -168,13 +168,13 @@ module.exports = {
       }
     }
 
-    if(resp.unit_list && resp.unit_list.length > 0) {
+    if (resp.unit_list && resp.unit_list.length > 0) {
       resp.unit_list.forEach((unit, i) => {
         entry['team' + (i + 1)] = gMapping.getMonsterName(unit.unit_master_id);
       });
     }
 
-    if(resp.instance_info)
+    if (resp.instance_info)
       entry.drop = 'Secret Dungeon';
 
     const headers = ['date', 'dungeon', 'result', 'time', 'mana', 'crystal', 'energy', 'drop', 'grade', 'sell_value',
@@ -189,7 +189,7 @@ module.exports = {
     const { wizard_id, wizard_name } = resp.wizard_info;
 
     let entry = {};
-    if(gMapping.dungeon[req.dungeon_id]) {
+    if (gMapping.dungeon[req.dungeon_id]) {
       entry.dungeon = `${gMapping.elemental_rift_dungeon[req.dungeon_id]}`;
       isElemental = true;
     }
@@ -201,24 +201,24 @@ module.exports = {
 
     let reward = resp.reward ? resp.reward : {};
     
-    if(winLost < 1 && resp.reward.crate === 'undefined'){
+    if (winLost < 1 && resp.reward.crate === 'undefined'){
         entry.drop = "Mana"
     }
-    if(reward.crate.runecraft_info){
+    if (reward.crate.runecraft_info){
       let item = {};
       item["info"] = {};
       item.info["craft_type"] = reward.crate.runecraft_info.craft_type;
       item.info["craft_type_id"] = reward.crate.runecraft_info.craft_type_id;
       entry = this.getItemRift(item, entry);
     }
-    if(reward.crate.rune){
+    if (reward.crate.rune){
       entry = this.getItemRift(reward.crate.rune, entry);
     }
     else{
       entry.drop = this.getItem(reward.crate);
     }
 
-  if(resp.unit_list && resp.unit_list.length > 0) {
+  if (resp.unit_list && resp.unit_list.length > 0) {
     resp.unit_list.forEach((unit, i) => {
       entry['team' + (i + 1)] = gMapping.getMonsterName(unit.unit_master_id);
     });
@@ -235,7 +235,7 @@ module.exports = {
     const { wizard_id, wizard_name } = resp.wizard_info;
 
     let entry = {};
-    if(gMapping.dungeon[req.dungeon_id]) {
+    if (gMapping.dungeon[req.dungeon_id]) {
       entry.dungeon = `${gMapping.elemental_rift_dungeon[req.dungeon_id]}`;
       isElemental = true;
     }
@@ -246,22 +246,22 @@ module.exports = {
     entry.result = winLost;
 
 
-    if(resp.item_list && resp.item_list.length >0){
+    if (resp.item_list && resp.item_list.length >0){
       resp.item_list.forEach((item, i) => {
-        if( item.is_boxing !== 1 || item.id === 2001){
+        if ( item.is_boxing !== 1 || item.id === 2001){
           entry['item' + (i+1)] = `${gMapping.craftMaterial[item.id]}` + 'x ' + item.quantity; 
         }
         else{
-          if(item.id === 2){
+          if (item.id === 2){
             entry.drop = "Mystical Scroll";
           }
-          if(item.id === 8){
+          if (item.id === 8){
             entry.drop = `Summoning Stones x${item.item_quantity}`;
           }
-          if(item.info.unit_master_id > 0){
+          if (item.info.unit_master_id > 0){
             entry.drop = `${gMapping.getMonsterName(item.unit_master_id)} ${item.class}`;
           }
-          if(item.info.craft_type_id || item.type === 8){
+          if (item.info.craft_type_id || item.type === 8){
             entry = this.getItemRift(item, entry); 
           }
         }
