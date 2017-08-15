@@ -1214,11 +1214,11 @@ module.exports = {
     5001: 'Rift Dungeon - Dark Beast'
   },
   raid_rift_dungeon: {
-      1: 'Rift of worlds- level 1' ,
-      2: 'Rift of worlds- level 2',
-      3: 'Rift of worlds- level 3',
-      4: 'Rift of worlds- level 4',
-      5: 'Rift of worlds- level 5'
+      1: 'Rift of Worlds- level 1' ,
+      2: 'Rift of Worlds- level 2',
+      3: 'Rift of Worlds- level 3',
+      4: 'Rift of Worlds- level 4',
+      5: 'Rift of Worlds- level 5'
   },
   difficulty: {
     1: 'Normal',
@@ -1284,7 +1284,6 @@ module.exports = {
     let ratio = 0.0;
 
     // main stat
-    console.log(JSON.stringify(rune));
     ratio += this.rune.mainstat[rune.pri_eff[0]].max[rune.class] / this.rune.mainstat[rune.pri_eff[0]].max[6];
 
     // sub stats
