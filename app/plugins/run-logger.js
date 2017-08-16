@@ -61,7 +61,8 @@ module.exports = {
       return `${gMapping.craftMaterial[crate.craft_stuff.item_master_id]} x${crate.craft_stuff.item_quantity}`;
     if (crate.summon_pieces)
       return `Summoning Piece ${gMapping.getMonsterName(crate.summon_pieces.item_master_id)} x${crate.summon_pieces.item_quantity}`;
-      return 'Unknown Drop';
+    
+    return 'Unknown Drop';
   },
 
   getItemRift(item, entry){
@@ -229,7 +230,7 @@ module.exports = {
     const headers = ['date', 'dungeon', 'result', 'time', 'item1', 'item2', 'item3', 'drop', 'grade', 'sell_value',
       'set', 'efficiency', 'slot', 'rarity', 'main_stat', 'prefix_stat', 'sub1', 'sub2', 'sub3', 'sub4', 'team1', 'team2', 'team3', 'team4', 'team5', 'team6'];
 
-    const filename = sanitize(`${wizard_name}-${wizard_id}-ele-runs.csv`);
+    const filename = sanitize(`${wizard_name}-${wizard_id}-raid-runs.csv`);
     this.saveToFile(entry, filename, headers, proxy);
   },
 
@@ -279,7 +280,7 @@ module.exports = {
     const headers = ['date', 'dungeon', 'result', 'time', 'item1', 'item2', 'item3', 'drop', 'grade', 'sell_value',
       'set', 'efficiency', 'slot', 'rarity', 'main_stat', 'prefix_stat', 'sub1', 'sub2', 'sub3', 'sub4', 'team1', 'team2', 'team3', 'team4', 'team5', 'team6'];
 
-    const filename = sanitize(`${wizard_name}-${wizard_id}-ele-runs.csv`);
+    const filename = sanitize(`${wizard_name}-${wizard_id}-raid-runs.csv`);
     this.saveToFile(entry, filename, headers, proxy);
   },
 
