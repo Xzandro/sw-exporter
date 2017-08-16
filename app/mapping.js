@@ -1321,25 +1321,5 @@ module.exports = {
     }
 
     return effectTypeStrings[type];
-  },
-
-  getVals(craft_id, craft_type) {
-    var map = {};
-    var enhance = this.rune;
-    var typeNumber = Number(craft_id.toString().slice(-4, -2))
-    map.set =  enhance.sets[Number(craft_id.toString().slice(0, -4))];
-    map.grade = enhance.quality[Number(craft_id.toString().slice(-1))];
-    map.type = enhance.effectTypes [typeNumber];
-    if(craft_type == 2){
-      map.min = this.grindstone[typeNumber].range[Number(craft_id.toString().slice(-1))].min;
-      map.max = this.grindstone[typeNumber].range[Number(craft_id.toString().slice(-1))].max;
-      map.drop = "Grindstone";
-    }
-    else{
-      map.min = this.enchanted_gem[typeNumber].range[Number(craft_id.toString().slice(-1))].min;
-      map.max = this.enchanted_gem[typeNumber].range[Number(craft_id.toString().slice(-1))].max;
-      map.drop = "Enchanted Gem";
-    }
-    return map;
   }
 }

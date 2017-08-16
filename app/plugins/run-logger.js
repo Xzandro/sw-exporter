@@ -82,7 +82,7 @@ module.exports = {
       });
     }
     if (item.info.craft_type_id){
-      enhancement = gMapping.getVals(item.info.craft_type_id, item.info.craft_type);
+      enhancement = this.getEnchantVals(item.info.craft_type_id, item.info.craft_type);
       entry.drop = enhancement.drop;
       entry.sell_value = item.sell_value;
       entry.set = enhancement.set;
@@ -214,6 +214,9 @@ module.exports = {
     if (reward.crate.rune){
       entry = this.getItemRift(reward.crate.rune, entry);
     }
+    if (reward.crate.unit_info.unit_master_id > 0 ){
+      entry.drop = `${gMapping.getMonsterName(reward.crate.unit_info.unit_master_id)} ${reward.crate.unit_info.class}`;
+    }
     else{
       entry.drop = this.getItem(reward.crate);
     }
@@ -259,7 +262,7 @@ module.exports = {
             entry.drop = `Summoning Stones x${item.item_quantity}`;
           }
           if (item.info.unit_master_id > 0){
-            entry.drop = `${gMapping.getMonsterName(item.unit_master_id)} ${item.class}`;
+            entry.drop = `${gMapping.getMonsterName(item.info.unit_master_id)} ${item.class}`;
           }
           if (item.info.craft_type_id || item.type === 8){
             entry = this.getItemRift(item, entry); 
@@ -278,5 +281,25 @@ module.exports = {
 
     const filename = sanitize(`${wizard_name}-${wizard_id}-ele-runs.csv`);
     this.saveToFile(entry, filename, headers, proxy);
+  },
+
+  getEnchantVals(craft_id, craft_type) {
+    var map = {};
+    var enhance = this.rune;
+    var typeNumber = Number(craft_id.toString().slice(-4, -2))
+    map.set =  gmapping.enhance.sets[Number(craft_id.toString().slice(0, -4))];
+    map.grade = gmapping.enhance.quality[Number(craft_id.toString().slice(-1))];
+    map.type = gmapping.enhance.effectTypes [typeNumber];
+    if(craft_type == 2){
+      map.min = gmapping.grindstone[typeNumber].range[Number(craft_id.toString().slice(-1))].min;
+      map.max = gmapping.grindstone[typeNumber].range[Number(craft_id.toString().slice(-1))].max;
+      map.drop = "Grindstone";
+    }
+    else{
+      map.min = gmapping.enchanted_gem[typeNumber].range[Number(craft_id.toString().slice(-1))].min;
+      map.max = gmapping.enchanted_gem[typeNumber].range[Number(craft_id.toString().slice(-1))].max;
+      map.drop = "Enchanted Gem";
+    }
+    return map;
   }
 }
