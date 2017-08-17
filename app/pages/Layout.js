@@ -3,7 +3,7 @@ const appVersion = require('electron').remote.app.getVersion();
 import React from 'react';
 import { Link } from 'react-router';
 
-import { Segment, Menu, Icon, Grid } from 'semantic-ui-react';
+import { Segment, Menu, Icon, Grid, Button } from 'semantic-ui-react';
 import Mousetrap from 'mousetrap';
 
 import Head from '../components/Head';
@@ -48,8 +48,8 @@ class Layout extends React.Component {
   render () {
     return (
       <div>
-        { this.state.compactMode ? null : <Head /> }
-        { this.state.compactMode ? null : (
+          { this.state.compactMode ? null : <Head /> }
+          { this.state.compactMode ? null : (
           <Menu fixed="left" vertical inverted width='thin' className="side-menu">
             <Menu.Item name='logs' link={true} active={this.state.activeItem === 'logs'} data-path="/" onClick={this.navigateFromElement.bind(this)}>
               <Icon name='home' />
@@ -68,6 +68,7 @@ class Layout extends React.Component {
         )}
 
         <Segment basic className={ this.state.compactMode ? 'compacted main-content' : 'main-content'}>
+          <Button compact floated="right" icon={ this.state.compactMode ? 'expand' : 'compress'} onClick={this.toggleCompactMode} />
           {this.props.children} 
         </Segment>
       </div>
