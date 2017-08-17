@@ -51,15 +51,15 @@ class Layout extends React.Component {
         { this.state.compactMode ? null : <Head /> }
         { this.state.compactMode ? null : (
           <Menu fixed="left" vertical inverted width='thin' className="side-menu">
-            <Menu.Item name='logs' link={true} active={this.state.activeItem === 'logs'} data-path="/" onClick={this.navigate.bind(this)}>
+            <Menu.Item name='logs' link={true} active={this.state.activeItem === 'logs'} data-path="/" onClick={this.navigateFromElement.bind(this)}>
               <Icon name='home' />
               Logs
             </Menu.Item>
-            <Menu.Item name='settings' link={true} active={this.state.activeItem === 'settings'} data-path="settings" onClick={this.navigate.bind(this)}>
+            <Menu.Item name='settings' link={true} active={this.state.activeItem === 'settings'} data-path="settings" onClick={this.navigateFromElement.bind(this)}>
               <Icon name='settings' />
               Settings
             </Menu.Item>
-            <Menu.Item name='help' link={true} active={this.state.activeItem === 'help'} data-path="help" onClick={this.navigate.bind(this)}>
+            <Menu.Item name='help' link={true} active={this.state.activeItem === 'help'} data-path="help" onClick={this.navigateFromElement.bind(this)}>
               <Icon name='help circle' />
               Help
             </Menu.Item>
