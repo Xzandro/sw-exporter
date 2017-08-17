@@ -13,6 +13,9 @@ body {
   margin-top: 65px;
   margin-left: 210px;
 }
+.ui.segment.main-content.compacted {
+  margin: 0;
+}
 .ui.segment.app-segment {
   border-radius: 0;
   margin-top: 0;

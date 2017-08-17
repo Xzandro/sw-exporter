@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Accordion, Icon } from 'semantic-ui-react';
+import { Image, Accordion, Icon, Table } from 'semantic-ui-react';
 
 class Help extends React.Component {
   render () {
@@ -48,6 +48,47 @@ class Help extends React.Component {
           <li>Log your runs, summons, and more to <a href="https://swarfarm.com" target="_blank">SWARFARM</a> just by playing the game while connected to the proxy.</li>
           <li>Log your guild war battles to <a href="https://gw.swop.one" target="_blank">SWOP Guild War logs</a></li>
         </ul>
+
+        <h1>Keyboard Shortcuts</h1>
+        <Table celled inverted selectable>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell colSpan='2'>Shortcut</Table.HeaderCell>
+              <Table.HeaderCell rowSpan='2'>Description</Table.HeaderCell>
+            </Table.Row>
+            <Table.Row>
+              <Table.HeaderCell>Windows / Linux</Table.HeaderCell>
+              <Table.HeaderCell>MacOS</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell>Ctrl + S</Table.Cell>
+              <Table.Cell>Command + S</Table.Cell>
+              <Table.Cell>Toggle proxy service.</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>Ctrl + B</Table.Cell>
+              <Table.Cell>Command + B</Table.Cell>
+              <Table.Cell>Toggle compact mode.</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>Alt + 1</Table.Cell>
+              <Table.Cell>Command + 1</Table.Cell>
+              <Table.Cell>Navigate to Logs view.</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>Alt + 2</Table.Cell>
+              <Table.Cell>Command + 2</Table.Cell>
+              <Table.Cell>Navigate to Settings view.</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>Alt + 3</Table.Cell>
+              <Table.Cell>Command + 3</Table.Cell>
+              <Table.Cell>Navigate to Help view.</Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
 
         <h1>FAQ</h1>
         <Accordion>

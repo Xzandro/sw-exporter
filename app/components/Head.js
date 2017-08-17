@@ -9,6 +9,10 @@ class Head extends React.Component {
   constructor() {
     super();
     this.state = { 'proxyRunning': ipcRenderer.sendSync('proxyIsRunning') };
+
+    Mousetrap.bind(['command+s', 'ctrl+s'], () => {
+      this.toggleProxy();
+    })
   }
 
   componentDidMount() {
