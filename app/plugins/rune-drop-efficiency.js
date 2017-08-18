@@ -70,6 +70,14 @@ module.exports = {
           });
         }
         break;
+
+      case 'BattleRiftDungeonResult':
+        resp.item_list.forEach((item, i) => {
+          if (item.type == 8) {
+            runes_info.push(this.logRuneDrop(item.info));
+          }
+        });
+        break;
         
       default:
         break;
