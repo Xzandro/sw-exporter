@@ -288,17 +288,17 @@ module.exports = {
     var map = {};
     var enhance = this.rune;
     var typeNumber = Number(craft_id.toString().slice(-4, -2))
-    map.set =  gmapping.enhance.sets[Number(craft_id.toString().slice(0, -4))];
-    map.grade = gmapping.enhance.quality[Number(craft_id.toString().slice(-1))];
-    map.type = gmapping.enhance.effectTypes [typeNumber];
+    map.set =  gMapping.enhance.sets[Number(craft_id.toString().slice(0, -4))];
+    map.grade = gMapping.enhance.quality[Number(craft_id.toString().slice(-1))];
+    map.type = gMapping.enhance.effectTypes [typeNumber];
     if(craft_type == 2){
-      map.min = gmapping.grindstone[typeNumber].range[Number(craft_id.toString().slice(-1))].min;
-      map.max = gmapping.grindstone[typeNumber].range[Number(craft_id.toString().slice(-1))].max;
+      map.min = gMapping.grindstone[typeNumber].range[Number(craft_id.toString().slice(-1))].min;
+      map.max = gMapping.grindstone[typeNumber].range[Number(craft_id.toString().slice(-1))].max;
       map.drop = "Grindstone";
     }
     else{
-      map.min = gmapping.enchanted_gem[typeNumber].range[Number(craft_id.toString().slice(-1))].min;
-      map.max = gmapping.enchanted_gem[typeNumber].range[Number(craft_id.toString().slice(-1))].max;
+      map.min = gMapping.enchanted_gem[typeNumber].range[Number(craft_id.toString().slice(-1))].min;
+      map.max = gMapping.enchanted_gem[typeNumber].range[Number(craft_id.toString().slice(-1))].max;
       map.drop = "Enchanted Gem";
     }
     return map;
