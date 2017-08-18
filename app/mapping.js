@@ -988,92 +988,92 @@ module.exports = {
     },
     2:{
       range: {
-        0: {min: 1, max: 3}, 
-        1: {min: 2, max: 5}, 
-        2: {min: 3, max: 6}, 
-        3: {min: 4, max: 7}, 
-        4: {min: 5, max: 10}
+        1: {min: 1, max: 3}, 
+        2: {min: 2, max: 5}, 
+        3: {min: 3, max: 6}, 
+        4: {min: 4, max: 7}, 
+        5: {min: 5, max: 10}
       }
     },
     3:{
       range: {
-        0: { min: 4 , max: 8},
-        1: { min: 6 , max: 12}, 
-        2: { min: 10, max: 18},
-        3: { min: 12, max: 22},
-        4: { min: 18, max: 30}
+        1: { min: 4 , max: 8},
+        2: { min: 6 , max: 12}, 
+        3: { min: 10, max: 18},
+        4: { min: 12, max: 22},
+        5: { min: 18, max: 30}
       }
     },
     4:{
       range: {
-        0: {min: 1, max: 3}, 
-        1: {min: 2, max: 5}, 
-        2: {min: 3, max: 6}, 
-        3: {min: 4, max: 7}, 
-        4: {min: 5, max: 10}
+        1: {min: 1, max: 3}, 
+        2: {min: 2, max: 5}, 
+        3: {min: 3, max: 6}, 
+        4: {min: 4, max: 7}, 
+        5: {min: 5, max: 10}
       }
     },
     5:{
       range: {
-        0: { min: 4 , max: 8}, 
-        1: { min: 6 , max: 12}, 
-        2: { min: 10, max: 18}, 
-        3: { min: 12, max: 22}, 
-        4: { min: 18, max: 30}
+        1: { min: 4 , max: 8}, 
+        2: { min: 6 , max: 12}, 
+        3: { min: 10, max: 18}, 
+        4: { min: 12, max: 22}, 
+        5: { min: 18, max: 30}
       }
     },
     6:{
       range: {
-        0: {min: 1, max: 3}, 
-        1: {min: 2, max: 5}, 
-        2: {min: 3, max: 6}, 
-        3: {min: 4, max: 7}, 
-        4: {min: 5, max: 10}
+        1: {min: 1, max: 3}, 
+        2: {min: 2, max: 5}, 
+        3: {min: 3, max: 6}, 
+        4: {min: 4, max: 7}, 
+        5: {min: 5, max: 10}
       }
     },
     8:{
       range: {
-        0: { min: 1, max: 2}, 
         1: { min: 1, max: 2}, 
-        2: { min: 2, max: 3}, 
-        3: { min: 3, max: 4}, 
-        4: { min: 4, max: 5}
+        2: { min: 1, max: 2}, 
+        3: { min: 2, max: 3}, 
+        4: { min: 3, max: 4}, 
+        5: { min: 4, max: 5}
       }
     },
     9:{
       range: {
-        0: { min: 1, max: 2}, 
-        1: { min: 1, max: 3}, 
-        2: { min: 2, max: 4}, 
-        3: { min: 3, max: 5}, 
-        4: { min: 4, max: 6}
+        1: { min: 1, max: 2}, 
+        2: { min: 1, max: 3}, 
+        3: { min: 2, max: 4}, 
+        4: { min: 3, max: 5}, 
+        5: { min: 4, max: 6}
       }
     },
     10:{
       range: {
-        0: {min: 1, max: 3}, 
-        1: {min: 2, max: 4}, 
-        2: {min: 2, max: 5}, 
-        3: {min: 4, max: 7}, 
-        4: {min: 5, max: 10}
+        1: {min: 1, max: 3}, 
+        2: {min: 2, max: 4}, 
+        3: {min: 2, max: 5}, 
+        4: {min: 4, max: 7}, 
+        5: {min: 5, max: 10}
       }
     },
     11:{
       range: {
-        0: {min: 1, max: 3}, 
-        1: {min: 2, max: 4}, 
-        2: {min: 2, max: 5}, 
-        3: {min: 4, max: 7}, 
-        4: {min: 5, max: 10}
+        1: {min: 1, max: 3}, 
+        2: {min: 2, max: 4}, 
+        3: {min: 2, max: 5}, 
+        4: {min: 4, max: 7}, 
+        5: {min: 5, max: 10}
       }
     },
     12:{
       range: {
-        0: {min: 1, max: 3}, 
-        1: {min: 2, max: 4}, 
-        2: {min: 2, max: 5}, 
-        3: {min: 4, max: 7}, 
-        4: {min: 5, max: 10}
+        1: {min: 1, max: 3}, 
+        2: {min: 2, max: 4}, 
+        3: {min: 2, max: 5}, 
+        4: {min: 4, max: 7}, 
+        5: {min: 5, max: 10}
       }
     }
   },
@@ -1081,101 +1081,101 @@ module.exports = {
   enchanted_gem:{
     1:{
       range: {
-        0: {min: 100, max: 150}, 
-        1: {min: 130, max: 220}, 
-        2: {min: 200, max: 310}, 
-        3: {min: 290, max: 420}, 
-        4: {min: 400, max: 580}
+        1: {min: 100, max: 150}, 
+        2: {min: 130, max: 220}, 
+        3: {min: 200, max: 310}, 
+        4: {min: 290, max: 420}, 
+        5: {min: 400, max: 580}
       }
     },
     2:{
       range: {
-        0: {min: 2, max: 4},
-        1: {min: 3, max: 7},
-        2: {min: 5, max: 9},
-        3: {min: 7, max: 11}, 
-        4: {min: 9, max: 13}
+        1: {min: 2, max: 4},
+        2: {min: 3, max: 7},
+        3: {min: 5, max: 9},
+        4: {min: 7, max: 11}, 
+        5: {min: 9, max: 13}
       }
     },
     3:{
       range: {
-        0: {min:8 , max: 12}, 
-        1: {min:10, max: 16}, 
-        2: {min:15, max: 23}, 
-        3: {min:20, max: 30}, 
-        4: {min:28, max: 40}
+        1: {min:8 , max: 12}, 
+        2: {min:10, max: 16}, 
+        3: {min:15, max: 23}, 
+        4: {min:20, max: 30}, 
+        5: {min:28, max: 40}
       }
     },
     4:{
       range: {
-        0: {min: 2, max: 4},
-        1: {min: 3, max: 7},
-        2: {min: 5, max: 9},
-        3: {min: 7, max: 11}, 
-        4: {min: 9, max: 13}
+        1: {min: 2, max: 4},
+        2: {min: 3, max: 7},
+        3: {min: 5, max: 9},
+        4: {min: 7, max: 11}, 
+        5: {min: 9, max: 13}
       }
     },
     5:{
       range: {
-        0: {min:8 , max: 12}, 
-        1: {min:10, max: 16}, 
-        2: {min:15, max: 23}, 
-        3: {min:20, max: 30}, 
-        4: {min:28, max: 40}
+        1: {min:8 , max: 12}, 
+        2: {min:10, max: 16}, 
+        3: {min:15, max: 23}, 
+        4: {min:20, max: 30}, 
+        5: {min:28, max: 40}
       }
     },
     6:{
       range: {
-        0: {min: 2, max: 4},
-        1: {min: 3, max: 7},
-        2: {min: 5, max: 9},
-        3: {min: 7, max: 11}, 
-        4: {min: 9, max: 13}
+        1: {min: 2, max: 4},
+        2: {min: 3, max: 7},
+        3: {min: 5, max: 9},
+        4: {min: 7, max: 11}, 
+        5: {min: 9, max: 13}
       }
     },
     8:{
       range: {
-        0: {min: 1, max: 3},
-        1: {min: 2, max: 4},
-        2: {min: 3, max: 6}, 
-        3: {min: 5, max: 8}, 
-        4: {min: 7, max: 10}
+        1: {min: 1, max: 3},
+        2: {min: 2, max: 4},
+        3: {min: 3, max: 6}, 
+        4: {min: 5, max: 8}, 
+        5: {min: 7, max: 10}
       }
     },
     9:{
       range: {
-        0: {min: 1, max: 3}, 
-        1: {min: 2, max: 4}, 
-        2: {min: 3, max: 5}, 
-        3: {min: 4, max: 7}, 
-        4: {min: 6, max: 9}
+        1: {min: 1, max: 3}, 
+        2: {min: 2, max: 4}, 
+        3: {min: 3, max: 5}, 
+        4: {min: 4, max: 7}, 
+        5: {min: 6, max: 9}
       }
     },
     10:{
       range: {
-        0: {min: 1, max: 3}, 
-        1: {min: 2, max: 4}, 
-        2: {min: 3, max: 6}, 
-        3: {min: 5, max: 8}, 
-        4: {min: 7, max: 10}
+        1: {min: 1, max: 3}, 
+        2: {min: 2, max: 4}, 
+        3: {min: 3, max: 6}, 
+        4: {min: 5, max: 8}, 
+        5: {min: 7, max: 10}
       }
     },
     11:{
       range: {
-        0: {min: 2, max: 4}, 
-        1: {min: 3, max: 6}, 
-        2: {min: 5, max: 8}, 
-        3: {min: 6, max: 9}, 
-        4: {min: 8, max: 11},
+        1: {min: 2, max: 4}, 
+        2: {min: 3, max: 6}, 
+        3: {min: 5, max: 8}, 
+        4: {min: 6, max: 9}, 
+        5: {min: 8, max: 11},
       }
     },
     12:{
       range: {
-        0: {min: 2, max: 4}, 
-        1: {min: 3, max: 6}, 
-        2: {min: 5, max: 8}, 
-        3: {min: 6, max: 9}, 
-        4: {min: 8, max: 11}
+        1: {min: 2, max: 4}, 
+        2: {min: 3, max: 6}, 
+        3: {min: 5, max: 8}, 
+        4: {min: 6, max: 9}, 
+        5: {min: 8, max: 11}
       }
     }
   },
