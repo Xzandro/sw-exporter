@@ -28,6 +28,13 @@ module.exports = {
 
         if (command === 'BattleScenarioResult' || command === 'BattleDungeonResult')
           this.log(proxy, req, resp);
+
+        if (command === 'BattleRiftOfWorldsRaidResult')
+          this.log_raid_rift(proxy, req, resp);
+
+        if (command === 'BattleRiftDungeonResult'){
+          this.log_elemental_rift(proxy, req, resp);
+        }
       }
     });
   },
@@ -54,9 +61,54 @@ module.exports = {
       return `${gMapping.craftMaterial[crate.craft_stuff.item_master_id]} x${crate.craft_stuff.item_quantity}`;
     if (crate.summon_pieces)
       return `Summoning Piece ${gMapping.getMonsterName(crate.summon_pieces.item_master_id)} x${crate.summon_pieces.item_quantity}`;
-
+    
     return 'Unknown Drop';
   },
+
+  getItemRift(item, entry){
+    if (item.type === 8){
+      let rune = item.info;
+      entry.drop = 'Rune';
+      entry.grade = `${rune.class}*`;
+      entry.sell_value = rune.sell_value;
+      entry.set = gMapping.rune.sets[rune.set_id];
+      entry.slot = rune.slot_no;
+      entry.efficiency = gMapping.getRuneEfficiency(rune).current;
+      entry.rarity = gMapping.rune.class[rune.sec_eff.length];
+      entry.main_stat = gMapping.getRuneEffect(rune.pri_eff);
+      entry.prefix_stat = gMapping.getRuneEffect(rune.prefix_eff);
+
+      rune.sec_eff.forEach((substat, i) => {
+        entry['sub' + (i + 1)] = gMapping.getRuneEffect(substat);
+      });
+    }
+    if (item.info.craft_type_id){
+      enhancement = this.getEnchantVals(item.info.craft_type_id, item.info.craft_type);
+      entry.drop = enhancement.drop;
+      entry.sell_value = item.sell_value;
+      entry.set = enhancement.set;
+      entry.main_stat = enhancement.type;
+      entry.sub1 = enhancement.min;
+      entry.sub2 = enhancement.max;
+    }
+    return entry;
+  },
+
+  saveToFile(entry, filename, headers, proxy){
+    let csvData = [];
+    const self = this;
+    fs.ensureFile(path.join(config.Config.App.filesPath, filename), err => {
+      csv.fromPath(path.join(config.Config.App.filesPath, filename), { ignoreEmpty: true, headers: headers, renameHeaders: true }).on('data', function (data) {
+        csvData.push(data);
+      }).on('end', function () {
+        csvData.push(entry);
+        csv.writeToPath(path.join(config.Config.App.filesPath, filename), csvData, { headers: headers }).on("finish", function () {
+          proxy.log({ type: 'success', source: 'plugin', name: self.pluginName, message: `Saved run data to ${filename}` });
+        });
+      });
+    })
+  },
+
   log(proxy ,req, resp) {
     const { command } = req;
     const { wizard_id, wizard_name } = resp.wizard_info;
@@ -126,23 +178,129 @@ module.exports = {
     if (resp.instance_info)
       entry.drop = 'Secret Dungeon';
 
-    let csvData = [];
     const headers = ['date', 'dungeon', 'result', 'time', 'mana', 'crystal', 'energy', 'drop', 'grade', 'sell_value',
       'set', 'efficiency', 'slot', 'rarity', 'main_stat', 'prefix_stat', 'sub1', 'sub2', 'sub3', 'sub4', 'team1', 'team2', 'team3', 'team4', 'team5'];
 
     const filename = sanitize(`${wizard_name}-${wizard_id}-runs.csv`);
-    const self = this;
+    this.saveToFile(entry, filename, headers, proxy);
+  },
 
-    fs.ensureFile(path.join(config.Config.App.filesPath, filename), err => {
-      csv.fromPath(path.join(config.Config.App.filesPath, filename), { ignoreEmpty: true, headers: headers, renameHeaders: true }).on('data', function (data) {
-        csvData.push(data);
-      }).on('end', function () {
-        csvData.push(entry);
-        csv.writeToPath(path.join(config.Config.App.filesPath, filename), csvData, { headers: headers }).on("finish", function () {
-          proxy.log({ type: 'success', source: 'plugin', name: self.pluginName, message: `Saved run data to ${filename}` });
-        });
-      });
-    })
+  log_raid_rift(proxy, req, resp){
+    const { command } = req;
+    const { wizard_id, wizard_name } = resp.wizard_info;
+
+    let entry = {};
+    if (gMapping.dungeon[req.dungeon_id]) {
+      entry.dungeon = `${gMapping.elemental_rift_dungeon[req.dungeon_id]}`;
+      isElemental = true;
+    }
+
+    let winLost = resp.win_lose === 1 ? 'Win' : 'Did not kill';
+
+    entry.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM');
+    entry.result = winLost;
+
+    let reward = resp.reward ? resp.reward : {};
     
+    if (winLost < 1 && resp.reward.crate === 'undefined'){
+        entry.drop = "Mana"
+    }
+    if (reward.crate.runecraft_info){
+      let item = {};
+      item["info"] = {};
+      item.info["craft_type"] = reward.crate.runecraft_info.craft_type;
+      item.info["craft_type_id"] = reward.crate.runecraft_info.craft_type_id;
+      entry = this.getItemRift(item, entry);
+    }
+    if (reward.crate.rune){
+      entry = this.getItemRift(reward.crate.rune, entry);
+    }
+    if (reward.crate.unit_info.unit_master_id > 0 ){
+      entry.drop = `${gMapping.getMonsterName(reward.crate.unit_info.unit_master_id)} ${reward.crate.unit_info.class}`;
+    }
+    else{
+      entry.drop = this.getItem(reward.crate);
+    }
+
+  if (resp.unit_list && resp.unit_list.length > 0) {
+    resp.unit_list.forEach((unit, i) => {
+      entry['team' + (i + 1)] = gMapping.getMonsterName(unit.unit_master_id);
+    });
+  }
+    const headers = ['date', 'dungeon', 'result', 'time', 'item1', 'item2', 'item3', 'drop', 'grade', 'sell_value',
+      'set', 'efficiency', 'slot', 'rarity', 'main_stat', 'prefix_stat', 'sub1', 'sub2', 'sub3', 'sub4', 'team1', 'team2', 'team3', 'team4', 'team5', 'team6'];
+
+    const filename = sanitize(`${wizard_name}-${wizard_id}-raid-runs.csv`);
+    this.saveToFile(entry, filename, headers, proxy);
+  },
+
+  log_elemental_rift(proxy ,req, resp) {
+    const { command } = req;
+    const { wizard_id, wizard_name } = resp.wizard_info;
+
+    let entry = {};
+    if (gMapping.dungeon[req.dungeon_id]) {
+      entry.dungeon = `${gMapping.elemental_rift_dungeon[req.dungeon_id]}`;
+      isElemental = true;
+    }
+
+    let winLost = req.battle_result == 1 ? 'Win' : 'Did not kill';
+
+    entry.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM');
+    entry.result = winLost;
+
+
+    if (resp.item_list && resp.item_list.length >0){
+      resp.item_list.forEach((item, i) => {
+        if ( item.is_boxing !== 1 || item.id === 2001){
+          entry['item' + (i+1)] = `${gMapping.craftMaterial[item.id]}` + 'x ' + item.quantity; 
+        }
+        else{
+          if (item.id === 2){
+            entry.drop = "Mystical Scroll";
+          }
+          if (item.id === 8){
+            entry.drop = `Summoning Stones x${item.item_quantity}`;
+          }
+          if (item.info.unit_master_id > 0){
+            entry.drop = `${gMapping.getMonsterName(item.info.unit_master_id)} ${item.class}`;
+          }
+          if (item.info.craft_type_id || item.type === 8){
+            entry = this.getItemRift(item, entry); 
+          }
+        }
+      })
+  }
+
+  if (resp.unit_list && resp.unit_list.length > 0) {
+    resp.unit_list.forEach((unit, i) => {
+      entry['team' + (i + 1)] = gMapping.getMonsterName(unit.unit_master_id);
+    });
+  }
+    const headers = ['date', 'dungeon', 'result', 'time', 'item1', 'item2', 'item3', 'drop', 'grade', 'sell_value',
+      'set', 'efficiency', 'slot', 'rarity', 'main_stat', 'prefix_stat', 'sub1', 'sub2', 'sub3', 'sub4', 'team1', 'team2', 'team3', 'team4', 'team5', 'team6'];
+
+    const filename = sanitize(`${wizard_name}-${wizard_id}-raid-runs.csv`);
+    this.saveToFile(entry, filename, headers, proxy);
+  },
+
+  getEnchantVals(craft_id, craft_type) {
+    var map = {};
+    var enhance = this.rune;
+    var typeNumber = Number(craft_id.toString().slice(-4, -2))
+    map.set =  gmapping.enhance.sets[Number(craft_id.toString().slice(0, -4))];
+    map.grade = gmapping.enhance.quality[Number(craft_id.toString().slice(-1))];
+    map.type = gmapping.enhance.effectTypes [typeNumber];
+    if(craft_type == 2){
+      map.min = gmapping.grindstone[typeNumber].range[Number(craft_id.toString().slice(-1))].min;
+      map.max = gmapping.grindstone[typeNumber].range[Number(craft_id.toString().slice(-1))].max;
+      map.drop = "Grindstone";
+    }
+    else{
+      map.min = gmapping.enchanted_gem[typeNumber].range[Number(craft_id.toString().slice(-1))].min;
+      map.max = gmapping.enchanted_gem[typeNumber].range[Number(craft_id.toString().slice(-1))].max;
+      map.drop = "Enchanted Gem";
+    }
+    return map;
   }
 }
