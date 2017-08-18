@@ -15,7 +15,7 @@ class Help extends React.Component {
         <p>Click Start Proxy now.</p>
         <h2>Configuring your mobile device</h2>
         <p>Your computer and mobile device must be connected to the same network and be able to communicate. This is normally as simple as connecting to the same Wi-Fi network or router. Some situations, like a college campus Wi-Fi connection, might not work.</p>
-        <p>In the top bar of this program, there is a list of IP addresses and a port number. If there is more than IP address, you must determine which one is the IP address that talks on the same network as your phone. These numbers are what you will be entering into your phone.</p>
+        <p>In the top bar of this program, there is a list of IP addresses and a port number. If there is more than IP address, you must determine which one is the IP address that talks on the same network as your phone. These numbers are what you will be entering into your phone (these numbers are only an example, yours may be different).</p>
         <Image src="../assets/help_network_settings.png" bordered />
         <h3>Android</h3>
         <ol>
