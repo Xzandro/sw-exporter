@@ -65,8 +65,8 @@ module.exports = {
     return 'Unknown Drop';
   },
 
-  getItemRift(item, entry){
-    if (item.type === 8){
+  getItemRift(item, entry) {
+    if (item.type === 8) {
       let rune = item.info;
       entry.drop = 'Rune';
       entry.grade = `${rune.class}*`;
@@ -82,7 +82,7 @@ module.exports = {
         entry['sub' + (i + 1)] = gMapping.getRuneEffect(substat);
       });
     }
-    if (item.info.craft_type_id){
+    if (item.info.craft_type_id) {
       enhancement = this.getEnchantVals(item.info.craft_type_id, item.info.craft_type);
       entry.drop = enhancement.drop;
       entry.sell_value = item.sell_value;
@@ -94,7 +94,7 @@ module.exports = {
     return entry;
   },
 
-  saveToFile(entry, filename, headers, proxy){
+  saveToFile(entry, filename, headers, proxy) {
     let csvData = [];
     const self = this;
     fs.ensureFile(path.join(config.Config.App.filesPath, filename), err => {
@@ -202,31 +202,30 @@ module.exports = {
 
     let reward = resp.reward ? resp.reward : {};
     
-    if (winLost < 1 && resp.reward.crate === 'undefined'){
+    if (winLost < 1 && resp.reward.crate === 'undefined') {
         entry.drop = "Mana"
     }
-    if (reward.crate.runecraft_info){
+    if (reward.crate.runecraft_info) {
       let item = {};
       item["info"] = {};
       item.info["craft_type"] = reward.crate.runecraft_info.craft_type;
       item.info["craft_type_id"] = reward.crate.runecraft_info.craft_type_id;
       entry = this.getItemRift(item, entry);
     }
-    if (reward.crate.rune){
+    if (reward.crate.rune) {
       entry = this.getItemRift(reward.crate.rune, entry);
     }
-    if (reward.crate.unit_info.unit_master_id > 0 ){
+    if (reward.crate.unit_info && reward.crate.unit_info.unit_master_id > 0 ) {
       entry.drop = `${gMapping.getMonsterName(reward.crate.unit_info.unit_master_id)} ${reward.crate.unit_info.class}`;
-    }
-    else{
+    } else {
       entry.drop = this.getItem(reward.crate);
     }
 
-  if (resp.unit_list && resp.unit_list.length > 0) {
-    resp.unit_list.forEach((unit, i) => {
-      entry['team' + (i + 1)] = gMapping.getMonsterName(unit.unit_master_id);
-    });
-  }
+    if (resp.unit_list && resp.unit_list.length > 0) {
+      resp.unit_list.forEach((unit, i) => {
+        entry['team' + (i + 1)] = gMapping.getMonsterName(unit.unit_master_id);
+      });
+    }
     const headers = ['date', 'dungeon', 'result', 'time', 'item1', 'item2', 'item3', 'drop', 'grade', 'sell_value',
       'set', 'efficiency', 'slot', 'rarity', 'main_stat', 'prefix_stat', 'sub1', 'sub2', 'sub3', 'sub4', 'team1', 'team2', 'team3', 'team4', 'team5', 'team6'];
 
@@ -250,22 +249,21 @@ module.exports = {
     entry.result = winLost;
 
 
-    if (resp.item_list && resp.item_list.length >0){
+    if (resp.item_list && resp.item_list.length > 0) {
       resp.item_list.forEach((item, i) => {
-        if ( item.is_boxing !== 1 || item.id === 2001){
-          entry['item' + (i+1)] = `${gMapping.craftMaterial[item.id]}` + 'x ' + item.quantity; 
-        }
-        else{
-          if (item.id === 2){
+        if (item.is_boxing !== 1 || item.id === 2001) {
+          entry['item' + (i+1)] = `${gMapping.craftMaterial[item.id]} x${item.quantity}`; 
+        } else {
+          if (item.id === 2) {
             entry.drop = "Mystical Scroll";
           }
-          if (item.id === 8){
+          if (item.id === 8) {
             entry.drop = `Summoning Stones x${item.item_quantity}`;
           }
-          if (item.info.unit_master_id > 0){
+          if (item.info.unit_master_id > 0) {
             entry.drop = `${gMapping.getMonsterName(item.info.unit_master_id)} ${item.class}`;
           }
-          if (item.info.craft_type_id || item.type === 8){
+          if ((item.info && item.info.craft_type_id) || item.type === 8) {
             entry = this.getItemRift(item, entry); 
           }
         }
@@ -286,19 +284,18 @@ module.exports = {
 
   getEnchantVals(craft_id, craft_type) {
     var map = {};
-    var enhance = this.rune;
     var typeNumber = Number(craft_id.toString().slice(-4, -2))
-    map.set =  gmapping.enhance.sets[Number(craft_id.toString().slice(0, -4))];
-    map.grade = gmapping.enhance.quality[Number(craft_id.toString().slice(-1))];
-    map.type = gmapping.enhance.effectTypes [typeNumber];
-    if(craft_type == 2){
-      map.min = gmapping.grindstone[typeNumber].range[Number(craft_id.toString().slice(-1))].min;
-      map.max = gmapping.grindstone[typeNumber].range[Number(craft_id.toString().slice(-1))].max;
+    map.set =  gMapping.rune.sets[Number(craft_id.toString().slice(0, -4))];
+    map.grade = gMapping.rune.quality[Number(craft_id.toString().slice(-1))];
+    map.type = gMapping.rune.effectTypes [typeNumber];
+    
+    if (craft_type == 2) {
+      map.min = gMapping.grindstone[typeNumber].range[Number(craft_id.toString().slice(-1))].min;
+      map.max = gMapping.grindstone[typeNumber].range[Number(craft_id.toString().slice(-1))].max;
       map.drop = "Grindstone";
-    }
-    else{
-      map.min = gmapping.enchanted_gem[typeNumber].range[Number(craft_id.toString().slice(-1))].min;
-      map.max = gmapping.enchanted_gem[typeNumber].range[Number(craft_id.toString().slice(-1))].max;
+    } else {
+      map.min = gMapping.enchanted_gem[typeNumber].range[Number(craft_id.toString().slice(-1))].min;
+      map.max = gMapping.enchanted_gem[typeNumber].range[Number(craft_id.toString().slice(-1))].max;
       map.drop = "Enchanted Gem";
     }
     return map;
