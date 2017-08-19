@@ -23,6 +23,12 @@
         "nsis"
       ]
     },
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "linux": {
+      "category": "Utility"
+    },
     "nsis": {
       "artifactName": "${productName}-Setup-${version}-${os}.${ext}"
     },
@@ -45,7 +51,7 @@
     "babel-preset-es2015": "^6.24.0",
     "babel-preset-react": "^6.23.0",
     "electron": "1.6.2",
-    "electron-builder": "^16.4.2",
+    "electron-builder": "^19.22.1",
     "electron-rebuild": "^1.6.0",
     "webpack": "^2.3.0"
   },
