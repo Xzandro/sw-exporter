@@ -215,7 +215,7 @@ module.exports = {
     if (reward.crate.rune) {
       entry = this.getItemRift(reward.crate.rune, entry);
     }
-    if (reward.crate.unit_info.unit_master_id > 0 ) {
+    if (reward.crate.unit_info && reward.crate.unit_info.unit_master_id > 0 ) {
       entry.drop = `${gMapping.getMonsterName(reward.crate.unit_info.unit_master_id)} ${reward.crate.unit_info.class}`;
     } else {
       entry.drop = this.getItem(reward.crate);
@@ -253,8 +253,7 @@ module.exports = {
       resp.item_list.forEach((item, i) => {
         if (item.is_boxing !== 1 || item.id === 2001) {
           entry['item' + (i+1)] = `${gMapping.craftMaterial[item.id]} x${item.quantity}`; 
-        }
-        else{
+        } else {
           if (item.id === 2) {
             entry.drop = "Mystical Scroll";
           }
@@ -264,7 +263,7 @@ module.exports = {
           if (item.info.unit_master_id > 0) {
             entry.drop = `${gMapping.getMonsterName(item.info.unit_master_id)} ${item.class}`;
           }
-          if (item.info.craft_type_id || item.type === 8) {
+          if ((item.info && item.info.craft_type_id) || item.type === 8) {
             entry = this.getItemRift(item, entry); 
           }
         }
