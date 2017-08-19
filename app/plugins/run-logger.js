@@ -285,11 +285,11 @@ module.exports = {
 
   getEnchantVals(craft_id, craft_type) {
     var map = {};
-    var enhance = this.rune;
     var typeNumber = Number(craft_id.toString().slice(-4, -2))
-    map.set =  gMapping.enhance.sets[Number(craft_id.toString().slice(0, -4))];
-    map.grade = gMapping.enhance.quality[Number(craft_id.toString().slice(-1))];
-    map.type = gMapping.enhance.effectTypes [typeNumber];
+    map.set =  gMapping.rune.sets[Number(craft_id.toString().slice(0, -4))];
+    map.grade = gMapping.rune.quality[Number(craft_id.toString().slice(-1))];
+    map.type = gMapping.rune.effectTypes [typeNumber];
+    
     if (craft_type == 2) {
       map.min = gMapping.grindstone[typeNumber].range[Number(craft_id.toString().slice(-1))].min;
       map.max = gMapping.grindstone[typeNumber].range[Number(craft_id.toString().slice(-1))].max;
