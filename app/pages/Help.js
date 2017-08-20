@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, Accordion, Icon, Table } from 'semantic-ui-react';
 
 class Help extends React.Component {
-  render () {
+  render() {
     return (
       <div>
         <h1>Setup Instructions</h1>
@@ -53,8 +53,8 @@ class Help extends React.Component {
         <Table celled inverted selectable>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell colSpan='2'>Shortcut</Table.HeaderCell>
-              <Table.HeaderCell rowSpan='2'>Description</Table.HeaderCell>
+              <Table.HeaderCell colSpan="2">Shortcut</Table.HeaderCell>
+              <Table.HeaderCell rowSpan="2">Description</Table.HeaderCell>
             </Table.Row>
             <Table.Row>
               <Table.HeaderCell>Windows / Linux</Table.HeaderCell>
@@ -92,22 +92,22 @@ class Help extends React.Component {
 
         <h1>FAQ</h1>
         <Accordion>
-          <Accordion.Title><Icon name='dropdown' />Can I get banned for using this?</Accordion.Title>
+          <Accordion.Title><Icon name="dropdown" />Can I get banned for using this?</Accordion.Title>
           <Accordion.Content>The proxy method of intercepting communication between your device and Com2US is largely undetectable. No reports of bans due to using a proxy have been reported.</Accordion.Content>
-          
-          <Accordion.Title><Icon name='dropdown' />What about SWProxy?</Accordion.Title>
+
+          <Accordion.Title><Icon name="dropdown" />What about SWProxy?</Accordion.Title>
           <Accordion.Content>SWProxy suffered from a few issues - difficulty releasing on mac and linux, proxy causing broken event pages, etc. SW Exporter was developed on a new code platform trying to address these issues from the start.</Accordion.Content>
-          
-          <Accordion.Title><Icon name='dropdown' />What if I find an issue?</Accordion.Title>
+
+          <Accordion.Title><Icon name="dropdown" />What if I find an issue?</Accordion.Title>
           <Accordion.Content>Please <a href="https://github.com/Xzandro/sw-exporter" target="_blank">report it on <Icon name="github square" />Github</a>.</Accordion.Content>
-          
-          <Accordion.Title><Icon name='dropdown' />How can I contribute?</Accordion.Title>
+
+          <Accordion.Title><Icon name="dropdown" />How can I contribute?</Accordion.Title>
           <Accordion.Content>
             <p>If you can code, check out the repository on <a href="https://github.com/Xzandro/sw-exporter" target="_blank"><Icon name="github square" />Github</a> and submit a pull request! Or you can buy <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HCGNZJSHCJWF2" target="_blank">Xzandro</a> or <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8BEPKLJMLJ2YS" target="_blank">Porksmash</a> a beer to support continued development.</p>
           </Accordion.Content>
         </Accordion>
       </div>
-    )
+    );
   }
 }
 

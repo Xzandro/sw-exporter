@@ -1,11 +1,11 @@
 const EventEmitter = require('events');
-const http = require('http')
+const http = require('http');
 const httpProxy = require('http-proxy');
 const os = require('os');
 const net = require('net');
 const url = require('url');
 
-const {decrypt_request, decrypt_response} = require('./smon_decryptor');
+const { decrypt_request, decrypt_response } = require('./smon_decryptor');
 
 class SWProxy extends EventEmitter {
   constructor() {
@@ -20,48 +20,46 @@ class SWProxy extends EventEmitter {
 
     if (port === undefined) { port = 8080; }
 
-    var parsed_requests = [];
+    let parsedRequests = [];
 
-    this.proxy = httpProxy.createProxyServer({}).on('proxyRes', (proxyResp, req, resp) => {
-      let resp_chunks = [];
+    this.proxy = httpProxy.createProxyServer({}).on('proxyRes', (proxyResp, req) => {
+      let respChunks = [];
 
       if (req.url.indexOf('qpyou.cn/api/gateway_c2.php') >= 0) {
         proxyResp.on('data', (chunk) => {
-          resp_chunks.push(chunk);
+          respChunks.push(chunk);
         });
 
         proxyResp.on('end', () => {
-          let resp_data;
+          let respData;
           try {
-            resp_data = decrypt_response(resp_chunks.join());
-          }
-          catch(e) {
+            respData = decrypt_response(respChunks.join());
+          } catch (e) {
             // Error decrypting the data, log and do not fire an event
-            self.log({ type: 'debug', source:'proxy', message: `Error decrypting response data - ignoring. ${e}`});
+            self.log({ type: 'debug', source: 'proxy', message: `Error decrypting response data - ignoring. ${e}` });
             return;
           }
-          
-          const {command} = resp_data;
 
-          if (parsed_requests[command]) {
+          const { command } = respData;
+
+          if (parsedRequests[command]) {
             // We have a complete request/response pair
-            const req_data = parsed_requests[command];
+            const reqData = parsedRequests[command];
 
-            if (config.Config.App.clearLogOnLogin && command === 'HubUserLogin')
-              self.clearLogs();
+            if (config.Config.App.clearLogOnLogin && command === 'HubUserLogin') { self.clearLogs(); }
 
             // Emit events, one for the specific API command and one for all commands
-            self.emit(command, req_data, resp_data);
-            self.emit('apiCommand', req_data, resp_data);
-            delete parsed_requests[command];
+            self.emit(command, reqData, respData);
+            self.emit('apiCommand', reqData, respData);
+            delete parsedRequests[command];
           }
         });
       }
     });
 
-    this.proxy.on('error', function (error, req, resp) {
+    this.proxy.on('error', (error, req, resp) => {
       resp.writeHead(500, {
-        'Content-Type': 'text/plain'
+        'Content-Type': 'text/plain',
       });
 
       resp.end('Something went wrong.');
@@ -69,27 +67,26 @@ class SWProxy extends EventEmitter {
 
     this.httpServer = http.createServer((req, resp) => {
       // Request has been intercepted from game client
-      let req_chunks = [];
+      let reqChunks = [];
       if (req.url.indexOf('qpyou.cn/api/gateway_c2.php') >= 0) {
         req.on('data', (chunk) => {
-          req_chunks.push(chunk);
+          reqChunks.push(chunk);
         });
         req.on('end', () => {
           // Parse the request
-          let req_data;
+          let reqData;
           try {
-            req_data = decrypt_request(req_chunks.join());
-          }
-          catch(e) {
+            reqData = decrypt_request(reqChunks.join());
+          } catch (e) {
             // Error decrypting the data, log and do not fire an event
-            self.log({ type: 'debug', source:'proxy', message: `Error decrypting request data - ignoring. ${e}`});
+            self.log({ type: 'debug', source: 'proxy', message: `Error decrypting request data - ignoring. ${e}` });
             return;
           }
-          
-          const {command} = req_data;
+
+          const { command } = reqData;
 
           // Add command request to an object so we can handle multiple requests at a time
-          parsed_requests[command] = req_data;
+          parsedRequests[command] = reqData;
         });
       }
 
@@ -100,15 +97,15 @@ class SWProxy extends EventEmitter {
     });
 
     this.httpServer.on('error', (e) => {
-      if (e.code == 'EADDRINUSE') {
-        self.log({ type: 'warning', source: 'proxy', message: 'Port is in use from another process. Try another port.' })
+      if (e.code === 'EADDRINUSE') {
+        self.log({ type: 'warning', source: 'proxy', message: 'Port is in use from another process. Try another port.' });
       }
     });
 
-    this.httpServer.on('connect', function (req, socket) {
-      let serverUrl = url.parse('https://' + req.url);
+    this.httpServer.on('connect', (req, socket) => {
+      const serverUrl = url.parse(`https://${req.url}`);
 
-      let srvSocket = net.connect(serverUrl.port, serverUrl.hostname, function() {
+      const srvSocket = net.connect(serverUrl.port, serverUrl.hostname, () => {
         socket.write('HTTP/1.1 200 Connection Established\r\n' +
         'Proxy-agent: Node-Proxy\r\n' +
         '\r\n');
@@ -116,12 +113,12 @@ class SWProxy extends EventEmitter {
         socket.pipe(srvSocket);
       });
 
-      srvSocket.on('error', (error) => {
-        console.log('Caught server socket error.');
+      srvSocket.on('error', () => {
+
       });
 
-      socket.on('error', (error) => {
-        console.log('Caught client socket error.');
+      socket.on('error', () => {
+
       });
     });
   }
@@ -131,19 +128,19 @@ class SWProxy extends EventEmitter {
     this.httpServer.close();
 
     win.webContents.send('proxyStopped');
-    this.log({ type: 'info', source: 'proxy', message: `Proxy stopped` });
+    this.log({ type: 'info', source: 'proxy', message: 'Proxy stopped' });
   }
 
   getInterfaces() {
     this.addresses = [];
-    let interfaces = os.networkInterfaces();
-    for (let k in interfaces) {
-        for (let k2 in interfaces[k]) {
-            let address = interfaces[k][k2];
-            if (address.family === 'IPv4' && !address.internal) {
-                this.addresses.push(address.address);
-            }
+    const interfaces = os.networkInterfaces();
+    for (const k in interfaces) {
+      for (const k2 in interfaces[k]) {
+        const address = interfaces[k][k2];
+        if (address.family === 'IPv4' && !address.internal) {
+          this.addresses.push(address.address);
         }
+      }
     }
     return this.addresses;
   }
@@ -156,8 +153,7 @@ class SWProxy extends EventEmitter {
   }
 
   log(entry) {
-    if (!entry)
-      return;
+    if (!entry) { return; }
 
     entry.date = new Date().toLocaleTimeString();
     this.logEntries = [entry, ...this.logEntries];

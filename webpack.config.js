@@ -1,19 +1,25 @@
 module.exports = {
-  entry:'./app/View.js',
-  output:{
-    filename:'./app/bundle.js'
+  entry: './app/View.js',
+  output: {
+    filename: './app/bundle.js',
   },
   target: 'electron',
   module: {
-    loaders: [
+    rules: [
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'eslint-loader',
+      },
       {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
-        query:{
-          presets:['react','es2015']
-        }
-      }
-    ]
-  }
-}
+        options: {
+          presets: ['react', 'es2015'],
+        },
+      },
+    ],
+  },
+};

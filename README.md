@@ -20,4 +20,4 @@ $ npm run dev
 $ npm start
 ```
 
-And you are ready to develop.
+And you are ready to develop. We use ESLint for linting so make sure there are no linting errors before you submit a PR please.

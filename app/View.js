@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, IndexRoute, hashHistory } from "react-router";
+import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 
 import Layout from './pages/Layout';
 import Logs from './pages/Logs';
@@ -15,4 +15,4 @@ ReactDOM.render(
       <Route path="help" component={Help} />
     </Route>
   </Router>,
-document.getElementById('app'));
+  document.getElementById('app'));

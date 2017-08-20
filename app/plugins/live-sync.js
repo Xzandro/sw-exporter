@@ -1,10 +1,9 @@
 const fs = require('fs-extra');
 const path = require('path');
-const eol = require('os').EOL;
 
 module.exports = {
   defaultConfig: {
-    enabled: false
+    enabled: false,
   },
   pluginName: 'LiveSync',
   pluginDescription: 'Keep SWOP synched with SW.',
@@ -16,61 +15,62 @@ module.exports = {
     });
   },
   processCommand(proxy, req, resp) {
-    const { command }  = req;
+    const { command } = req;
 
     switch (command) {
       case 'BattleRiftOfWorldsRaidResult':
-        this.logRaid(proxy, req, resp)
+        this.logRaid(proxy, req, resp);
         break;
       case 'SellRuneCraftItem':
-        this.logSellCraft(proxy, req, resp)
+        this.logSellCraft(proxy, req, resp);
         break;
       case 'BattleDungeonResult':
       case 'BattleScenarioResult':
-        this.logDungeon(proxy, req, resp)
+        this.logDungeon(proxy, req, resp);
         break;
       case 'SellRune':
-        this.logSellRune(proxy, req, resp)
+        this.logSellRune(proxy, req, resp);
         break;
       case 'UpgradeRune':
-        this.logUpgradeRune(proxy, req, resp)
+        this.logUpgradeRune(proxy, req, resp);
         break;
       case 'EquipRune':
-        this.logEquipRune(proxy, req, resp)
+        this.logEquipRune(proxy, req, resp);
         break;
       case 'UnequipRune':
-        this.logUnequipRune(proxy, req, resp)
+        this.logUnequipRune(proxy, req, resp);
         break;
       case 'AmplifyRune':
-        this.logAmplifyRune(proxy, req, resp)
+        this.logAmplifyRune(proxy, req, resp);
         break;
       case 'BuyBlackMarketItem':
-        this.logBuyRune(proxy, req, resp)
+        this.logBuyRune(proxy, req, resp);
         break;
       case 'BuyShopItem':
-        this.logCraftRune(proxy, req, resp)
+        this.logCraftRune(proxy, req, resp);
         break;
       case 'ConfirmRune':
-        this.logReappraiseRune(proxy, req, resp)
+        this.logReappraiseRune(proxy, req, resp);
         break;
       case 'EquipRuneList':
-        this.logEquipRuneList(proxy, req, resp)
+        this.logEquipRuneList(proxy, req, resp);
+        break;
       default:
         break;
     }
   },
 
-  saveAction(proxy, wizard_id, timestamp, action, content) {
-    let result = { wizard_id: wizard_id, timestamp: timestamp, action: action, type: 'raw' };
+  saveAction(proxy, wizardId, timestamp, action, content) {
+    let result = { wizard_id: wizardId, timestamp, action, type: 'raw' };
     result = Object.assign(result, content);
 
-    const filename = `${wizard_id}-live-${timestamp}`.concat('.json');
+    const filename = `${wizardId}-live-${timestamp}`.concat('.json');
     fs.ensureDirSync(path.join(config.Config.App.filesPath, 'live'));
 
-    var outFile = fs.createWriteStream(
+    const outFile = fs.createWriteStream(
       path.join(config.Config.App.filesPath, 'live', filename), {
         flags: 'w',
-        autoClose: true
+        autoClose: true,
       }
     );
 
@@ -80,7 +80,7 @@ module.exports = {
   },
 
   logDungeon(proxy, req, resp) {
-    const winOrLost = resp.win_lose == 1 ? 'Win' : 'Lost';
+    const winOrLost = resp.win_lose === 1 ? 'Win' : 'Lost';
 
     if (winOrLost === 'Win') {
       const reward = resp.reward ? resp.reward : {};
@@ -119,15 +119,14 @@ module.exports = {
     this.saveAction(proxy, req.wizard_id, resp.tvalue, 'unequip_rune', { rune_id: req.rune_id });
   },
   logEquipRuneList(proxy, req, resp) {
-    this.saveAction(proxy, req.wizard_id, resp.tvalue, 'equip_rune_list', { equip: resp.equip_rune_id_list, unequip: resp.unequip_rune_id_list })
+    this.saveAction(proxy, req.wizard_id, resp.tvalue, 'equip_rune_list', { equip: resp.equip_rune_id_list, unequip: resp.unequip_rune_id_list });
   },
 
   logUpgradeRune(proxy, req, resp) {
-    const original_level = req.upgrade_curr;
-    const new_level = resp.rune.upgrade_curr;
+    const originalLevel = req.upgrade_curr;
+    const newLevel = resp.rune.upgrade_curr;
 
-    if (new_level > original_level)
-      this.saveAction(proxy, req.wizard_id, resp.tvalue, 'upgrade_rune', { rune: resp.rune });
+    if (newLevel > originalLevel) { this.saveAction(proxy, req.wizard_id, resp.tvalue, 'upgrade_rune', { rune: resp.rune }); }
   },
 
   logSellRune(proxy, req, resp) {
@@ -139,21 +138,21 @@ module.exports = {
   },
 
   logRaid(proxy, req, resp) {
-    const wizard_id = resp.wizard_info.wizard_id;
-    const winOrLost = resp.win_lose == 1 ? 'Win' : 'Lost';
+    const wizardId = resp.wizard_info.wizard_id;
+    const winOrLost = resp.win_lose === 1 ? 'Win' : 'Lost';
 
     if (winOrLost === 'Win') {
-      for (let reward_id in resp.battle_reward_list) {
-        if (wizard_id == resp.battle_reward_list[reward_id].wizard_id) {
-          let reward = resp.battle_reward_list[reward_id].reward_list[0] || {};
-          
-          if (reward.item_master_type == 27) {
-            const craft_info = resp.reward.crate.runecraft_info;
-            this.saveAction(proxy, wizard_id, resp.tvalue, 'new_craft', { craft: craft_info });
+      for (const rewardID in resp.battle_reward_list) {
+        if (wizardId === resp.battle_reward_list[rewardID].wizard_id) {
+          const reward = resp.battle_reward_list[rewardID].reward_list[0] || {};
+
+          if (reward.item_master_type === 27) {
+            const craftInfo = resp.reward.crate.runecraft_info;
+            this.saveAction(proxy, wizard_id, resp.tvalue, 'new_craft', { craft: craftInfo });
             break;
           }
         }
       }
     }
-  }
-}
+  },
+};

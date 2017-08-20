@@ -18,7 +18,7 @@ module.exports = {
       };
       proxy.log({ type: 'debug', source: 'plugin', name: this.pluginName, message: 'Retrieving list of accepted log types from SWARFARM...' });
       request(options, (error, response, body) => {
-        if (!error && response.statusCode == 200) {
+        if (!error && response.statusCode === 200) {
           this.accepted_commands = JSON.parse(body);
           proxy.log({ type: 'success', source: 'plugin', name: this.pluginName, message: `Looking for the following commands to log: ${Object.keys(this.accepted_commands).join(', ')}` });
         } else {
@@ -27,30 +27,28 @@ module.exports = {
         }
       });
       proxy.on('apiCommand', (req, resp) => {
-        if (config.Config.Plugins[this.pluginName].enabled)
-          this.log(proxy, req, resp);
+        if (config.Config.Plugins[this.pluginName].enabled) { this.log(proxy, req, resp); }
       });
     }
   },
 
   log(proxy, req, resp) {
-    const {command} = req;
+    const { command } = req;
 
-    if (!this.accepted_commands || !this.accepted_commands[command])
-      return;
+    if (!this.accepted_commands || !this.accepted_commands[command]) { return; }
 
-    let accepted_data = this.accepted_commands[command];
-    let result_data = { 'request': {}, 'response': {} };
+    let acceptedData = this.accepted_commands[command];
+    let resultData = { request: {}, response: {} };
 
-    accepted_data.request.forEach(prop => {
-      result_data.request[prop] = req[prop] || null;
+    acceptedData.request.forEach((prop) => {
+      resultData.request[prop] = req[prop] || null;
     });
 
-    accepted_data.response.forEach(prop => {
-      result_data.response[prop] = resp[prop] || null;
+    acceptedData.response.forEach((prop) => {
+      resultData.response[prop] = resp[prop] || null;
     });
 
-    request.post({url: this.log_url, form: { data: JSON.stringify(result_data)} },  (error, response, body) => {
+    request.post({ url: this.log_url, form: { data: JSON.stringify(resultData) } }, (error, response) => {
       if (error) {
         proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: `Error: ${error.message}` });
         return;
@@ -63,4 +61,4 @@ module.exports = {
       }
     });
   }
-}
+};

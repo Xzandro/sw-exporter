@@ -20,15 +20,14 @@ module.exports = {
       }
     });
     app.on('will-quit', () => {
-      if (config.Config.Plugins[this.pluginName].deleteFileOnQuit)
-        fs.unlinkSync(path.join(config.Config.App.filesPath, 'full_log.txt'));
+      if (config.Config.Plugins[this.pluginName].deleteFileOnQuit) { fs.unlinkSync(path.join(config.Config.App.filesPath, 'full_log.txt')); }
     });
   },
   logCommand(req, resp) {
-    const {command} = req;
+    const { command } = req;
 
-    var logfile = fs.createWriteStream(
-        path.join(config.Config.App.filesPath, 'full_log.txt'), {
+    let logfile = fs.createWriteStream(
+      path.join(config.Config.App.filesPath, 'full_log.txt'), {
         flags: 'a',
         autoClose: true
       }
@@ -36,12 +35,12 @@ module.exports = {
 
     logfile.write(
       `API Command: ${command}`.concat(' - ', Date(), eol,
-      'Request: ', eol,
-      JSON.stringify(req), eol,
-      'Response: ', eol,
-      JSON.stringify(resp), eol, eol
-    ));
+        'Request: ', eol,
+        JSON.stringify(req), eol,
+        'Response: ', eol,
+        JSON.stringify(resp), eol, eol
+      ));
 
     logfile.end();
   }
-}
+};
