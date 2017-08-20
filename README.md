@@ -21,3 +21,44 @@ $ npm start
 ```
 
 And you are ready to develop. We use ESLint for linting so make sure there are no linting errors before you submit a PR please.
+
+## Building Packages
+It is important that the bundle.js is generated & update-to-date. You can accomplish that via
+```
+$ npm run dev
+```
+to start the Development script or just do
+```
+$ webpack
+```
+
+After that you have several possibilities.
+
+### Windows
+For Windows you can build a Portable or Setup version (default: Setup). That's changeable via the package.json.
+```
+"win": {
+  "target": [
+    "nsis"
+  ]
+}
+```
+Just change nsis to portable.
+
+Building the packages
+```
+$ npm run dist:win32
+$ npm run dist win:64
+```
+
+### Linux
+An AppImage package file will be build which is compatible with most common linux os.
+```
+$ npm run dist:linux
+```
+
+### Mac
+A typical DMG package file will be build.
+```
+$ npm run dist:mac
+```
