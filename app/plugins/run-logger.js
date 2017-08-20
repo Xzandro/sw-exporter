@@ -260,7 +260,7 @@ module.exports = {
           if (item.id === 8) {
             entry.drop = `Summoning Stones x${item.item_quantity}`;
           }
-          if (item.info.unit_master_id > 0) {
+          if (item.info && item.info.unit_master_id > 0) {
             entry.drop = `${gMapping.getMonsterName(item.info.unit_master_id)} ${item.class}`;
           }
           if ((item.info && item.info.craft_type_id) || item.type === 8) {
