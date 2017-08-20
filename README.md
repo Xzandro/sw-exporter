@@ -23,7 +23,9 @@ $ npm start
 And you are ready to develop. We use ESLint for linting so make sure there are no linting errors before you submit a PR please.
 
 ## Building Packages
-It is important that the bundle.js is generated & update-to-date. You can accomplish that via
+At first you need to keep in mind that you can only build packages for your current used OS!
+
+It is also important that the bundle.js is generated & update-to-date. You can accomplish that via
 ```
 $ npm run dev
 ```
