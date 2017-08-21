@@ -18,7 +18,9 @@ class SWProxy extends EventEmitter {
   start(port) {
     const self = this; // so event callbacks can access this SWProxy class
 
-    if (port === undefined) { port = 8080; }
+    if (port === undefined) {
+      port = 8080;
+    }
 
     let parsedRequests = [];
 
@@ -46,7 +48,9 @@ class SWProxy extends EventEmitter {
             // We have a complete request/response pair
             const reqData = parsedRequests[command];
 
-            if (config.Config.App.clearLogOnLogin && command === 'HubUserLogin') { self.clearLogs(); }
+            if (config.Config.App.clearLogOnLogin && command === 'HubUserLogin') {
+              self.clearLogs();
+            }
 
             // Emit events, one for the specific API command and one for all commands
             self.emit(command, reqData, respData);

@@ -126,7 +126,9 @@ module.exports = {
     const originalLevel = req.upgrade_curr;
     const newLevel = resp.rune.upgrade_curr;
 
-    if (newLevel > originalLevel) { this.saveAction(proxy, req.wizard_id, resp.tvalue, 'upgrade_rune', { rune: resp.rune }); }
+    if (newLevel > originalLevel) {
+      this.saveAction(proxy, req.wizard_id, resp.tvalue, 'upgrade_rune', { rune: resp.rune });
+    }
   },
 
   logSellRune(proxy, req, resp) {

@@ -27,7 +27,9 @@ module.exports = {
         }
       });
       proxy.on('apiCommand', (req, resp) => {
-        if (config.Config.Plugins[this.pluginName].enabled) { this.log(proxy, req, resp); }
+        if (config.Config.Plugins[this.pluginName].enabled) {
+          this.log(proxy, req, resp);
+        }
       });
     }
   },

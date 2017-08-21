@@ -15,13 +15,17 @@ module.exports = {
   init(proxy, config) {
     proxy.on('HubUserLogin', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {
-        if (config.Config.Plugins[this.pluginName].sortData) { resp = this.sortUserData(resp); }
+        if (config.Config.Plugins[this.pluginName].sortData) {
+          resp = this.sortUserData(resp);
+        }
         this.writeProfileToFile(proxy, req, resp);
       }
     });
     proxy.on('GuestLogin', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {
-        if (config.Config.Plugins[this.pluginName].sortData) { resp = this.sortUserData(resp); }
+        if (config.Config.Plugins[this.pluginName].sortData) {
+          resp = this.sortUserData(resp);
+        }
         this.writeProfileToFile(proxy, req, resp);
       }
     });
@@ -46,7 +50,9 @@ module.exports = {
     // get storage building id
     let storageID;
     for (let building of data.building_list) {
-      if (building.building_master_id === 25) { storageID = building.building_id; }
+      if (building.building_master_id === 25) {
+        storageID = building.building_id;
+      }
     }
     // generic sort function
     cmp = function (x, y) {
@@ -74,7 +80,9 @@ module.exports = {
     // sort runes on monsters
     for (let monster of data.unit_list) {
       // make sure that runes is actually an array (thanks com2us)
-      if (monster.runes === Object(monster.runes)) { monster.runes = Object.values(monster.runes); }
+      if (monster.runes === Object(monster.runes)) {
+        monster.runes = Object.values(monster.runes);
+      }
 
       monster.runes = monster.runes.sort((a, b) => cmp(
         [cmp(a.slot_no, b.slot_no)],
@@ -83,7 +91,9 @@ module.exports = {
     }
 
     // make sure that runes is actually an array (thanks again com2us)
-    if (data.runes === Object(data.runes)) { data.runes = Object.values(data.runes); }
+    if (data.runes === Object(data.runes)) {
+      data.runes = Object.values(data.runes);
+    }
 
     // sort runes in inventory
     data.runes = data.runes.sort((a, b) => cmp(

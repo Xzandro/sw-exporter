@@ -20,13 +20,21 @@ module.exports = {
       if (config.Config.Plugins[this.pluginName].enabled) {
         const { command, wizard_id } = req;
 
-        if (!this.temp[wizard_id]) { this.temp[wizard_id] = {}; }
+        if (!this.temp[wizard_id]) {
+          this.temp[wizard_id] = {};
+        }
 
-        if (command === 'BattleScenarioStart') { this.temp[wizard_id].stage = gMapping.scenario[req.region_id] ? `${gMapping.scenario[req.region_id]} ${gMapping.difficulty[req.difficulty]} - ${req.stage_no}` : 'Unknown'; }
+        if (command === 'BattleScenarioStart') {
+          this.temp[wizard_id].stage = gMapping.scenario[req.region_id] ? `${gMapping.scenario[req.region_id]} ${gMapping.difficulty[req.difficulty]} - ${req.stage_no}` : 'Unknown';
+        }
 
-        if (command === 'BattleScenarioResult' || command === 'BattleDungeonResult') { this.log(proxy, req, resp); }
+        if (command === 'BattleScenarioResult' || command === 'BattleDungeonResult') {
+          this.log(proxy, req, resp);
+        }
 
-        if (command === 'BattleRiftOfWorldsRaidResult') { this.log_raid_rift(proxy, req, resp); }
+        if (command === 'BattleRiftOfWorldsRaidResult') {
+          this.log_raid_rift(proxy, req, resp);
+        }
 
         if (command === 'BattleRiftDungeonResult') {
           this.log_elemental_rift(proxy, req, resp);
@@ -35,20 +43,36 @@ module.exports = {
     });
   },
   getItem(crate) {
-    if (crate.random_scroll && crate.random_scroll.item_master_id === 1) { return `Unknown Scroll x${crate.random_scroll.item_quantity}`; }
-    if (crate.random_scroll && crate.random_scroll.item_master_id === 8) { return `Summoning Stones x${crate.random_scroll.item_quantity}`; }
-    if (crate.random_scroll && crate.random_scroll.item_master_id === 2) { return 'Mystical Scroll'; }
-    if (crate.costume_point) { return `Shapeshifting Stone x${crate.costume_point}`; }
-    if (crate.rune_upgrade_stone) { return `Power Stone x${crate.rune_upgrade_stone.item_quantity}`; }
-    if (crate.unit_info) { return `${gMapping.getMonsterName(crate.unit_info.unit_master_id)} ${crate.unit_info.class}`; }
+    if (crate.random_scroll && crate.random_scroll.item_master_id === 1) {
+      return `Unknown Scroll x${crate.random_scroll.item_quantity}`;
+    }
+    if (crate.random_scroll && crate.random_scroll.item_master_id === 8) {
+      return `Summoning Stones x${crate.random_scroll.item_quantity}`;
+    }
+    if (crate.random_scroll && crate.random_scroll.item_master_id === 2) {
+      return 'Mystical Scroll';
+    }
+    if (crate.costume_point) {
+      return `Shapeshifting Stone x${crate.costume_point}`;
+    }
+    if (crate.rune_upgrade_stone) {
+      return `Power Stone x${crate.rune_upgrade_stone.item_quantity}`;
+    }
+    if (crate.unit_info) {
+      return `${gMapping.getMonsterName(crate.unit_info.unit_master_id)} ${crate.unit_info.class}`;
+    }
     if (crate.material) {
       const id = crate.material.item_master_id.toString();
       const attribute = Number(id.slice(-1));
       const grade = Number(id.slice(1, -3));
       return `Essence of ${gMapping.essence.attribute[attribute]}(${gMapping.essence.grade[grade]}) x${crate.material.item_quantity}`;
     }
-    if (crate.craft_stuff && gMapping.craftMaterial[crate.craft_stuff.item_master_id]) { return `${gMapping.craftMaterial[crate.craft_stuff.item_master_id]} x${crate.craft_stuff.item_quantity}`; }
-    if (crate.summon_pieces) { return `Summoning Piece ${gMapping.getMonsterName(crate.summon_pieces.item_master_id)} x${crate.summon_pieces.item_quantity}`; }
+    if (crate.craft_stuff && gMapping.craftMaterial[crate.craft_stuff.item_master_id]) {
+      return `${gMapping.craftMaterial[crate.craft_stuff.item_master_id]} x${crate.craft_stuff.item_quantity}`;
+    }
+    if (crate.summon_pieces) {
+      return `Summoning Piece ${gMapping.getMonsterName(crate.summon_pieces.item_master_id)} x${crate.summon_pieces.item_quantity}`;
+    }
 
     return 'Unknown Drop';
   },
@@ -112,7 +136,9 @@ module.exports = {
       }
     }
 
-    if (command === 'BattleScenarioResult') { entry.dungeon = this.temp[wizard_id].stage ? this.temp[wizard_id].stage : 'Unknown'; }
+    if (command === 'BattleScenarioResult') {
+      entry.dungeon = this.temp[wizard_id].stage ? this.temp[wizard_id].stage : 'Unknown';
+    }
 
     const winLost = resp.win_lose === 1 ? 'Win' : 'Lost';
     if (winLost === 'Lost' && !config.Config.Plugins[this.pluginName].logWipes) { return; }
@@ -162,7 +188,9 @@ module.exports = {
       });
     }
 
-    if (resp.instance_info) { entry.drop = 'Secret Dungeon'; }
+    if (resp.instance_info) {
+      entry.drop = 'Secret Dungeon';
+    }
 
     const headers = ['date', 'dungeon', 'result', 'time', 'mana', 'crystal', 'energy', 'drop', 'grade', 'sell_value',
       'set', 'efficiency', 'slot', 'rarity', 'main_stat', 'prefix_stat', 'sub1', 'sub2', 'sub3', 'sub4', 'team1', 'team2', 'team3', 'team4', 'team5'];

@@ -15,7 +15,9 @@ module.exports = {
   init(proxy, config) {
     proxy.on('VisitFriend', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {
-        if (config.Config.Plugins[this.pluginName].sortData) { resp.friend = this.sortUserData(resp.friend); }
+        if (config.Config.Plugins[this.pluginName].sortData) {
+          resp.friend = this.sortUserData(resp.friend);
+        }
         this.writeProfileToFile(proxy, req, resp);
       }
     });
@@ -41,7 +43,9 @@ module.exports = {
     let storageID;
     for (const building of data.building_list) {
       data.wizard_id = building.wizard_id;
-      if (building.building_master_id === 25) { storageID = building.building_id; }
+      if (building.building_master_id === 25) {
+        storageID = building.building_id;
+      }
     }
     // generic sort function
     cmp = function (x, y) {

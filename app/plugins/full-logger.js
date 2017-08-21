@@ -20,7 +20,9 @@ module.exports = {
       }
     });
     app.on('will-quit', () => {
-      if (config.Config.Plugins[this.pluginName].deleteFileOnQuit) { fs.unlinkSync(path.join(config.Config.App.filesPath, 'full_log.txt')); }
+      if (config.Config.Plugins[this.pluginName].deleteFileOnQuit) {
+        fs.unlinkSync(path.join(config.Config.App.filesPath, 'full_log.txt'));
+      }
     });
   },
   logCommand(req, resp) {

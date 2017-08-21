@@ -43,11 +43,15 @@ module.exports = {
         break;
 
       case 'BuyBlackMarketItem':
-        if (resp.runes && resp.runes.length === 1) { runesInfo.push(this.logRuneDrop(resp.runes[0])); }
+        if (resp.runes && resp.runes.length === 1) {
+          runesInfo.push(this.logRuneDrop(resp.runes[0]));
+        }
         break;
 
       case 'BuyShopItem':
-        if (resp.reward && resp.reward.crate && resp.reward.crate.runes) { runesInfo.push(this.logRuneDrop(resp.reward.crate.runes[0])); }
+        if (resp.reward && resp.reward.crate && resp.reward.crate.runes) {
+          runesInfo.push(this.logRuneDrop(resp.reward.crate.runes[0]));
+        }
         break;
 
       case 'GetBlackMarketList':
