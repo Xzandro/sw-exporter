@@ -19,6 +19,12 @@ module.exports = {
         this.writeProfileToFile(proxy, req, resp);
       }
     });
+    proxy.on('GuestLogin', (req, resp) => {
+      if (config.Config.Plugins[this.pluginName].enabled) {
+        if (config.Config.Plugins[this.pluginName].sortData) { resp = this.sortUserData(resp); }
+        this.writeProfileToFile(proxy, req, resp);
+      }
+    });
   },
   writeProfileToFile(proxy, req, resp) {
     const wizardID = resp.wizard_info.wizard_id;
