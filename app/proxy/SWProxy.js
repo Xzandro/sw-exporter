@@ -48,7 +48,7 @@ class SWProxy extends EventEmitter {
             // We have a complete request/response pair
             const reqData = parsedRequests[command];
 
-            if (config.Config.App.clearLogOnLogin && command === 'HubUserLogin') {
+            if (config.Config.App.clearLogOnLogin && (command === 'HubUserLogin' || command === 'GuestLogin')) {
               self.clearLogs();
             }
 
