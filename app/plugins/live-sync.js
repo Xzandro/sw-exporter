@@ -150,7 +150,7 @@ module.exports = {
 
           if (reward.item_master_type === 27) {
             const craftInfo = resp.reward.crate.runecraft_info;
-            this.saveAction(proxy, wizard_id, resp.tvalue, 'new_craft', { craft: craftInfo });
+            this.saveAction(proxy, wizardId, resp.tvalue, 'new_craft', { craft: craftInfo });
             break;
           }
         }
