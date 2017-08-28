@@ -216,28 +216,28 @@ module.exports = {
     const reward = resp.reward ? resp.reward : {};
 
     if (winLost === 1 && !resp.reward.crate) {
-      entry.drop = `${resp.battle_reward_list.find((value) => { value.wizard_id === resp.wizard_info.wizard_id }).reward_list[0].item_quantity} Mana`;
-    }
-    else{
-      if(winLost > 1 && winLost !== 4){
-        if (reward.crate.runecraft_info) {
-          const item = {};
-          item.info = {};
-          item.info.craft_type = reward.crate.runecraft_info.craft_type;
-          item.info.craft_type_id = reward.crate.runecraft_info.craft_type_id;
-          entry = this.getItemRift(item, entry);
-        }
-        if (reward.crate.rune) {
-          entry = this.getItemRift(reward.crate.rune, entry);
-        }
-        if (reward.crate.unit_info && reward.crate.unit_info.unit_master_id > 0) {
-          entry.drop = `${gMapping.getMonsterName(reward.crate.unit_info.unit_master_id)} ${reward.crate.unit_info.class}`;
-        } 
-        if(!entry.drop && resp.reward.crate){
-          entry.drop = this.getItem(reward.crate);
-        }
+      entry.drop = `${resp.battle_reward_list.find(value => value.wizard_id === resp.wizard_info.wizard_id).reward_list[0].item_quantity} Mana`;
+    } else if (winLost > 1 && winLost !== 4) {
+      if (reward.crate.runecraft_info) {
+        const item = {};
+        item.info = {};
+        item.info.craft_type = reward.crate.runecraft_info.craft_type;
+        item.info.craft_type_id = reward.crate.runecraft_info.craft_type_id;
+        entry = this.getItemRift(item, entry);
       }
+      if (reward.crate.rune) {
+        entry = this.getItemRift(reward.crate.rune, entry);
+      }
+      if (reward.crate.unit_info && reward.crate.unit_info.unit_master_id > 0) {
+        entry.drop = `${gMapping.getMonsterName(reward.crate.unit_info.unit_master_id)} ${reward.crate.unit_info.class}`;
+      }
+      if (!entry.drop && resp.reward.crate) {
+        entry.drop = this.getItem(reward.crate);
+      }
+    } else {
+      entry.drop = 'unknown';
     }
+
 
     if (resp.unit_list && resp.unit_list.length > 0) {
       resp.unit_list.forEach((unit, i) => {
