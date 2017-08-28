@@ -219,7 +219,7 @@ module.exports = {
       entry.drop = `${resp.battle_reward_list.find((value) => { value.wizard_id === resp.wizard_info.wizard_id }).reward_list[0].item_quantity} Mana`;
     }
     else{
-      if(winLost > 1 && windLost !== 4){
+      if(winLost > 1 && winLost !== 4){
         if (reward.crate.runecraft_info) {
           const item = {};
           item.info = {};
