@@ -18,14 +18,14 @@ module.exports = {
   init(proxy, config) {
     proxy.on('apiCommand', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {
-        const { command, wizard_id } = req;
+        const { command, wizard_id: wizardID } = req;
 
-        if (!this.temp[wizard_id]) {
-          this.temp[wizard_id] = {};
+        if (!this.temp[wizardID]) {
+          this.temp[wizardID] = {};
         }
 
         if (command === 'BattleScenarioStart') {
-          this.temp[wizard_id].stage = gMapping.scenario[req.region_id] ? `${gMapping.scenario[req.region_id]} ${gMapping.difficulty[req.difficulty]} - ${req.stage_no}` : 'Unknown';
+          this.temp[wizardID].stage = gMapping.scenario[req.region_id] ? `${gMapping.scenario[req.region_id]} ${gMapping.difficulty[req.difficulty]} - ${req.stage_no}` : 'Unknown';
         }
 
         if (command === 'BattleScenarioResult' || command === 'BattleDungeonResult') {
@@ -137,7 +137,7 @@ module.exports = {
     }
 
     if (command === 'BattleScenarioResult') {
-      entry.dungeon = this.temp[wizard_id].stage ? this.temp[wizard_id].stage : 'Unknown';
+      entry.dungeon = this.temp[wizardID].stage ? this.temp[wizardID].stage : 'Unknown';
     }
 
     const winLost = resp.win_lose === 1 ? 'Win' : 'Lost';
