@@ -1250,7 +1250,7 @@ module.exports = {
     2001: 'Rune Piece',
     3001: 'Magic Dust',
     4001: 'Symbol of Harmony',
-    4002: 'Symbol of Transcendance',
+    4002: 'Symbol of Transcendence',
     4003: 'Symbol of Chaos',
     5001: 'Frozen Water Crystal',
     5002: 'Flaming Fire Crystal',
