@@ -635,7 +635,7 @@ module.exports = {
       19311: 'Sera',
       19312: 'Anne',
       19313: 'Hannah',
-      19314: '',
+      19314: 'Loren',
       19315: 'Cassie',
 
       194: 'Pirate Captain',
@@ -796,6 +796,13 @@ module.exports = {
       21613: 'Diana',
       21614: 'Eleanor',
       21615: 'Alexandra',
+
+      218: 'Paladin',
+      21811: 'Josephine',
+      21812: 'Ophilia',
+      21813: 'Louise',
+      21814: 'Jeanne',
+      21815: 'Leona',
 
       15105: 'Devilmon',
       14314: 'Rainbowmon',
