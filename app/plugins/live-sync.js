@@ -118,8 +118,13 @@ module.exports = {
   logUnequipRune(proxy, req, resp) {
     this.saveAction(proxy, req.wizard_id, resp.tvalue, 'unequip_rune', { rune_id: req.rune_id });
   },
+
   logEquipRuneList(proxy, req, resp) {
-    this.saveAction(proxy, req.wizard_id, resp.tvalue, 'equip_rune_list', { equip: resp.equip_rune_id_list, unequip: resp.unequip_rune_id_list });
+    this.saveAction(proxy, req.wizard_id, resp.tvalue, 'equip_rune_list', {
+      equip_rune_id_list: resp.equip_rune_id_list,
+      unequip_rune_id_list: resp.unequip_rune_id_list,
+      unit_info: resp.unit_info
+    });
   },
 
   logUpgradeRune(proxy, req, resp) {
