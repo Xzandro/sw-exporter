@@ -4,7 +4,7 @@ const sanitize = require('sanitize-filename');
 
 module.exports = {
   defaultConfig: {
-    enabled: true,
+    enabled: false,
     sortData: true,
   },
   defaultConfigDetails: {
