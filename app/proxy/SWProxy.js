@@ -4,6 +4,9 @@ const httpProxy = require('http-proxy');
 const os = require('os');
 const net = require('net');
 const url = require('url');
+const io = require('socket.io')({
+  serveClient: false
+});
 
 const { decrypt_request, decrypt_response } = require('./smon_decryptor');
 
@@ -55,6 +58,7 @@ class SWProxy extends EventEmitter {
             // Emit events, one for the specific API command and one for all commands
             self.emit(command, reqData, respData);
             self.emit('apiCommand', reqData, respData);
+            io.emit('apiCommand', reqData, respData);
             delete parsedRequests[command];
           }
         });
@@ -95,7 +99,15 @@ class SWProxy extends EventEmitter {
       }
 
       this.proxy.web(req, resp, { target: req.url, prependPath: false });
-    }).listen(port, () => {
+    });
+
+    io.attach(this.httpServer, {
+      pingInterval: 10000,
+      pingTimeout: 5000,
+      cookie: false
+    });
+
+    this.httpServer.listen(port, () => {
       this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
       win.webContents.send('proxyStarted');
     });
@@ -123,6 +135,13 @@ class SWProxy extends EventEmitter {
 
       socket.on('error', () => {
 
+      });
+    });
+
+    io.on('connection', (client) => {
+      console.log('a user connected');
+      client.on('disconnect', () => {
+        console.log('a user disconnected');
       });
     });
   }
