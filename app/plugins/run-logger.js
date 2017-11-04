@@ -215,25 +215,25 @@ module.exports = {
 
     const reward = resp.reward ? resp.reward : {};
 
-    if (resp.win_lose === 1 ) {
+    if (resp.win_lose === 1) {
       if (!reward.crate) {
         entry.drop = `${resp.battle_reward_list.find(value => value.wizard_id === resp.wizard_info.wizard_id).reward_list[0].item_quantity} Mana`;
+      } else if (reward.crate.runecraft_info) {
+        const item = {
+          info: {
+            craft_type: reward.crate.runecraft_info.craft_type,
+            craft_type_id: reward.crate.runecraft_info.craft_type_id
+          }
+        };
+        entry = this.getItemRift(item, entry);
+      } else if (reward.crate.rune) {
+        entry = this.getItemRift(reward.crate.rune, entry);
+      } else if (reward.crate.unit_info && reward.crate.unit_info.unit_master_id > 0) {
+        entry.drop = `${gMapping.getMonsterName(reward.crate.unit_info.unit_master_id)} ${reward.crate.unit_info.class}`;
+      } else if (!entry.drop && resp.reward.crate) {
+        entry.drop = this.getItem(reward.crate);
       } else {
-        if (reward.crate.runecraft_info) {
-          const item = {};
-          item.info = {};
-          item.info.craft_type = reward.crate.runecraft_info.craft_type;
-          item.info.craft_type_id = reward.crate.runecraft_info.craft_type_id;
-          entry = this.getItemRift(item, entry);
-        } else if (reward.crate.rune) {
-          entry = this.getItemRift(reward.crate.rune, entry);
-        } else if (reward.crate.unit_info && reward.crate.unit_info.unit_master_id > 0) {
-          entry.drop = `${gMapping.getMonsterName(reward.crate.unit_info.unit_master_id)} ${reward.crate.unit_info.class}`;
-        } else if (!entry.drop && resp.reward.crate) {
-          entry.drop = this.getItem(reward.crate);
-        } else {
-          entry.drop = 'unknown';
-        }
+        entry.drop = 'unknown';
       }
     } else {
       entry.drop = 'none';
