@@ -17,28 +17,32 @@ module.exports = {
   temp: {},
   init(proxy, config) {
     proxy.on('apiCommand', (req, resp) => {
-      if (config.Config.Plugins[this.pluginName].enabled) {
-        const { command, wizard_id: wizardID } = req;
+      try {
+        if (config.Config.Plugins[this.pluginName].enabled) {
+          const { command, wizard_id: wizardID } = req;
 
-        if (!this.temp[wizardID]) {
-          this.temp[wizardID] = {};
-        }
+          if (!this.temp[wizardID]) {
+            this.temp[wizardID] = {};
+          }
 
-        if (command === 'BattleScenarioStart') {
-          this.temp[wizardID].stage = gMapping.scenario[req.region_id] ? `${gMapping.scenario[req.region_id]} ${gMapping.difficulty[req.difficulty]} - ${req.stage_no}` : 'Unknown';
-        }
+          if (command === 'BattleScenarioStart') {
+            this.temp[wizardID].stage = gMapping.scenario[req.region_id] ? `${gMapping.scenario[req.region_id]} ${gMapping.difficulty[req.difficulty]} - ${req.stage_no}` : 'Unknown';
+          }
 
-        if (command === 'BattleScenarioResult' || command === 'BattleDungeonResult') {
-          this.log(proxy, req, resp);
-        }
+          if (command === 'BattleScenarioResult' || command === 'BattleDungeonResult') {
+            this.log(proxy, req, resp);
+          }
 
-        if (command === 'BattleRiftOfWorldsRaidResult') {
-          this.log_raid_rift(proxy, req, resp);
-        }
+          if (command === 'BattleRiftOfWorldsRaidResult') {
+            this.log_raid_rift(proxy, req, resp);
+          }
 
-        if (command === 'BattleRiftDungeonResult') {
-          this.log_elemental_rift(proxy, req, resp);
+          if (command === 'BattleRiftDungeonResult') {
+            this.log_elemental_rift(proxy, req, resp);
+          }
         }
+      } catch (e) {
+        proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: `An unexpected error occured: ${e.message}` });
       }
     });
   },
