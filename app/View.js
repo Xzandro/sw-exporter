@@ -1,18 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, IndexRoute, hashHistory } from 'react-router';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import Layout from './pages/Layout';
 import Logs from './pages/Logs';
 import Settings from './pages/Settings';
 import Help from './pages/Help';
 
-ReactDOM.render(
-  <Router history={hashHistory}>
-    <Route path="/" component={Layout}>
-      <IndexRoute component={Logs} />
-      <Route path="settings" component={Settings} />
-      <Route path="help" component={Help} />
-    </Route>
-  </Router>,
-  document.getElementById('app'));
+ReactDOM.render((
+  <BrowserRouter>
+    <Layout>
+      <Switch>
+        <Route exact path="/" component={Logs} />
+        <Route exact path="/settings" component={Settings} />
+        <Route exact path="/help" component={Help} />
+        <Redirect to="/" />
+      </Switch>
+    </Layout>
+  </BrowserRouter>
+), document.getElementById('app'));

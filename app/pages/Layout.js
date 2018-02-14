@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 import { Segment, Menu, Icon, Button } from 'semantic-ui-react';
 import Mousetrap from 'mousetrap';
@@ -31,7 +32,7 @@ class Layout extends React.Component {
   }
 
   navigate(path, name) {
-    this.props.router.push(path);
+    this.props.history.push(path);
     this.setState({ activeItem: name });
   }
 
@@ -74,4 +75,4 @@ class Layout extends React.Component {
   }
 }
 
-module.exports = Layout;
+module.exports = withRouter(Layout);
