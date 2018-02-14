@@ -2,7 +2,20 @@ import React from 'react';
 import { Image, Accordion, Icon, Table } from 'semantic-ui-react';
 
 class Help extends React.Component {
+  constructor() {
+    super();
+    this.state = { activeIndex: 0 };
+  }
+
+  handleAccordionClick(e, titleProps) {
+    const { index } = titleProps;
+    const newIndex = this.state.activeIndex === index ? -1 : index;
+
+    this.setState({ activeIndex: newIndex });
+  }
   render() {
+    const { activeIndex } = this.state;
+
     return (
       <div>
         <h1>Setup Instructions</h1>
@@ -92,17 +105,17 @@ class Help extends React.Component {
 
         <h1>FAQ</h1>
         <Accordion>
-          <Accordion.Title><Icon name="dropdown" />Can I get banned for using this?</Accordion.Title>
-          <Accordion.Content>The proxy method of intercepting communication between your device and Com2US is largely undetectable. No reports of bans due to using a proxy have been reported.</Accordion.Content>
+          <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleAccordionClick.bind(this)}><Icon name="dropdown" />Can I get banned for using this?</Accordion.Title>
+          <Accordion.Content active={activeIndex === 0}>The proxy method of intercepting communication between your device and Com2US is largely undetectable. No reports of bans due to using a proxy have been reported.</Accordion.Content>
 
-          <Accordion.Title><Icon name="dropdown" />What about SWProxy?</Accordion.Title>
-          <Accordion.Content>SWProxy suffered from a few issues - difficulty releasing on mac and linux, proxy causing broken event pages, etc. SW Exporter was developed on a new code platform trying to address these issues from the start.</Accordion.Content>
+          <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleAccordionClick.bind(this)}><Icon name="dropdown" />What about SWProxy?</Accordion.Title>
+          <Accordion.Content active={activeIndex === 1}>SWProxy suffered from a few issues - difficulty releasing on mac and linux, proxy causing broken event pages, etc. SW Exporter was developed on a new code platform trying to address these issues from the start.</Accordion.Content>
 
-          <Accordion.Title><Icon name="dropdown" />What if I find an issue?</Accordion.Title>
-          <Accordion.Content>Please <a href="https://github.com/Xzandro/sw-exporter" target="_blank">report it on <Icon name="github square" />Github</a>.</Accordion.Content>
+          <Accordion.Title active={activeIndex === 2} index={2} onClick={this.handleAccordionClick.bind(this)}><Icon name="dropdown" />What if I find an issue?</Accordion.Title>
+          <Accordion.Content active={activeIndex === 2}>Please <a href="https://github.com/Xzandro/sw-exporter" target="_blank">report it on <Icon name="github square" />Github</a>.</Accordion.Content>
 
-          <Accordion.Title><Icon name="dropdown" />How can I contribute?</Accordion.Title>
-          <Accordion.Content>
+          <Accordion.Title active={activeIndex === 3} index={3} onClick={this.handleAccordionClick.bind(this)}><Icon name="dropdown" />How can I contribute?</Accordion.Title>
+          <Accordion.Content active={activeIndex === 3}>
             <p>If you can code, check out the repository on <a href="https://github.com/Xzandro/sw-exporter" target="_blank"><Icon name="github square" />Github</a> and submit a pull request! Or you can buy <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HCGNZJSHCJWF2" target="_blank">Xzandro</a> or <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8BEPKLJMLJ2YS" target="_blank">Porksmash</a> a beer to support continued development.</p>
           </Accordion.Content>
         </Accordion>
