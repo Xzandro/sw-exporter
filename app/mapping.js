@@ -986,11 +986,11 @@ module.exports = {
   grindstone: {
     1: {
       range: {
-        0: { min: 80, max: 120 },
-        1: { min: 100, max: 200 },
-        2: { min: 180, max: 250 },
-        3: { min: 230, max: 450 },
-        4: { min: 430, max: 550 }
+        1: { min: 80, max: 120 },
+        2: { min: 100, max: 200 },
+        3: { min: 180, max: 250 },
+        4: { min: 230, max: 450 },
+        5: { min: 430, max: 550 }
       }
     },
     2: {
@@ -1161,8 +1161,8 @@ module.exports = {
     10: {
       range: {
         1: { min: 1, max: 3 },
-        2: { min: 2, max: 4 },
-        3: { min: 3, max: 6 },
+        2: { min: 3, max: 5 },
+        3: { min: 4, max: 6 },
         4: { min: 5, max: 8 },
         5: { min: 7, max: 10 }
       }
