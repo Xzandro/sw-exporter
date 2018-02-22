@@ -2,6 +2,7 @@ node_modules/
 dist/
 .idea/
 .vscode/
+.DS_STORE
 npm-debug.log
 *.log.*
 full_log.txt
