@@ -23,6 +23,29 @@ body {
   border-left: none;
 }
 
+.defender .title {
+  font-size: 16px !important;
+  font-weight: bold;
+}
+
+.defender .deck {
+  margin-top: 8px;
+}
+
+.defender .star img {
+  width: 11px;
+}
+
+.defender .name {
+  font-size: 16px !important;
+  margin-left: 5px;
+}
+
+.defender .level {
+  font-size: 14px !important;
+  margin-left: 5px;
+}
+
 .rune .content .star-line .star img {
   width: 11px;
 }
