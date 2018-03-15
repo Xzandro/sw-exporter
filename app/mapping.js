@@ -804,6 +804,20 @@ module.exports = {
       21814: 'Jeanne',
       21815: 'Leona',
 
+      219: 'Chakram Dancer',
+      21911: 'Talia',
+      21912: 'Shaina',
+      21913: 'Melissa',
+      21914: 'Deva',
+      21915: 'Belita',
+
+      220: 'Boomerang Warrior',
+      22011: 'Sabrina',
+      22012: 'Maruna',
+      22013: 'Zenobia',
+      22014: 'Bailey',
+      22015: 'Martina',
+
       15105: 'Devilmon',
       14314: 'Rainbowmon',
 
