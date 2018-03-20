@@ -26,9 +26,7 @@ const saveToFile = (entry, siegeId, proxy) => {
     const csvData = [];
     const self = this;
     const filename = `${siegeId}-${entry.guild_name}-${baseFileName}`;
-    console.log(siegeId);
     const filePath = path.join(config.Config.App.filesPath, `${siegeId}`, filename);
-    console.log(filePath);
     fs.ensureFile(filePath, (err) => {
       if (err) { return; }
       csv.fromPath(filePath, { ignoreEmpty: true, headers, renameHeaders: true }).on('data', (data) => {
@@ -41,6 +39,11 @@ const saveToFile = (entry, siegeId, proxy) => {
       });
     });
   };
+
+const write = (entry, proxy) => {
+  const messages = _.map(entry.guild_list, guildData => `${guildData.guild_name}: ${guildData.attack_count}/${guildData.play_member_count * 10}`)
+  proxy.log({ type: 'info', source: 'plugin', name: this.pluginName, message: _.join(messages, ' | ') });
+};
 
 module.exports = {
   defaultConfig: {
@@ -61,6 +64,7 @@ module.exports = {
   },
   log(proxy, req, resp) {
     const { siege_id: siegeId } = resp.match_info;
+    write(resp, proxy);
     _.forEach(resp.guild_list, guildData => saveToFile(guildData, siegeId, proxy));
   }
 };
