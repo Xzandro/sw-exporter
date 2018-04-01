@@ -122,8 +122,8 @@ app.on('ready', () => {
 
     global.plugins = loadPlugins();
 
-    if (global.config.Config.Proxy.autoStart) {
-      proxy.start(config.Config.Proxy.port);
+    if (process.env.autostart || global.config.Config.Proxy.autoStart) {
+      proxy.start(process.env.port || config.Config.Proxy.port);
     }
   });
 });
