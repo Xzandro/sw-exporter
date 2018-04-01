@@ -97,6 +97,9 @@ class SWProxy extends EventEmitter {
       this.proxy.web(req, resp, { target: req.url, prependPath: false });
     }).listen(port, () => {
       this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
+      if (process.env.autostart) {
+        console.log(`SW Exporter Proxy is listening on port ${port}`);
+      }
       win.webContents.send('proxyStarted');
     });
 
