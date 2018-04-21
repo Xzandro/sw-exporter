@@ -107,11 +107,8 @@ module.exports = {
   log_trial_tower(proxy, req, resp) {
     const { command } = req;
     const { wizard_id: wizardID, wizard_name: wizardName } = resp.wizard_info;
-    let prepData = null;
+    let prepData = this.temp[wizardID].toa;
     const entry = {};
-    const file = path.join(config.Config.App.filesPath, `toaTemp${wizardID}.json`);
-    prepData = fs.readJsonSync(file);
-    fs.removeSync(file);
 
     const runTime = resp.tvalue - prepData.trialStart;
     const time = [Math.floor((runTime / 60) % 60), runTime];
@@ -159,6 +156,7 @@ module.exports = {
   },
 
   log_trial_boss(proxy, req, resp) {
+    const { wizard_id: wizardID, wizard_name: wizardName } = resp.wizard_info;
     let boss = [];
 
     for (let i = 0; i < resp.trial_tower_unit_list[2].length; i += 1) {
@@ -170,7 +168,6 @@ module.exports = {
     let toa = {};
     toa.boss = boss;
     toa.trialStart = resp.tvalue;
-    const file = path.join(config.Config.App.filesPath, `toaTemp${req.wizard_id}.json`);
-    fs.outputJsonSync(file, toa);
+    this.temp[wizardID].toa = toa;
   }
 };
