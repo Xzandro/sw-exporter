@@ -25,12 +25,18 @@ module.exports = {
             this.temp[wizardID] = {};
           }
 
+          if (command === 'BattleTrialTowerStart_v2') {
+            this.log_trial_boss(proxy, req, resp);
+          }
+
           if (command === 'BattleTrialTowerResult_v2') {
-            this.log_elemental_rift(proxy, req, resp);
+            this.log_trial_tower(proxy, req, resp);
           }
         }
       } catch (e) {
-        proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: `An unexpected error occured: ${e.message}` });
+        proxy.log({
+          type: 'error', source: 'plugin', name: this.pluginName, message: `An unexpected error occured: ${e.message}`
+        });
       }
     });
   },
@@ -43,6 +49,12 @@ module.exports = {
     }
     if (crate.random_scroll && crate.random_scroll.item_master_id === 2) {
       return 'Mystical Scroll';
+    }
+    if (crate.random_scroll && crate.random_scroll.item_master_id === 3) {
+      return 'Light & Darkness Scroll';
+    }
+    if (crate.random_scroll && crate.random_scroll.item_master_id === 7) {
+      return 'Legendary Scroll';
     }
     if (crate.costume_point) {
       return `Shapeshifting Stone x${crate.costume_point}`;
@@ -65,7 +77,12 @@ module.exports = {
     if (crate.summon_pieces) {
       return `Summoning Piece ${gMapping.getMonsterName(crate.summon_pieces.item_master_id)} x${crate.summon_pieces.item_quantity}`;
     }
-
+    if (crate.energy) {
+      return `Energy x${crate.energy}`;
+    }
+    if (crate.crystal) {
+      return `Crystal x${crate.crystal}`;
+    }
     return 'Unknown Drop';
   },
 
@@ -79,7 +96,9 @@ module.exports = {
       }).on('end', () => {
         csvData.push(entry);
         csv.writeToPath(path.join(config.Config.App.filesPath, filename), csvData, { headers }).on('finish', () => {
-          proxy.log({ type: 'success', source: 'plugin', name: self.pluginName, message: `Saved run data to ${filename}` });
+          proxy.log({
+            type: 'success', source: 'plugin', name: self.pluginName, message: `Saved run data to ${filename}`
+          });
         });
       });
     });
@@ -88,8 +107,15 @@ module.exports = {
   log_trial_tower(proxy, req, resp) {
     const { command } = req;
     const { wizard_id: wizardID, wizard_name: wizardName } = resp.wizard_info;
-
+    let prepData = null;
     const entry = {};
+    const file = path.join(config.Config.App.filesPath, `toaTemp${wizardID}.json`);
+    prepData = fs.readJsonSync(file);
+    fs.removeSync(file);
+
+    const runTime = resp.tvalue - prepData.trialStart;
+    const time = [Math.floor((runTime / 60) % 60), runTime];
+    entry.time = `${time[0]}:${time[1]}`;
 
     const winLost = resp.win_lose === 1 ? 'Win' : 'Lost';
     if (winLost === 'Lost' && !config.Config.Plugins[this.pluginName].logWipes) { return; }
@@ -118,9 +144,33 @@ module.exports = {
     entry.tower = resp.trial_tower_info.difficulty === 1 ? 'Normal' : 'Hard';
     entry.floor = resp.floor_id;
 
-    const headers = ['date', 'tower', 'floor', 'result', 'mana', 'crystal', 'energy', 'drop', 'team1', 'team2', 'team3', 'team4', 'team5'];
+    if (prepData.boss.length > 1) {
+      entry.boss = `${gMapping.getMonsterName(prepData.boss[0])} and ${gMapping.getMonsterName(prepData.boss[1])}`;
+    } else if (prepData.boss.length === 1) {
+      entry.boss = gMapping.getMonsterName(prepData.boss[0]);
+    } else {
+      entry.boss = 'No Boss';
+    }
+
+    const headers = ['date', 'time', 'tower', 'floor', 'boss', 'result', 'mana', 'crystal', 'energy', 'drop', 'team1', 'team2', 'team3', 'team4', 'team5'];
 
     const filename = sanitize(`${wizardName}-${wizardID}-toa-runs.csv`);
     this.saveToFile(entry, filename, headers, proxy);
   },
+
+  log_trial_boss(proxy, req, resp) {
+    let boss = [];
+
+    for (let i = 0; i < resp.trial_tower_unit_list[2].length; i += 1) {
+      if (resp.trial_tower_unit_list[2][i].boss === 1) {
+        boss.push(resp.trial_tower_unit_list[2][i].unit_master_id);
+      }
+    }
+
+    let toa = {};
+    toa.boss = boss;
+    toa.trialStart = resp.tvalue;
+    const file = path.join(config.Config.App.filesPath, `toaTemp${req.wizard_id}.json`);
+    fs.outputJsonSync(file, toa);
+  }
 };
