@@ -1,7 +1,7 @@
 {
   "name": "sw-exporter",
   "productName": "Summoners War Exporter",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "This tool will parse intercepted data from Summoners War and extract information on the monsters and runes of the user.",
   "main": "./app/main.js",
   "scripts": {
@@ -52,7 +52,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "electron": "1.8.2",
-    "electron-builder": "^20.14.5",
+    "electron-builder": "^20.15.3",
     "electron-rebuild": "^1.7.3",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
@@ -70,8 +70,8 @@
     "http-proxy": "^1.17.0",
     "lodash": "^4.17.10",
     "mousetrap": "^1.6.1",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
     "react-router-dom": "^4.2.2",
     "request": "^2.87.0",
     "sanitize-filename": "^1.6.1",
