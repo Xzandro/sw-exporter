@@ -51,7 +51,7 @@
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "electron": "1.8.2",
+    "electron": "^2.0.2",
     "electron-builder": "^20.15.3",
     "electron-rebuild": "^1.7.3",
     "eslint": "^4.19.1",
