@@ -1246,6 +1246,20 @@ module.exports = {
     2: 'Hard',
     3: 'Hell'
   },
+  ratings: {
+    1: 'F',
+    2: 'D',
+    3: 'C',
+    4: 'B-',
+    5: 'B',
+    6: 'B+',
+    7: 'A-',
+    8: 'A',
+    9: 'A+',
+    10: 'S',
+    11: 'SS',
+    12: 'SSS'
+  },
   essence: {
     attribute: {
       1: 'Water',
@@ -1280,6 +1294,20 @@ module.exports = {
     5005: 'Pitch-black Dark Crystal',
     6001: 'Condensed Magic Crystal',
     7001: 'Pure Magic Crystal'
+  },
+  arenaRatings: {
+    1001: 'Challenger I',
+    1002: 'Challenger II',
+    1003: 'Challenger III',
+    2001: 'Fighter I',
+    2002: 'Fighter II',
+    2003: 'Fighter III',
+    3001: 'Conqueror I',
+    3002: 'Conqueror II',
+    3003: 'Conqueror III',
+    4001: 'Guardian I',
+    4002: 'Guardian II',
+    4003: 'Guardian III'
   },
 
   getMonsterName(id) {
