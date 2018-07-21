@@ -865,7 +865,8 @@ module.exports = {
       20: 'Determination',
       21: 'Enhance',
       22: 'Accuracy',
-      23: 'Tolerance'
+      23: 'Tolerance',
+      99: 'Immemorial'
     },
     class: {
       0: 'Common',
