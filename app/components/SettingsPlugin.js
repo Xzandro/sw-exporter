@@ -20,7 +20,7 @@ class SettingsPlugin extends React.Component {
       let inputType = 'checkbox';
       const configDetails = config.ConfigDetails.Plugins[this.props.pluginName];
       if (configDetails && configDetails[key] && configDetails[key].type) {
-        inputType = config.ConfigDetails.Plugins[this.props.pluginName][key].type;
+        inputType = configDetails[key].type;
       }
       const InputComponent = this.components[inputType];
       return (
