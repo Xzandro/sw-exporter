@@ -29,7 +29,7 @@ class SettingsPlugin extends React.Component {
             section="Plugins"
             pluginName={this.props.pluginName}
             setting={key}
-            Input={<InputComponent {...this.props} />}
+            Input={<InputComponent />}
           />
         </Form.Field>
       );
