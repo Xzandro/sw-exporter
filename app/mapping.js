@@ -818,6 +818,25 @@ module.exports = {
       22014: 'Bailey',
       22015: 'Martina',
 
+      221: 'Dryad',
+      22111: 'Herne',
+      22112: 'Nisha',
+      22113: 'Mellia',
+      22114: 'Felleria',
+      22115: 'Hyanes',
+
+      222: 'Druid',
+      22211: 'Abellio',
+      22212: 'Bellenus',
+      22213: 'Taranys',
+      22214: 'Valantis',
+      22215: 'Pater',
+      22311: 'Abellio',
+      22312: 'Bellenus',
+      22313: 'Taranys',
+      22314: 'Valantis',
+      22315: 'Pater',
+
       15105: 'Devilmon',
       14314: 'Rainbowmon',
 
@@ -865,7 +884,8 @@ module.exports = {
       20: 'Determination',
       21: 'Enhance',
       22: 'Accuracy',
-      23: 'Tolerance'
+      23: 'Tolerance',
+      99: 'Immemorial'
     },
     class: {
       0: 'Common',

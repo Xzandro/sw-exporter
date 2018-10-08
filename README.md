@@ -50,7 +50,7 @@ Just change nsis to portable.
 Building the packages
 ```
 $ npm run dist:win32
-$ npm run dist win:64
+$ npm run dist:win64
 ```
 
 ### Linux

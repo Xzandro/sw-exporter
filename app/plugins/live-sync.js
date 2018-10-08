@@ -43,6 +43,9 @@ module.exports = {
       case 'AmplifyRune':
         this.logAmplifyRune(proxy, req, resp);
         break;
+      case 'ConvertRune':
+        this.logConvertRune(proxy, req, resp);
+        break;
       case 'BuyBlackMarketItem':
         this.logBuyRune(proxy, req, resp);
         break;
@@ -109,6 +112,10 @@ module.exports = {
 
   logAmplifyRune(proxy, req, resp) {
     this.saveAction(proxy, req.wizard_id, resp.tvalue, 'amplify_rune', { rune_id: req.rune_id, craft_id: req.craft_item_id, rune: resp.rune });
+  },
+
+  logConvertRune(proxy, req, resp) {
+    this.saveAction(proxy, req.wizard_id, resp.tvalue, 'convert_rune', { rune_id: req.rune_id, craft_id: req.craft_item_id, rune: resp.rune });
   },
 
   logEquipRune(proxy, req, resp) {

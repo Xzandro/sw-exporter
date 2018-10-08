@@ -7,7 +7,7 @@ import Logs from './pages/Logs';
 import Settings from './pages/Settings';
 import Help from './pages/Help';
 
-ReactDOM.render((
+ReactDOM.render(
   <BrowserRouter>
     <Layout>
       <Switch>
@@ -17,5 +17,6 @@ ReactDOM.render((
         <Redirect to="/" />
       </Switch>
     </Layout>
-  </BrowserRouter>
-), document.getElementById('app'));
+  </BrowserRouter>,
+  document.getElementById('app')
+);
