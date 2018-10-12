@@ -48,6 +48,12 @@ module.exports = {
         }
         break;
 
+      case 'BuyGuildBlackMarketItem':
+        if (resp.runes && resp.runes.length === 1) {
+          runesInfo.push(this.logRuneDrop(resp.runes[0]));
+        }
+        break;
+
       case 'BuyShopItem':
         if (resp.reward && resp.reward.crate && resp.reward.crate.runes) {
           runesInfo.push(this.logRuneDrop(resp.reward.crate.runes[0]));
@@ -55,6 +61,14 @@ module.exports = {
         break;
 
       case 'GetBlackMarketList':
+        resp.market_list.forEach((item) => {
+          if (item.item_master_type === 8 && item.runes) {
+            runesInfo.push(this.logRuneDrop(item.runes[0]));
+          }
+        });
+        break;
+
+      case 'GetGuildBlackMarketList':
         resp.market_list.forEach((item) => {
           if (item.item_master_type === 8 && item.runes) {
             runesInfo.push(this.logRuneDrop(item.runes[0]));
