@@ -35,7 +35,7 @@ module.exports = {
         }
       } catch (e) {
         proxy.log({
-          type: 'error', source: 'plugin', name: this.pluginName, message: `An unexpected error occured: ${e.message}`
+          type: 'error', source: 'plugin', name: this.pluginName, message: `An unexpected error occurred: ${e.message}`
         });
       }
     });
@@ -111,7 +111,7 @@ module.exports = {
     const entry = {};
 
     const runTime = resp.tvalue - prepData.trialStart;
-    const time = [Math.floor((runTime / 60) % 60), runTime];
+    const time = [Math.floor((runTime / 60) % 60), runTime % 60];
     entry.time = `${time[0]}:${time[1]}`;
 
     const winLost = resp.win_lose === 1 ? 'Win' : 'Lost';
