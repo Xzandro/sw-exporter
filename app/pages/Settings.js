@@ -1,16 +1,6 @@
 import React from 'react';
 
-import {
-  Button,
-  Checkbox,
-  Grid,
-  Header,
-  Form,
-  Input,
-  Icon,
-  Popup,
-  Segment
-} from 'semantic-ui-react';
+import { Button, Checkbox, Grid, Header, Form, Input, Icon, Popup, Segment } from 'semantic-ui-react';
 import SettingsPlugin from '../components/SettingsPlugin';
 import SettingsItem from '../components/SettingsItem';
 
@@ -48,11 +38,7 @@ class Settings extends React.Component {
     const folderLocations = ipcRenderer.sendSync('getFolderLocations');
     const pluginSettings = plugins.map((plugin, i) => {
       let description = plugin.pluginDescription ? (
-        <Popup
-          trigger={<Icon name="info circle" />}
-          content={plugin.pluginDescription}
-          size="small"
-        />
+        <Popup trigger={<Icon name="info circle" />} content={plugin.pluginDescription} size="small" />
       ) : (
         ''
       );
@@ -75,52 +61,20 @@ class Settings extends React.Component {
         </Header>
         <Segment attached>
           <Form>
-            <Form.Field>
-              <Input
-                label="Files Path"
-                action={
-                  <Button
-                    content="Change"
-                    onClick={this.openDialog.bind(this)}
-                  />
-                }
-                value={this.state.filesPath}
-                readOnly
-                fluid
-              />
-            </Form.Field>
-            <Form.Field>
-              <Input
-                label="Settings Path"
-                defaultValue={folderLocations.settings}
-                fluid
-                readOnly
-              />
-            </Form.Field>
+            <Form.Input
+              label="Files Path"
+              action={<Button content="Change" onClick={this.openDialog.bind(this)} />}
+              value={this.state.filesPath}
+              readOnly
+              fluid
+            />
+            <Form.Input label="Settings Path" defaultValue={folderLocations.settings} fluid readOnly />
             <Form.Group widths={2}>
-              <Form.Field>
-                <SettingsItem
-                  section="Proxy"
-                  setting="autoStart"
-                  Input={<Checkbox />}
-                />
-              </Form.Field>
-              <Form.Field>
-                <SettingsItem
-                  section="App"
-                  setting="debug"
-                  Input={<Checkbox />}
-                />
-              </Form.Field>
+              <SettingsItem section="Proxy" setting="autoStart" Input={<Checkbox />} />
+              <SettingsItem section="App" setting="debug" Input={<Checkbox />} />
             </Form.Group>
             <Form.Group widths={2}>
-              <Form.Field>
-                <SettingsItem
-                  section="App"
-                  setting="clearLogOnLogin"
-                  Input={<Checkbox />}
-                />
-              </Form.Field>
+              <SettingsItem section="App" setting="clearLogOnLogin" Input={<Checkbox />} />
             </Form.Group>
           </Form>
         </Segment>
