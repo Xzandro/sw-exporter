@@ -24,7 +24,7 @@ class Settings extends React.Component {
       {
         properties: ['openDirectory']
       },
-      (dirName) => {
+      dirName => {
         if (dirName) {
           this.setState({ filesPath: dirName.toString() });
           config.Config.App.filesPath = dirName.toString();

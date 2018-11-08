@@ -28,7 +28,7 @@ class SWProxy extends EventEmitter {
       let respChunks = [];
 
       if (req.url.indexOf('qpyou.cn/api/gateway_c2.php') >= 0) {
-        proxyResp.on('data', (chunk) => {
+        proxyResp.on('data', chunk => {
           respChunks.push(chunk);
         });
 
@@ -63,47 +63,49 @@ class SWProxy extends EventEmitter {
 
     this.proxy.on('error', (error, req, resp) => {
       resp.writeHead(500, {
-        'Content-Type': 'text/plain',
+        'Content-Type': 'text/plain'
       });
 
       resp.end('Something went wrong.');
     });
 
-    this.httpServer = http.createServer((req, resp) => {
-      // Request has been intercepted from game client
-      let reqChunks = [];
-      if (req.url.indexOf('qpyou.cn/api/gateway_c2.php') >= 0) {
-        req.on('data', (chunk) => {
-          reqChunks.push(chunk);
-        });
-        req.on('end', () => {
-          // Parse the request
-          let reqData;
-          try {
-            reqData = decrypt_request(reqChunks.join());
-          } catch (e) {
-            // Error decrypting the data, log and do not fire an event
-            self.log({ type: 'debug', source: 'proxy', message: `Error decrypting request data - ignoring. ${e}` });
-            return;
-          }
+    this.httpServer = http
+      .createServer((req, resp) => {
+        // Request has been intercepted from game client
+        let reqChunks = [];
+        if (req.url.indexOf('qpyou.cn/api/gateway_c2.php') >= 0) {
+          req.on('data', chunk => {
+            reqChunks.push(chunk);
+          });
+          req.on('end', () => {
+            // Parse the request
+            let reqData;
+            try {
+              reqData = decrypt_request(reqChunks.join());
+            } catch (e) {
+              // Error decrypting the data, log and do not fire an event
+              self.log({ type: 'debug', source: 'proxy', message: `Error decrypting request data - ignoring. ${e}` });
+              return;
+            }
 
-          const { command } = reqData;
+            const { command } = reqData;
 
-          // Add command request to an object so we can handle multiple requests at a time
-          parsedRequests[command] = reqData;
-        });
-      }
+            // Add command request to an object so we can handle multiple requests at a time
+            parsedRequests[command] = reqData;
+          });
+        }
 
-      this.proxy.web(req, resp, { target: req.url, prependPath: false });
-    }).listen(port, () => {
-      this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
-      if (process.env.autostart) {
-        console.log(`SW Exporter Proxy is listening on port ${port}`);
-      }
-      win.webContents.send('proxyStarted');
-    });
+        this.proxy.web(req, resp, { target: req.url, prependPath: false });
+      })
+      .listen(port, () => {
+        this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
+        if (process.env.autostart) {
+          console.log(`SW Exporter Proxy is listening on port ${port}`);
+        }
+        win.webContents.send('proxyStarted');
+      });
 
-    this.httpServer.on('error', (e) => {
+    this.httpServer.on('error', e => {
       if (e.code === 'EADDRINUSE') {
         self.log({ type: 'warning', source: 'proxy', message: 'Port is in use from another process. Try another port.' });
       }
@@ -112,21 +114,19 @@ class SWProxy extends EventEmitter {
     this.httpServer.on('connect', (req, socket) => {
       const serverUrl = url.parse(`https://${req.url}`);
 
-      const srvSocket = net.connect(serverUrl.port, serverUrl.hostname, () => {
-        socket.write('HTTP/1.1 200 Connection Established\r\n' +
-        'Proxy-agent: Node-Proxy\r\n' +
-        '\r\n');
-        srvSocket.pipe(socket);
-        socket.pipe(srvSocket);
-      });
+      const srvSocket = net.connect(
+        serverUrl.port,
+        serverUrl.hostname,
+        () => {
+          socket.write('HTTP/1.1 200 Connection Established\r\n' + 'Proxy-agent: Node-Proxy\r\n' + '\r\n');
+          srvSocket.pipe(socket);
+          socket.pipe(srvSocket);
+        }
+      );
 
-      srvSocket.on('error', () => {
+      srvSocket.on('error', () => {});
 
-      });
-
-      socket.on('error', () => {
-
-      });
+      socket.on('error', () => {});
     });
   }
 
@@ -160,7 +160,9 @@ class SWProxy extends EventEmitter {
   }
 
   log(entry) {
-    if (!entry) { return; }
+    if (!entry) {
+      return;
+    }
 
     entry.date = new Date().toLocaleTimeString();
     this.logEntries = [entry, ...this.logEntries];

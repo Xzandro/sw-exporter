@@ -26,8 +26,7 @@ class SettingsItem extends React.Component {
         config.ConfigDetails[this.props.section][this.props.pluginName][this.props.setting].label;
     } else {
       customLabel =
-        config.ConfigDetails[this.props.section][this.props.setting] &&
-        config.ConfigDetails[this.props.section][this.props.setting].label;
+        config.ConfigDetails[this.props.section][this.props.setting] && config.ConfigDetails[this.props.section][this.props.setting].label;
     }
 
     return customLabel || capitalize(this.props.setting);
@@ -48,32 +47,11 @@ class SettingsItem extends React.Component {
   getInputElement() {
     switch (this.Input.type.name) {
       case 'Checkbox':
-        return (
-          <Form.Checkbox
-            {...this.Input.props}
-            label={this.getLabel()}
-            checked={this.state.value}
-            onChange={this.changeSetting.bind(this)}
-          />
-        );
+        return <Form.Checkbox {...this.Input.props} label={this.getLabel()} checked={this.state.value} onChange={this.changeSetting.bind(this)} />;
       case 'Select':
-        return (
-          <Form.Select
-            {...this.Input.props}
-            label={this.getLabel()}
-            value={this.state.value}
-            onChange={this.changeSetting.bind(this)}
-          />
-        );
+        return <Form.Select {...this.Input.props} label={this.getLabel()} value={this.state.value} onChange={this.changeSetting.bind(this)} />;
       default:
-        return (
-          <Form.Input
-            {...this.Input.props}
-            label={this.getLabel()}
-            value={this.state.value}
-            onChange={this.changeSetting.bind(this)}
-          />
-        );
+        return <Form.Input {...this.Input.props} label={this.getLabel()} value={this.state.value} onChange={this.changeSetting.bind(this)} />;
     }
   }
 

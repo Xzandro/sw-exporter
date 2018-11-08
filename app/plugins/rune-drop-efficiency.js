@@ -3,8 +3,7 @@ module.exports = {
     enabled: true
   },
   pluginName: 'RuneDropEfficiency',
-  pluginDescription:
-    'Logs the maximum possible efficiency for runes as they drop.',
+  pluginDescription: 'Logs the maximum possible efficiency for runes as they drop.',
   init(proxy) {
     proxy.on('apiCommand', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {
@@ -61,7 +60,7 @@ module.exports = {
         break;
 
       case 'GetBlackMarketList':
-        resp.market_list.forEach((item) => {
+        resp.market_list.forEach(item => {
           if (item.item_master_type === 8 && item.runes) {
             runesInfo.push(this.logRuneDrop(item.runes[0]));
           }
@@ -69,7 +68,7 @@ module.exports = {
         break;
 
       case 'GetGuildBlackMarketList':
-        resp.market_list.forEach((item) => {
+        resp.market_list.forEach(item => {
           if (item.item_master_type === 8 && item.runes) {
             runesInfo.push(this.logRuneDrop(item.runes[0]));
           }
@@ -80,7 +79,7 @@ module.exports = {
         const reward = resp.reward ? resp.reward : {};
 
         if (reward.crate && reward.crate.runes) {
-          reward.crate.runes.forEach((rune) => {
+          reward.crate.runes.forEach(rune => {
             runesInfo.push(this.logRuneDrop(rune));
           });
         }
@@ -88,7 +87,7 @@ module.exports = {
       }
       case 'BattleRiftDungeonResult':
         if (resp.item_list) {
-          resp.item_list.forEach((item) => {
+          resp.item_list.forEach(item => {
             if (item.type === 8) {
               runesInfo.push(this.logRuneDrop(item.info));
             }
@@ -126,20 +125,14 @@ module.exports = {
 
     return `<div class="rune item">
               <div class="ui image ${color} label">
-                <img src="../assets/runes/${
-  gMapping.rune.sets[rune.set_id]
-}.png" />
+                <img src="../assets/runes/${gMapping.rune.sets[rune.set_id]}.png" />
                 <span class="upgrade">+${rune.upgrade_curr}</span>  
               </div>
 
               <div class="content">
                 ${starHtml}
-                <div class="header">${gMapping.rune.sets[rune.set_id]} Rune (${
-  rune.slot_no
-}) ${gMapping.rune.effectTypes[rune.pri_eff[0]]}</div>
-                <div class="description">Efficiency: ${efficiency.current}%. ${
-  rune.upgrade_curr < 12 ? `Max: ${efficiency.max}%` : ''
-}</div>
+                <div class="header">${gMapping.rune.sets[rune.set_id]} Rune (${rune.slot_no}) ${gMapping.rune.effectTypes[rune.pri_eff[0]]}</div>
+                <div class="description">Efficiency: ${efficiency.current}%. ${rune.upgrade_curr < 12 ? `Max: ${efficiency.max}%` : ''}</div>
               </div>
             </div>`;
   },
@@ -159,7 +152,7 @@ module.exports = {
   mountRuneListHtml(runes) {
     let message = '<div class="runes ui list relaxed">';
 
-    runes.forEach((rune) => {
+    runes.forEach(rune => {
       message = message.concat(rune);
     });
 

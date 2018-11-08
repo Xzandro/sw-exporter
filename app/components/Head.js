@@ -56,7 +56,12 @@ class Head extends React.Component {
           <Input label="Port" defaultValue={config.Config.Proxy.port} onChange={this.changePort.bind(this)} />
         </Menu.Item>
         <Menu.Item position="right">
-          <Button content={this.state.proxyRunning ? 'Stop Proxy' : 'Start Proxy'} icon={this.state.proxyRunning ? 'stop' : 'play'} labelPosition="right" onClick={this.toggleProxy.bind(this)} />
+          <Button
+            content={this.state.proxyRunning ? 'Stop Proxy' : 'Start Proxy'}
+            icon={this.state.proxyRunning ? 'stop' : 'play'}
+            labelPosition="right"
+            onClick={this.toggleProxy.bind(this)}
+          />
         </Menu.Item>
       </Menu>
     );

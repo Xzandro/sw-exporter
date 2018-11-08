@@ -63,9 +63,7 @@ module.exports = {
               type: 'error',
               source: 'plugin',
               name: this.pluginName,
-              message: `Profile upload is enabled, but missing API key and/or username. Check ${
-                this.pluginName
-              } settings.`
+              message: `Profile upload is enabled, but missing API key and/or username. Check ${this.pluginName} settings.`
             });
           } else {
             this.upload_profile(proxy, req, resp, myConfig.username, myConfig.apiKey);
@@ -84,44 +82,41 @@ module.exports = {
     let acceptedData = this.accepted_commands[command];
     let resultData = { request: {}, response: {} };
 
-    acceptedData.request.forEach((prop) => {
+    acceptedData.request.forEach(prop => {
       resultData.request[prop] = req[prop] || null;
     });
 
-    acceptedData.response.forEach((prop) => {
+    acceptedData.response.forEach(prop => {
       resultData.response[prop] = resp[prop] || null;
     });
 
-    request.post(
-      { url: `${SWARFARM_URL}/data/log/upload/`, form: { data: JSON.stringify(resultData) } },
-      (error, response) => {
-        if (error) {
-          proxy.log({
-            type: 'error',
-            source: 'plugin',
-            name: this.pluginName,
-            message: `Error: ${error.message}`
-          });
-          return;
-        }
-
-        if (response.statusCode === 200) {
-          proxy.log({
-            type: 'success',
-            source: 'plugin',
-            name: this.pluginName,
-            message: `${command} logged successfully`
-          });
-        } else {
-          proxy.log({
-            type: 'error',
-            source: 'plugin',
-            name: this.pluginName,
-            message: `Request failed: Server responded with code: ${response.statusCode}`
-          });
-        }
+    request.post({ url: `${SWARFARM_URL}/data/log/upload/`, form: { data: JSON.stringify(resultData) } }, (error, response) => {
+      if (error) {
+        proxy.log({
+          type: 'error',
+          source: 'plugin',
+          name: this.pluginName,
+          message: `Error: ${error.message}`
+        });
+        return;
       }
-    );
+
+      if (response.statusCode === 200) {
+        proxy.log({
+          type: 'success',
+          source: 'plugin',
+          name: this.pluginName,
+          message: `${command} logged successfully`
+        });
+      } else {
+        proxy.log({
+          type: 'error',
+          source: 'plugin',
+          name: this.pluginName,
+          message: `Request failed: Server responded with code: ${response.statusCode}`
+        });
+      }
+    });
   },
   upload_profile(proxy, req, resp, username, apiKey) {
     const { command } = req;
