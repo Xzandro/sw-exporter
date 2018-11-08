@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Checkbox, Grid, Header, Form, Input, Icon, Popup, Segment } from 'semantic-ui-react';
+import { Button, Checkbox, Grid, Header, Form, Icon, Popup, Segment } from 'semantic-ui-react';
 import SettingsPlugin from '../components/SettingsPlugin';
 import SettingsItem from '../components/SettingsItem';
 

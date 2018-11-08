@@ -6,25 +6,21 @@ module.exports = {
   defaultConfig: {
     enabled: true,
     profileSync: false,
-    username: '',
     apiKey: ''
   },
   defaultConfigDetails: {
     profileSync: { label: 'Automatically upload profile to SWARFARM' },
-    username: { label: 'SWARFARM Username', type: 'input' },
     apiKey: { label: 'SWARFARM API key', type: 'input' }
   },
   pluginName: 'SwarfarmLogger',
   pluginDescription: 'Transfers your Dungeon Run data to swarfarm.com automatically.',
-  commands_url: `${SWARFARM_URL}/data/log/accepted_commands/`,
-  log_url: `${SWARFARM_URL}/data/log/upload/`,
   accepted_commands: false,
   init(proxy, config) {
     if (config.Config.Plugins[this.pluginName].enabled) {
       this.proxy = proxy;
       let options = {
         method: 'get',
-        uri: this.commands_url
+        uri: `${SWARFARM_URL}/data/log/accepted_commands/`
       };
       proxy.log({
         type: 'debug',
@@ -96,38 +92,41 @@ module.exports = {
       resultData.response[prop] = resp[prop] || null;
     });
 
-    request.post({ url: this.log_url, form: { data: JSON.stringify(resultData) } }, (error, response) => {
-      if (error) {
-        proxy.log({
-          type: 'error',
-          source: 'plugin',
-          name: this.pluginName,
-          message: `Error: ${error.message}`
-        });
-        return;
-      }
+    request.post(
+      { url: `${SWARFARM_URL}/data/log/upload/`, form: { data: JSON.stringify(resultData) } },
+      (error, response) => {
+        if (error) {
+          proxy.log({
+            type: 'error',
+            source: 'plugin',
+            name: this.pluginName,
+            message: `Error: ${error.message}`
+          });
+          return;
+        }
 
-      if (response.statusCode === 200) {
-        proxy.log({
-          type: 'success',
-          source: 'plugin',
-          name: this.pluginName,
-          message: `${command} logged successfully`
-        });
-      } else {
-        proxy.log({
-          type: 'error',
-          source: 'plugin',
-          name: this.pluginName,
-          message: `Request failed: Server responded with code: ${response.statusCode}`
-        });
+        if (response.statusCode === 200) {
+          proxy.log({
+            type: 'success',
+            source: 'plugin',
+            name: this.pluginName,
+            message: `${command} logged successfully`
+          });
+        } else {
+          proxy.log({
+            type: 'error',
+            source: 'plugin',
+            name: this.pluginName,
+            message: `Request failed: Server responded with code: ${response.statusCode}`
+          });
+        }
       }
-    });
+    );
   },
   upload_profile(proxy, req, resp, username, apiKey) {
     const { command } = req;
     const options = {
-      url: `${SWARFARM_URL}/api/v2/profiles/${username}/upload/`,
+      url: `${SWARFARM_URL}/api/v2/profiles/upload/`,
       method: 'POST',
       headers: {
         Authorization: `Token ${apiKey}`
@@ -170,17 +169,13 @@ module.exports = {
           resultCheckTimer = setInterval(() => {
             request(
               {
-                url: `${SWARFARM_URL}/api/v2/profiles/${username}/upload/${jobId}/`,
+                url: `${SWARFARM_URL}/api/v2/profiles/upload/${jobId}/`,
                 headers: {
                   Authorization: `Token ${apiKey}`
                 },
                 json: true
               },
               (resultError, resultResponse, resultBody) => {
-                console.log('error:', resultError); // Print the error if one occurred
-                console.log('statusCode:', resultResponse && resultResponse.statusCode); // Print the response status code if a response was received
-                console.log('body:', resultBody); // Print the HTML for the Google homepage.
-
                 if (resultBody && resultBody.status === 'SUCCESS') {
                   clearTimeout(failsafeCheckTimer);
                   clearInterval(resultCheckTimer);
@@ -201,8 +196,7 @@ module.exports = {
             type: 'error',
             source: 'plugin',
             name: this.pluginName,
-            message:
-              'Unable to authenticate to SWARFARM. Check your API key and username in settings. Profile import aborted.'
+            message: `There were errors importing your SWARFARM profile: ${body.detail}`
           });
         } else if (response.statusCode === 401) {
           // HTTP 401 Unauthorized - Failed to authenticate
@@ -210,7 +204,7 @@ module.exports = {
             type: 'error',
             source: 'plugin',
             name: this.pluginName,
-            message: `There were errors importing your SWARFARM profile: ${body.detail}`
+            message: 'Unable to authenticate to SWARFARM. Check your API key in settings.'
           });
         } else if (response.statusCode === 409) {
           // HTTP 409 Conflict - Validation checks failed
