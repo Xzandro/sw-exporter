@@ -199,7 +199,6 @@ module.exports = {
           }, 2500);
         } else if (response.statusCode === 400) {
           // HTTP 400 Bad Request - malformed upload data or request
-          console.log(body);
           proxy.log({
             type: 'error',
             source: 'plugin',
