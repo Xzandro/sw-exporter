@@ -28,20 +28,27 @@ module.exports = {
   logCommand(req, resp) {
     const { command } = req;
 
-    let logfile = fs.createWriteStream(
-      path.join(config.Config.App.filesPath, 'full_log.txt'), {
-        flags: 'a',
-        autoClose: true
-      }
-    );
+    let logfile = fs.createWriteStream(path.join(config.Config.App.filesPath, 'full_log.txt'), {
+      flags: 'a',
+      autoClose: true
+    });
 
     logfile.write(
-      `API Command: ${command}`.concat(' - ', Date(), eol,
-        'Request: ', eol,
-        JSON.stringify(req), eol,
-        'Response: ', eol,
-        JSON.stringify(resp), eol, eol
-      ));
+      `API Command: ${command}`.concat(
+        ' - ',
+        Date(),
+        eol,
+        'Request: ',
+        eol,
+        JSON.stringify(req),
+        eol,
+        'Response: ',
+        eol,
+        JSON.stringify(resp),
+        eol,
+        eol
+      )
+    );
 
     logfile.end();
   }

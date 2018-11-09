@@ -25,12 +25,7 @@ class SettingsPlugin extends React.Component {
       const InputComponent = this.components[inputType];
       return (
         <Form.Field key={i}>
-          <SettingsItem
-            section="Plugins"
-            pluginName={this.props.pluginName}
-            setting={key}
-            Input={<InputComponent />}
-          />
+          <SettingsItem section="Plugins" pluginName={this.props.pluginName} setting={key} Input={<InputComponent />} />
         </Form.Field>
       );
     });

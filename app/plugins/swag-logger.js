@@ -39,7 +39,12 @@ module.exports = {
       if (response.statusCode === 200) {
         proxy.log({ type: 'success', source: 'plugin', name: this.pluginName, message: `${command} logged successfully` });
       } else {
-        proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: `Request failed: Server responded with code: ${response.statusCode}` });
+        proxy.log({
+          type: 'error',
+          source: 'plugin',
+          name: this.pluginName,
+          message: `Request failed: Server responded with code: ${response.statusCode}`
+        });
       }
     });
   }

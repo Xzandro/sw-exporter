@@ -7,10 +7,10 @@ const sanitize = require('sanitize-filename');
 module.exports = {
   defaultConfig: {
     enabled: false,
-    logWipes: false,
+    logWipes: false
   },
   defaultConfigDetails: {
-    logWipes: { label: 'Log Wipes' },
+    logWipes: { label: 'Log Wipes' }
   },
   pluginName: 'TOALogger',
   pluginDescription: 'Creates a local csv file and saves data of TOA runs in there.',
@@ -35,7 +35,10 @@ module.exports = {
         }
       } catch (e) {
         proxy.log({
-          type: 'error', source: 'plugin', name: this.pluginName, message: `An unexpected error occurred: ${e.message}`
+          type: 'error',
+          source: 'plugin',
+          name: this.pluginName,
+          message: `An unexpected error occurred: ${e.message}`
         });
       }
     });
@@ -89,18 +92,26 @@ module.exports = {
   saveToFile(entry, filename, headers, proxy) {
     const csvData = [];
     const self = this;
-    fs.ensureFile(path.join(config.Config.App.filesPath, filename), (err) => {
-      if (err) { return; }
-      csv.fromPath(path.join(config.Config.App.filesPath, filename), { ignoreEmpty: true, headers, renameHeaders: true }).on('data', (data) => {
-        csvData.push(data);
-      }).on('end', () => {
-        csvData.push(entry);
-        csv.writeToPath(path.join(config.Config.App.filesPath, filename), csvData, { headers }).on('finish', () => {
-          proxy.log({
-            type: 'success', source: 'plugin', name: self.pluginName, message: `Saved run data to ${filename}`
+    fs.ensureFile(path.join(config.Config.App.filesPath, filename), err => {
+      if (err) {
+        return;
+      }
+      csv
+        .fromPath(path.join(config.Config.App.filesPath, filename), { ignoreEmpty: true, headers, renameHeaders: true })
+        .on('data', data => {
+          csvData.push(data);
+        })
+        .on('end', () => {
+          csvData.push(entry);
+          csv.writeToPath(path.join(config.Config.App.filesPath, filename), csvData, { headers }).on('finish', () => {
+            proxy.log({
+              type: 'success',
+              source: 'plugin',
+              name: self.pluginName,
+              message: `Saved run data to ${filename}`
+            });
           });
         });
-      });
     });
   },
 
@@ -115,7 +126,9 @@ module.exports = {
     entry.time = `${time[0]}:${time[1]}`;
 
     const winLost = resp.win_lose === 1 ? 'Win' : 'Lost';
-    if (winLost === 'Lost' && !config.Config.Plugins[this.pluginName].logWipes) { return; }
+    if (winLost === 'Lost' && !config.Config.Plugins[this.pluginName].logWipes) {
+      return;
+    }
 
     entry.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM');
     entry.result = winLost;
@@ -149,7 +162,23 @@ module.exports = {
       entry.boss = 'No Boss';
     }
 
-    const headers = ['date', 'time', 'tower', 'floor', 'boss', 'result', 'mana', 'crystal', 'energy', 'drop', 'team1', 'team2', 'team3', 'team4', 'team5'];
+    const headers = [
+      'date',
+      'time',
+      'tower',
+      'floor',
+      'boss',
+      'result',
+      'mana',
+      'crystal',
+      'energy',
+      'drop',
+      'team1',
+      'team2',
+      'team3',
+      'team4',
+      'team5'
+    ];
 
     const filename = sanitize(`${wizardName}-${wizardID}-toa-runs.csv`);
     this.saveToFile(entry, filename, headers, proxy);

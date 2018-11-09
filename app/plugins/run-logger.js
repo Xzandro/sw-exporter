@@ -7,10 +7,10 @@ const sanitize = require('sanitize-filename');
 module.exports = {
   defaultConfig: {
     enabled: false,
-    logWipes: false,
+    logWipes: false
   },
   defaultConfigDetails: {
-    logWipes: { label: 'Log Wipes' },
+    logWipes: { label: 'Log Wipes' }
   },
   pluginName: 'RunLogger',
   pluginDescription: 'Creates a local csv file and saves data of every dungeon and scenario run in there.',
@@ -26,7 +26,9 @@ module.exports = {
           }
 
           if (command === 'BattleScenarioStart') {
-            this.temp[wizardID].stage = gMapping.scenario[req.region_id] ? `${gMapping.scenario[req.region_id]} ${gMapping.difficulty[req.difficulty]} - ${req.stage_no}` : 'Unknown';
+            this.temp[wizardID].stage = gMapping.scenario[req.region_id]
+              ? `${gMapping.scenario[req.region_id]} ${gMapping.difficulty[req.difficulty]} - ${req.stage_no}`
+              : 'Unknown';
           }
 
           if (command === 'BattleScenarioResult' || command === 'BattleDungeonResult') {
@@ -113,16 +115,21 @@ module.exports = {
   saveToFile(entry, filename, headers, proxy) {
     const csvData = [];
     const self = this;
-    fs.ensureFile(path.join(config.Config.App.filesPath, filename), (err) => {
-      if (err) { return; }
-      csv.fromPath(path.join(config.Config.App.filesPath, filename), { ignoreEmpty: true, headers, renameHeaders: true }).on('data', (data) => {
-        csvData.push(data);
-      }).on('end', () => {
-        csvData.push(entry);
-        csv.writeToPath(path.join(config.Config.App.filesPath, filename), csvData, { headers }).on('finish', () => {
-          proxy.log({ type: 'success', source: 'plugin', name: self.pluginName, message: `Saved run data to ${filename}` });
+    fs.ensureFile(path.join(config.Config.App.filesPath, filename), err => {
+      if (err) {
+        return;
+      }
+      csv
+        .fromPath(path.join(config.Config.App.filesPath, filename), { ignoreEmpty: true, headers, renameHeaders: true })
+        .on('data', data => {
+          csvData.push(data);
+        })
+        .on('end', () => {
+          csvData.push(entry);
+          csv.writeToPath(path.join(config.Config.App.filesPath, filename), csvData, { headers }).on('finish', () => {
+            proxy.log({ type: 'success', source: 'plugin', name: self.pluginName, message: `Saved run data to ${filename}` });
+          });
         });
-      });
     });
   },
 
@@ -145,7 +152,9 @@ module.exports = {
     }
 
     const winLost = resp.win_lose === 1 ? 'Win' : 'Lost';
-    if (winLost === 'Lost' && !config.Config.Plugins[this.pluginName].logWipes) { return; }
+    if (winLost === 'Lost' && !config.Config.Plugins[this.pluginName].logWipes) {
+      return;
+    }
 
     entry.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM');
     entry.result = winLost;
@@ -156,7 +165,8 @@ module.exports = {
     entry.crystal = reward.crystal ? reward.crystal : 0;
 
     if (req.clear_time) {
-      const seconds = Math.floor((req.clear_time / 1000) % 60) < 10 ? `0${Math.floor((req.clear_time / 1000) % 60)}` : Math.floor((req.clear_time / 1000) % 60);
+      const seconds =
+        Math.floor((req.clear_time / 1000) % 60) < 10 ? `0${Math.floor((req.clear_time / 1000) % 60)}` : Math.floor((req.clear_time / 1000) % 60);
       const time = [Math.floor(req.clear_time / 1000 / 60), seconds];
       entry.time = `${time[0]}:${time[1]}`;
     }
@@ -196,8 +206,33 @@ module.exports = {
       entry.drop = 'Secret Dungeon';
     }
 
-    const headers = ['date', 'dungeon', 'result', 'time', 'mana', 'crystal', 'energy', 'drop', 'grade', 'sell_value',
-      'set', 'efficiency', 'slot', 'rarity', 'main_stat', 'prefix_stat', 'sub1', 'sub2', 'sub3', 'sub4', 'team1', 'team2', 'team3', 'team4', 'team5'];
+    const headers = [
+      'date',
+      'dungeon',
+      'result',
+      'time',
+      'mana',
+      'crystal',
+      'energy',
+      'drop',
+      'grade',
+      'sell_value',
+      'set',
+      'efficiency',
+      'slot',
+      'rarity',
+      'main_stat',
+      'prefix_stat',
+      'sub1',
+      'sub2',
+      'sub3',
+      'sub4',
+      'team1',
+      'team2',
+      'team3',
+      'team4',
+      'team5'
+    ];
 
     const filename = sanitize(`${wizardName}-${wizardID}-runs.csv`);
     this.saveToFile(entry, filename, headers, proxy);
@@ -248,8 +283,34 @@ module.exports = {
         entry[`team${i + 1}`] = gMapping.getMonsterName(unit.unit_master_id);
       });
     }
-    const headers = ['date', 'dungeon', 'result', 'time', 'item1', 'item2', 'item3', 'drop', 'grade', 'sell_value',
-      'set', 'efficiency', 'slot', 'rarity', 'main_stat', 'prefix_stat', 'sub1', 'sub2', 'sub3', 'sub4', 'team1', 'team2', 'team3', 'team4', 'team5', 'team6'];
+    const headers = [
+      'date',
+      'dungeon',
+      'result',
+      'time',
+      'item1',
+      'item2',
+      'item3',
+      'drop',
+      'grade',
+      'sell_value',
+      'set',
+      'efficiency',
+      'slot',
+      'rarity',
+      'main_stat',
+      'prefix_stat',
+      'sub1',
+      'sub2',
+      'sub3',
+      'sub4',
+      'team1',
+      'team2',
+      'team3',
+      'team4',
+      'team5',
+      'team6'
+    ];
 
     const filename = sanitize(`${wizardName}-${wizardID}-raid-runs.csv`);
     this.saveToFile(entry, filename, headers, proxy);
@@ -268,7 +329,6 @@ module.exports = {
 
     entry.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM');
     entry.result = winLost;
-
 
     if (resp.item_list && resp.item_list.length > 0) {
       resp.item_list.forEach((item, i) => {
@@ -296,8 +356,34 @@ module.exports = {
         entry[`team${i + 1}`] = gMapping.getMonsterName(unit.unit_master_id);
       });
     }
-    const headers = ['date', 'dungeon', 'result', 'time', 'item1', 'item2', 'item3', 'drop', 'grade', 'sell_value',
-      'set', 'efficiency', 'slot', 'rarity', 'main_stat', 'prefix_stat', 'sub1', 'sub2', 'sub3', 'sub4', 'team1', 'team2', 'team3', 'team4', 'team5', 'team6'];
+    const headers = [
+      'date',
+      'dungeon',
+      'result',
+      'time',
+      'item1',
+      'item2',
+      'item3',
+      'drop',
+      'grade',
+      'sell_value',
+      'set',
+      'efficiency',
+      'slot',
+      'rarity',
+      'main_stat',
+      'prefix_stat',
+      'sub1',
+      'sub2',
+      'sub3',
+      'sub4',
+      'team1',
+      'team2',
+      'team3',
+      'team4',
+      'team5',
+      'team6'
+    ];
 
     const filename = sanitize(`${wizardName}-${wizardID}-raid-runs.csv`);
     this.saveToFile(entry, filename, headers, proxy);
@@ -320,5 +406,5 @@ module.exports = {
       map.drop = 'Enchanted Gem';
     }
     return map;
-  },
+  }
 };

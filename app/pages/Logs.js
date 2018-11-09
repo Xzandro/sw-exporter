@@ -63,9 +63,7 @@ class Logs extends React.Component {
                   <Label size="mini" color={this.labelColor(entry.type)}>
                     {capitalize(entry.type)}
                   </Label>
-                  {capitalize(entry.source)}{' '}
-                  {entry.name ? ` - ${entry.name}` : ''}{' '}
-                  <Feed.Date>{entry.date}</Feed.Date>
+                  {capitalize(entry.source)} {entry.name ? ` - ${entry.name}` : ''} <Feed.Date>{entry.date}</Feed.Date>
                 </Feed.Summary>
                 <Feed.Extra>
                   <div dangerouslySetInnerHTML={{ __html: entry.message }} />

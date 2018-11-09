@@ -3,7 +3,7 @@ module.exports = {
   output: {
     filename: './app/bundle.js',
   },
-  target: 'electron',
+  target: 'electron-renderer',
   module: {
     rules: [
       {

@@ -35,11 +35,13 @@ function createWindow() {
 
   global.mainWindowId = win.id;
 
-  win.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
-    protocol: 'file:',
-    slashes: true
-  }));
+  win.loadURL(
+    url.format({
+      pathname: path.join(__dirname, 'index.html'),
+      protocol: 'file:',
+      slashes: true
+    })
+  );
 
   win.webContents.on('new-window', (e, link) => {
     e.preventDefault();
@@ -49,15 +51,13 @@ function createWindow() {
 
 const proxy = new SWProxy();
 
-proxy.on('error', () => {
+proxy.on('error', () => {});
 
-});
-
-ipcMain.on('proxyIsRunning', (event) => {
+ipcMain.on('proxyIsRunning', event => {
   event.returnValue = proxy.isRunning();
 });
 
-ipcMain.on('proxyGetInterfaces', (event) => {
+ipcMain.on('proxyGetInterfaces', event => {
   event.returnValue = proxy.getInterfaces();
 });
 
@@ -69,17 +69,17 @@ ipcMain.on('proxyStop', () => {
   proxy.stop();
 });
 
-ipcMain.on('logGetEntries', (event) => {
+ipcMain.on('logGetEntries', event => {
   event.returnValue = proxy.getLogEntries();
 });
 
 ipcMain.on('updateConfig', () => {
-  storage.set('Config', config.Config, (error) => {
+  storage.set('Config', config.Config, error => {
     if (error) throw error;
   });
 });
 
-ipcMain.on('getFolderLocations', (event) => {
+ipcMain.on('getFolderLocations', event => {
   event.returnValue = {
     settings: app.getPath('userData'),
     plugins: path.join(path.dirname(app.getPath('exe')), 'plugins')
@@ -95,12 +95,12 @@ function loadPlugins() {
   const pluginDir = path.join(__dirname, 'plugins');
 
   // Load each plugin module in the folder
-  fs.readdirSync(pluginDir).forEach((file) => {
+  fs.readdirSync(pluginDir).forEach(file => {
     plugins.push(require(path.join(pluginDir, file)));
   });
 
   // Initialize plugins
-  plugins.forEach((plug) => {
+  plugins.forEach(plug => {
     config.Config.Plugins[plug.pluginName] = _.merge(plug.defaultConfig, config.Config.Plugins[plug.pluginName]);
     config.ConfigDetails.Plugins[plug.pluginName] = plug.defaultConfigDetails || {};
     plug.init(proxy, config);

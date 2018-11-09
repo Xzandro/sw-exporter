@@ -35,12 +35,10 @@ module.exports = {
     const wizardName = resp.wizard_info.wizard_name;
     const filename = sanitize(`${wizardName}-${wizardID}`).concat('.json');
 
-    let outFile = fs.createWriteStream(
-      path.join(config.Config.App.filesPath, filename), {
-        flags: 'w',
-        autoClose: true
-      }
-    );
+    let outFile = fs.createWriteStream(path.join(config.Config.App.filesPath, filename), {
+      flags: 'w',
+      autoClose: true
+    });
 
     outFile.write(JSON.stringify(resp, true, 2));
     outFile.end();
@@ -55,27 +53,29 @@ module.exports = {
       }
     }
     // generic sort function
-    cmp = function (x, y) {
+    cmp = function(x, y) {
       return x > y ? 1 : x < y ? -1 : 0;
     };
 
     // sort monsters
-    data.unit_list = data.unit_list.sort((a, b) => cmp(
-      [
-        cmp((a.building_id === storageID) ? 1 : 0, (b.building_id === storageID) ? 1 : 0),
-        -cmp(a.class, b.class),
-        -cmp(a.unit_level, b.unit_level),
-        cmp(a.attribute, b.attribute),
-        cmp(a.unit_id, b.unit_id)
-      ],
-      [
-        cmp((b.building_id === storageID) ? 1 : 0, (a.building_id === storageID) ? 1 : 0),
-        -cmp(b.class, a.class),
-        -cmp(b.unit_level, a.unit_level),
-        cmp(b.attribute, a.attribute),
-        cmp(b.unit_id, a.unit_id)
-      ]
-    ));
+    data.unit_list = data.unit_list.sort((a, b) =>
+      cmp(
+        [
+          cmp(a.building_id === storageID ? 1 : 0, b.building_id === storageID ? 1 : 0),
+          -cmp(a.class, b.class),
+          -cmp(a.unit_level, b.unit_level),
+          cmp(a.attribute, b.attribute),
+          cmp(a.unit_id, b.unit_id)
+        ],
+        [
+          cmp(b.building_id === storageID ? 1 : 0, a.building_id === storageID ? 1 : 0),
+          -cmp(b.class, a.class),
+          -cmp(b.unit_level, a.unit_level),
+          cmp(b.attribute, a.attribute),
+          cmp(b.unit_id, a.unit_id)
+        ]
+      )
+    );
 
     // sort runes on monsters
     for (let monster of data.unit_list) {
@@ -84,10 +84,7 @@ module.exports = {
         monster.runes = Object.values(monster.runes);
       }
 
-      monster.runes = monster.runes.sort((a, b) => cmp(
-        [cmp(a.slot_no, b.slot_no)],
-        [cmp(b.slot_no, a.slot_no)]
-      ));
+      monster.runes = monster.runes.sort((a, b) => cmp([cmp(a.slot_no, b.slot_no)], [cmp(b.slot_no, a.slot_no)]));
     }
 
     // make sure that runes is actually an array (thanks again com2us)
@@ -96,16 +93,17 @@ module.exports = {
     }
 
     // sort runes in inventory
-    data.runes = data.runes.sort((a, b) => cmp(
-      [cmp(a.set_id, b.set_id), cmp(a.slot_no, b.slot_no)],
-      [cmp(b.set_id, a.set_id), cmp(b.slot_no, a.slot_no)]
-    ));
+    data.runes = data.runes.sort((a, b) =>
+      cmp([cmp(a.set_id, b.set_id), cmp(a.slot_no, b.slot_no)], [cmp(b.set_id, a.set_id), cmp(b.slot_no, a.slot_no)])
+    );
 
     // sort crafts
-    data.rune_craft_item_list = data.rune_craft_item_list.sort((a, b) => cmp(
-      [cmp(a.craft_type, b.craft_type), cmp(a.craft_item_id, b.craft_item_id)],
-      [cmp(b.craft_type, a.craft_type), cmp(b.craft_item_id, a.craft_item_id)]
-    ));
+    data.rune_craft_item_list = data.rune_craft_item_list.sort((a, b) =>
+      cmp(
+        [cmp(a.craft_type, b.craft_type), cmp(a.craft_item_id, b.craft_item_id)],
+        [cmp(b.craft_type, a.craft_type), cmp(b.craft_item_id, a.craft_item_id)]
+      )
+    );
 
     return data;
   }

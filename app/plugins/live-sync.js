@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = {
   defaultConfig: {
-    enabled: false,
+    enabled: false
   },
   pluginName: 'LiveSync',
   pluginDescription: 'Keep SWOP synched with SW.',
@@ -70,12 +70,10 @@ module.exports = {
     const filename = `${wizardId}-live-${timestamp}`.concat('.json');
     fs.ensureDirSync(path.join(config.Config.App.filesPath, 'live'));
 
-    const outFile = fs.createWriteStream(
-      path.join(config.Config.App.filesPath, 'live', filename), {
-        flags: 'w',
-        autoClose: true,
-      }
-    );
+    const outFile = fs.createWriteStream(path.join(config.Config.App.filesPath, 'live', filename), {
+      flags: 'w',
+      autoClose: true
+    });
 
     outFile.write(JSON.stringify(result, true, 2));
     outFile.end();
@@ -168,5 +166,5 @@ module.exports = {
         }
       }
     }
-  },
+  }
 };
