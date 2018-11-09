@@ -28,48 +28,48 @@ module.exports = {
         name: this.pluginName,
         message: 'Retrieving list of accepted log types from SWARFARM...'
       });
-      request(options, (error, response, body) => {
-        if (!error && response.statusCode === 200) {
-          this.accepted_commands = JSON.parse(body);
-          proxy.log({
-            type: 'success',
-            source: 'plugin',
-            name: this.pluginName,
-            message: `Looking for the following commands to log: ${Object.keys(this.accepted_commands).join(', ')}`
-          });
-        } else {
-          proxy.log({
-            type: 'error',
-            source: 'plugin',
-            name: this.pluginName,
-            message: 'Unable to retrieve accepted log types. SWARFARM logging is disabled.'
-          });
-          config.Config.Plugins[this.pluginName].enabled = false;
-        }
-      });
-      proxy.on('apiCommand', (req, resp) => {
-        const myConfig = config.Config.Plugins[this.pluginName];
-
-        // Send log event to data logs
-        if (myConfig.enabled) {
-          this.log(proxy, req, resp);
-        }
-
-        // Profile sync if enabled
-        if (myConfig.profileSync) {
-          // Check that API key and username are filled in
-          if (!myConfig.username || !myConfig.apiKey) {
+      try {
+        request(options, (error, response, body) => {
+          if (!error && response.statusCode === 200) {
+            this.accepted_commands = JSON.parse(body);
+            proxy.log({
+              type: 'success',
+              source: 'plugin',
+              name: this.pluginName,
+              message: `Looking for the following commands to log: ${Object.keys(this.accepted_commands).join(', ')}`
+            });
+          } else {
             proxy.log({
               type: 'error',
               source: 'plugin',
               name: this.pluginName,
-              message: `Profile upload is enabled, but missing API key and/or username. Check ${this.pluginName} settings.`
+              message: 'Unable to retrieve accepted log types. SWARFARM logging is disabled.'
             });
-          } else {
-            this.upload_profile(proxy, req, resp, myConfig.username, myConfig.apiKey);
+            config.Config.Plugins[this.pluginName].enabled = false;
           }
-        }
-      });
+        });
+        proxy.on('apiCommand', (req, resp) => {
+          const myConfig = config.Config.Plugins[this.pluginName];
+
+          // Send log event to data logs
+          if (myConfig.enabled) {
+            this.log(proxy, req, resp);
+          }
+
+          // Profile sync if enabled
+          if (myConfig.profileSync) {
+            this.upload_profile(proxy, req, resp, myConfig.apiKey);
+          }
+        });
+      } catch (error) {
+        proxy.log({
+          type: 'error',
+          source: 'plugin',
+          name: this.pluginName,
+          message: 'Unable to retrieve accepted log types. SWARFARM logging is disabled.'
+        });
+        config.Config.Plugins[this.pluginName].enabled = false;
+      }
     }
   },
   log(proxy, req, resp) {
@@ -118,7 +118,7 @@ module.exports = {
       }
     });
   },
-  upload_profile(proxy, req, resp, username, apiKey) {
+  upload_profile(proxy, req, resp, apiKey) {
     const { command } = req;
     const options = {
       url: `${SWARFARM_URL}/api/v2/profiles/upload/`,
@@ -131,6 +131,18 @@ module.exports = {
     };
 
     if (command === 'HubUserLogin') {
+      // Check that API key is filled in
+      if (!apiKey) {
+        proxy.log({
+          type: 'error',
+          source: 'plugin',
+          name: this.pluginName,
+          message: `Profile upload is enabled, but missing API key. Check ${this.pluginName} settings.`
+        });
+
+        return;
+      }
+
       proxy.log({
         type: 'info',
         source: 'plugin',
@@ -187,11 +199,12 @@ module.exports = {
           }, 2500);
         } else if (response.statusCode === 400) {
           // HTTP 400 Bad Request - malformed upload data or request
+          console.log(body);
           proxy.log({
             type: 'error',
             source: 'plugin',
             name: this.pluginName,
-            message: `There were errors importing your SWARFARM profile: ${body.detail}`
+            message: `There were errors importing your SWARFARM profile: ${body}`
           });
         } else if (response.statusCode === 401) {
           // HTTP 401 Unauthorized - Failed to authenticate
