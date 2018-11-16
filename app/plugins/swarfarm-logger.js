@@ -203,7 +203,7 @@ module.exports = {
             type: 'error',
             source: 'plugin',
             name: this.pluginName,
-            message: `There were errors importing your SWARFARM profile: ${body}`
+            message: `There were errors importing your SWARFARM profile: ${JSON.stringify(body)}`
           });
         } else if (response.statusCode === 401) {
           // HTTP 401 Unauthorized - Failed to authenticate
@@ -219,7 +219,7 @@ module.exports = {
             type: 'error',
             source: 'plugin',
             name: this.pluginName,
-            message: `${body.validation_error} You must manually upload your profile on SWARFARM to resolve this.`
+            message: `${JSON.stringify(body)}. You must manually upload your profile on SWARFARM to resolve this.`
           });
         }
       });
