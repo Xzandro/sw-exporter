@@ -1,9 +1,10 @@
 const request = require('request');
 const RELEASES_URL = 'https://api.github.com/repos/Xzandro/sw-exporter/releases/latest';
+const LATEST_DOWNLOAD_URL = '<a href="https://github.com/Xzandro/sw-exporter/releases/latest" target=_blank>Github</a>';
 
 module.exports = {
   defaultConfig: {
-    enabled: false
+    enabled: true
   },
   pluginName: 'VersionChecker',
   pluginDescription: 'This plugin checks to make sure you are using the latest version of the exporter app.',
@@ -23,8 +24,7 @@ module.exports = {
         name: this.pluginName,
         message: `You have app version ${global.appVersion}.  Checking against latest release version...`
       });
-      let latestDownloadUrl = '<a href="https://github.com/Xzandro/sw-exporter/releases/latest" target=_blank>Github</a>';
-      let errorMessage = `Unable to check for the latest version automatically.  You can manually check by going to ${latestDownloadUrl} and checking against your version number.`;
+      let errorMessage = `Unable to check for the latest version automatically.  You can manually check by going to ${LATEST_DOWNLOAD_URL} and checking against your version number.`;
       try {
         request(options, (error, response, body) => {
           if (!error && response.statusCode === 200) {
@@ -33,7 +33,7 @@ module.exports = {
             if (json_body.tag_name === global.appVersion) {
               message = 'You have the latest version!';
             } else {
-              message = `You have ${global.appVersion} and ${json_body.tag_name} is the latest version.  Go to ${latestDownloadUrl} to download the latest version of the app.`;
+              message = `You have ${global.appVersion} and ${json_body.tag_name} is the latest version.  Go to ${LATEST_DOWNLOAD_URL} to download the latest version of the app.`;
             }
             proxy.log({
               type: 'success',
