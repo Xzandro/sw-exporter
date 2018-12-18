@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, shell } = require('electron');
 const fs = require('fs-extra');
 const storage = require('electron-json-storage');
 const _ = require('lodash');
@@ -112,6 +112,28 @@ function loadPlugins() {
 
 app.on('ready', () => {
   createWindow();
+
+  if (process.platform === 'darwin') {
+    // Create our menu entries so that we can use MAC shortcuts like copy & paste
+    Menu.setApplicationMenu(
+      Menu.buildFromTemplate([
+        {
+          label: 'Edit',
+          submenu: [
+            { role: 'undo' },
+            { role: 'redo' },
+            { type: 'separator' },
+            { role: 'cut' },
+            { role: 'copy' },
+            { role: 'paste' },
+            { role: 'pasteandmatchstyle' },
+            { role: 'delete' },
+            { role: 'selectall' }
+          ]
+        }
+      ])
+    );
+  }
 
   storage.getAll((error, data) => {
     if (error) throw error;
