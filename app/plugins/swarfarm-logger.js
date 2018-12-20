@@ -1,6 +1,6 @@
 const request = require('request');
 
-const SWARFARM_URL = 'https://swarfarm.com';
+const SWARFARM_URL = 'http://127.0.0.1:8000';
 
 module.exports = {
   defaultConfig: {
@@ -90,7 +90,7 @@ module.exports = {
       resultData.response[prop] = resp[prop] || null;
     });
 
-    request.post({ url: `${SWARFARM_URL}/data/log/upload/`, form: { data: JSON.stringify(resultData) } }, (error, response) => {
+    request.post({ url: `${SWARFARM_URL}/data/log/upload/`, form: { data: JSON.stringify(resultData) } }, (error, response, body) => {
       if (error) {
         proxy.log({
           type: 'error',
@@ -113,7 +113,7 @@ module.exports = {
           type: 'error',
           source: 'plugin',
           name: this.pluginName,
-          message: `Request failed: Server responded with code: ${response.statusCode}`
+          message: `Error ${response.statusCode}: ${body}`
         });
       }
     });
