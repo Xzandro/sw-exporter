@@ -1,6 +1,6 @@
 const request = require('request');
 
-const SWARFARM_URL = 'http://127.0.0.1:8000';
+const SWARFARM_URL = 'https://swarfarm.com';
 
 module.exports = {
   defaultConfig: {
