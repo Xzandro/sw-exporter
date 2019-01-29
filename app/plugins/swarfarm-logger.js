@@ -31,13 +31,23 @@ module.exports = {
       try {
         request(options, (error, response, body) => {
           if (!error && response.statusCode === 200) {
-            this.accepted_commands = JSON.parse(body);
-            proxy.log({
-              type: 'success',
-              source: 'plugin',
-              name: this.pluginName,
-              message: `Looking for the following commands to log: ${Object.keys(this.accepted_commands).join(', ')}`
-            });
+            try {
+              this.accepted_commands = JSON.parse(body);
+              proxy.log({
+                type: 'success',
+                source: 'plugin',
+                name: this.pluginName,
+                message: `Looking for the following commands to log: ${Object.keys(this.accepted_commands).join(', ')}`
+              });
+            } catch (error) {
+              proxy.log({
+                type: 'error',
+                source: 'plugin',
+                name: this.pluginName,
+                message: 'Unable to parse accepted log types. SWARFARM logging is disabled.'
+              });
+              config.Config.Plugins[this.pluginName].enabled = false;
+            }
           } else {
             proxy.log({
               type: 'error',
