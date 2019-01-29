@@ -21,7 +21,7 @@ module.exports = {
   writeSiegeMatchToFile(proxy, req, resp) {
     const wizardID = req.wizard_id;
     const siegeID = req.siege_id;
-    const filename = sanitize(`${wizardID}-${siegeID}`).concat('-siegeMatch.json');
+    const filename = sanitize(`SiegeMatch-${wizardID}-${siegeID}`).concat('.json');
 
     const outFile = fs.createWriteStream(path.join(config.Config.App.filesPath, filename), {
       flags: 'w',
