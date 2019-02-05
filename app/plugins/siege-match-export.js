@@ -11,9 +11,6 @@ module.exports = {
   init(proxy, config) {
     proxy.on('GetGuildSiegeMatchupInfo', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {
-        // if (config.Config.Plugins[this.pluginName].sortData) {
-        //   resp.friend = this.sortUserData(resp.friend);
-        // }
         this.writeSiegeMatchToFile(proxy, req, resp);
       }
     });
