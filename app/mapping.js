@@ -853,6 +853,24 @@ module.exports = {
       22614: 'Geldnir',
       22615: 'Herteit',
 
+      227: 'Sniper Mk.I',
+      22711: 'Covenant',
+      22712: 'Carcano',
+      22713: 'Carbine',
+      22714: 'Magnum',
+      22715: 'Dragunov',
+      228: 'Sniper Mk.I',
+      22812: 'Carcano',
+      22813: 'Carbine',
+      22815: 'Dragunov',
+
+      229: 'Cannon Girl',
+      22911: 'Abigail',
+      22912: 'Scarlett',
+      22913: 'Christina',
+      22914: 'Emily',
+      22915: 'Bella',
+
       15105: 'Devilmon',
       14314: 'Rainbowmon',
 
