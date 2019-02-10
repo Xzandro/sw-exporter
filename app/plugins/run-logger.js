@@ -252,17 +252,32 @@ module.exports = {
     entry.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM');
     entry.result = winLost;
 
+    if (resp.clear_time) {
+      const seconds =
+        Math.floor((resp.clear_time.current_time / 1000) % 60) < 10
+          ? `0${Math.floor((resp.clear_time.current_time / 1000) % 60)}`
+          : Math.floor((resp.clear_time.current_time / 1000) % 60);
+      const time = [Math.floor(resp.clear_time.current_time / 1000 / 60), seconds];
+      entry.time = `${time[0]}:${time[1]}`;
+    }
+
     const reward = resp.reward ? resp.reward : {};
 
     if (resp.win_lose === 1) {
       if (!reward.crate) {
-        entry.drop = `${resp.battle_reward_list.find(value => value.wizard_id === resp.wizard_info.wizard_id).reward_list[0].item_quantity} Mana`;
-      } else if (reward.crate.runecraft_info) {
+        const reward = resp.battle_reward_list.find(value => value.wizard_id === resp.wizard_info.wizard_id).reward_list[0];
+        if (reward.item_master_id === 6) {
+          entry.drop = `Shapeshifting stones x${reward.item_quantity}`;
+        } else {
+          entry.drop = `${reward.item_quantity} Mana`;
+        }
+      } else if (reward.crate.changestones) {
         const item = {
           info: {
-            craft_type: reward.crate.runecraft_info.craft_type,
-            craft_type_id: reward.crate.runecraft_info.craft_type_id
-          }
+            craft_type: reward.crate.changestones[0].craft_type,
+            craft_type_id: reward.crate.changestones[0].craft_type_id
+          },
+          sell_value: reward.crate.changestones[0].sell_value
         };
         entry = this.getItemRift(item, entry);
       } else if (reward.crate.rune) {
@@ -283,6 +298,7 @@ module.exports = {
         entry[`team${i + 1}`] = gMapping.getMonsterName(unit.unit_master_id);
       });
     }
+
     const headers = [
       'date',
       'dungeon',

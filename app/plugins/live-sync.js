@@ -159,8 +159,8 @@ module.exports = {
           const reward = resp.battle_reward_list[rewardID].reward_list[0] || {};
 
           if (reward.item_master_type === 27) {
-            const craftInfo = resp.reward.crate.runecraft_info;
-            this.saveAction(proxy, wizardId, resp.tvalue, 'new_craft', { craft: craftInfo });
+            const changestone = resp.reward.crate.changestones[0] || {};
+            this.saveAction(proxy, wizardId, resp.tvalue, 'new_craft', { craft: changestone });
             break;
           }
         }
