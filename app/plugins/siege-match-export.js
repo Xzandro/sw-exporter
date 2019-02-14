@@ -8,10 +8,18 @@ module.exports = {
   },
   pluginName: 'SiegeMatchExport',
   pluginDescription: 'Exports siege match info.',
+  data: { match: {}, attack: {} },
   init(proxy, config) {
     proxy.on('GetGuildSiegeMatchupInfo', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {
-        this.writeSiegeMatchToFile(proxy, req, resp);
+        this.data.match = resp;
+        this.writeSiegeMatchToFile(proxy, req, this.data);
+      }
+    });
+    proxy.on('GetGuildSiegeBattleLog', (req, resp) => {
+      if (config.Config.Plugins[this.pluginName].enabled) {
+        this.data.attack = resp;
+        this.writeSiegeMatchToFile(proxy, req, this.data);
       }
     });
   },
