@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Menu, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, shell, Tray, nativeImage } = require('electron');
 const fs = require('fs-extra');
 const storage = require('electron-json-storage');
 const _ = require('lodash');
@@ -25,6 +25,22 @@ let defaultConfigDetails = {
     Plugins: {}
   }
 };
+let tray = null;
+// TODO: Cleanup this bodge that gets us the path.
+let trayIconPath = path.join(__dirname, '..', 'assets', 'icons', 'tray-icon.png');
+// Create as a NativeImage as this suppresses any errors that occur.
+let trayIcon = nativeImage.createFromPath(trayIconPath);
+
+const contextMenu = Menu.buildFromTemplate([
+  { label: 'Enable Proxy', type: 'checkbox', checked: false, click: trayToggleProxy },
+  { type: 'separator' },
+  { label: 'Quit', type: 'normal', click: () => { app.quit(); } }
+]);
+
+function trayToggleProxy(menuItem, browserWindow, event) {
+  if(proxy.isRunning()) proxy.stop();
+  else proxy.start(config.Config.Proxy.port);
+}
 
 function createWindow() {
   global.win = new BrowserWindow({
@@ -64,10 +80,14 @@ ipcMain.on('proxyGetInterfaces', event => {
 
 ipcMain.on('proxyStart', () => {
   proxy.start(config.Config.Proxy.port);
+  contextMenu.items[0].checked = true;
+  tray.setContextMenu(contextMenu);
 });
 
 ipcMain.on('proxyStop', () => {
   proxy.stop();
+  contextMenu.items[0].checked = false;
+  tray.setContextMenu(contextMenu);
 });
 
 ipcMain.on('logGetEntries', event => {
@@ -113,6 +133,11 @@ function loadPlugins() {
 app.on('ready', () => {
   createWindow();
 
+  // Create, label, and display the tray icon
+  tray = new Tray(trayIcon);
+  tray.setToolTip('Summoner\'s War Exporter (SWEX)');
+  tray.setContextMenu(contextMenu);
+
   if (process.platform === 'darwin') {
     // Create our menu entries so that we can use MAC shortcuts like copy & paste
     Menu.setApplicationMenu(
@@ -147,6 +172,10 @@ app.on('ready', () => {
 
     if (process.env.autostart || global.config.Config.Proxy.autoStart) {
       proxy.start(process.env.port || config.Config.Proxy.port);
+
+      // Update the initial state of the tray icon
+      contextMenu.items[0].checked = true;
+      tray.setContextMenu(contextMenu);
     }
   });
 });
