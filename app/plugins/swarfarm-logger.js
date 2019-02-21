@@ -161,6 +161,16 @@ module.exports = {
       });
 
       request(options, (error, response, body) => {
+        if (error) {
+          proxy.log({
+            type: 'error',
+            source: 'plugin',
+            name: this.pluginName,
+            message: `Error: ${error.message}`
+          });
+          return;
+        }
+        
         if (response.statusCode === 200) {
           proxy.log({
             type: 'debug',
