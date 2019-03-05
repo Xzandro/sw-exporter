@@ -6,25 +6,28 @@ module.exports = {
   defaultConfig: {
     enabled: false
   },
-  pluginName: 'SiegeMatchExport',
-  pluginDescription: 'Exports siege match info.',
+  pluginName: 'SiegeInsightsPlugin',
+  pluginDescription: 'Exports siege matchup info and logs for Siege Insights.',
   data: {},
   init(proxy, config) {
     proxy.on('GetGuildSiegeMatchupInfo', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {
         this.data['wizard_id'] = req.wizard_id;
         this.data['matchup_info'] = resp;
-        this.writeSiegeMatchToFile(proxy, req, this.data);
+        this.writeSiegeMatchToFile(proxy, this.data, 'matchup info');
       }
     });
     proxy.on('GetGuildSiegeBattleLog', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {
         req.log_type === 1 ? (this.data['attack_log'] = resp) : (this.data['defense_log'] = resp);
-        this.writeSiegeMatchToFile(proxy, req, this.data);
+        if (this.data.matchup_info) {
+          const log_msg = req.log_type === 1 ? 'attack log' : 'defense log';
+          this.writeSiegeMatchToFile(proxy, this.data, log_msg);
+        }
       }
     });
   },
-  writeSiegeMatchToFile(proxy, req, data) {
+  writeSiegeMatchToFile(proxy, data, log_msg) {
     const matchID = data.matchup_info.match_info.match_id;
     const filename = sanitize(`SiegeMatch-${matchID}`).concat('.json');
 
@@ -35,6 +38,6 @@ module.exports = {
 
     outFile.write(JSON.stringify(data, true, 2));
     outFile.end();
-    proxy.log({ type: 'success', source: 'plugin', name: this.pluginName, message: `Saved siege match data to file ${filename}` });
+    proxy.log({ type: 'success', source: 'plugin', name: this.pluginName, message: `Saved ${log_msg} data to file ${filename}` });
   }
 };
