@@ -19,9 +19,15 @@ module.exports = {
     });
     proxy.on('GetGuildSiegeBattleLog', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {
-        req.log_type === 1 ? (this.data['attack_log'] = resp) : (this.data['defense_log'] = resp);
+        let log_msg;
+        if (req.log_type === 1) {
+          this.data['attack_log'] = resp;
+          log_msg = 'attack log';
+        } else {
+          this.data['defense_log'] = resp;
+          log_msg = 'defense log';
+        }
         if (this.data.matchup_info) {
-          const log_msg = req.log_type === 1 ? 'attack log' : 'defense log';
           this.writeSiegeMatchToFile(proxy, this.data, log_msg);
         }
       }
