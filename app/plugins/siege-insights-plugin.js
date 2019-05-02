@@ -14,7 +14,7 @@ module.exports = {
       if (config.Config.Plugins[this.pluginName].enabled) {
         this.data['wizard_id'] = req.wizard_id;
         this.data['matchup_info'] = resp;
-        this.writeSiegeMatchToFile(proxy, this.data, 'matchup info');
+        this.writeSiegeMatchToFile(proxy, this.data, resp.match_info.match_id, 'matchup info');
       }
     });
     proxy.on('GetGuildSiegeBattleLog', (req, resp) => {
@@ -27,15 +27,12 @@ module.exports = {
           this.data['defense_log'] = resp;
           log_msg = 'defense log';
         }
-        if (this.data.matchup_info) {
-          this.writeSiegeMatchToFile(proxy, this.data, log_msg);
-        }
+        this.writeSiegeMatchToFile(proxy, this.data, resp.log_list[0].guild_info_list[0].match_id, log_msg);
       }
     });
   },
-  writeSiegeMatchToFile(proxy, data, log_msg) {
-    const matchID = data.matchup_info.match_info.match_id;
-    const filename = sanitize(`SiegeMatch-${matchID}`).concat('.json');
+  writeSiegeMatchToFile(proxy, data, match_id, log_msg) {
+    const filename = sanitize(`SiegeMatch-${match_id}`).concat('.json');
 
     const outFile = fs.createWriteStream(path.join(config.Config.App.filesPath, filename), {
       flags: 'w',
