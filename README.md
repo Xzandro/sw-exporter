@@ -15,6 +15,7 @@ Further instructions are available in the Help section of Summoner's War Exporte
 Install [node.js](https://nodejs.org/).
 ```
 $ git clone https://github.com/Xzandro/sw-exporter.git
+$ cd sw-exporter
 $ npm install
 $ npm run dev
 $ npm start
