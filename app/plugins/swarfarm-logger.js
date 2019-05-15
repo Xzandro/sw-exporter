@@ -275,7 +275,7 @@ module.exports = {
     profileSync: { label: 'Automatically upload profile to SWARFARM' },
     apiKey: { label: 'SWARFARM API key', type: 'input' }
   },
-  pluginName: 'SwarfarmLogger',
+  pluginName,
   pluginDescription: 'Syncs your SWARFARM profile automatically and logs data for your account.',
   init(proxyInstance, config) {
     myConfig = config.Config.Plugins[pluginName];
