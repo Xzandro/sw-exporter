@@ -7,7 +7,7 @@ let request, acceptedCommands, apiKey, proxy, myConfig;
 
 const getApiKey = wizardId => {
   if (apiKey instanceof Object) {
-    return apiKey[wizardId.toString()];
+    return apiKey[wizardId];
   } else {
     return apiKey;
   }
