@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, Form, Input } from 'semantic-ui-react';
+import { Checkbox, Form, Input, TextArea } from 'semantic-ui-react';
 import SettingsItem from './SettingsItem';
 
 const { remote } = require('electron');
@@ -11,7 +11,8 @@ class SettingsPlugin extends React.Component {
     super();
     this.components = {
       checkbox: Checkbox,
-      input: Input
+      input: Input,
+      textarea: TextArea
     };
   }
 

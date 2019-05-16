@@ -5,31 +5,6 @@ const SWARFARM_URL = 'https://swarfarm.com/api/v2/';
 const pluginName = 'SwarfarmLogger';
 let request, acceptedCommands, apiKey, proxy, myConfig;
 
-const loadExtraConfig = dir => {
-  const filePath = `${dir}\\swarfarm.json`;
-  if (fs.existsSync(filePath)) {
-    try {
-      const extra_config = JSON.parse(fs.readFileSync(filePath));
-      if (extra_config.apiKeys) {
-        apiKey = extra_config.apiKeys;
-        proxy.log({
-          type: 'success',
-          source: 'plugin',
-          name: pluginName,
-          message: 'Using SWARFARM API keys from swarfarm.json.'
-        });
-      }
-    } catch (error) {
-      proxy.log({
-        type: 'error',
-        source: 'plugin',
-        name: pluginName,
-        message: `Unable to load/parse extra config from swarfarm.json. Check your syntax. Using values in Settings section.`
-      });
-    }
-  }
-};
-
 const getApiKey = wizardId => {
   if (apiKey instanceof Object) {
     return apiKey[wizardId.toString()];
@@ -273,18 +248,18 @@ module.exports = {
   },
   defaultConfigDetails: {
     profileSync: { label: 'Automatically upload profile to SWARFARM' },
-    apiKey: { label: 'SWARFARM API key', type: 'input' }
+    apiKey: { label: 'SWARFARM API key', type: 'textarea' }
   },
   pluginName,
   pluginDescription: 'Syncs your SWARFARM profile automatically and logs data for your account.',
   init(proxyInstance, config) {
     myConfig = config.Config.Plugins[pluginName];
+    apiKey = myConfig.apiKey;
 
     if (myConfig.enabled) {
       proxy = proxyInstance;
       request = requestLib.defaults({ baseUrl: SWARFARM_URL });
       apiKey = myConfig.apiKey;
-      loadExtraConfig(config.Config.App.filesPath);
 
       if (!apiKey) {
         // Warning message to user to prompt to set API key.

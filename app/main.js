@@ -102,7 +102,23 @@ function loadPlugins() {
 
   // Initialize plugins
   plugins.forEach(plug => {
+    // try to parse JSON for textareas
     config.Config.Plugins[plug.pluginName] = _.merge(plug.defaultConfig, config.Config.Plugins[plug.pluginName]);
+    Object.entries(config.Config.Plugins[plug.pluginName]).forEach(([key, value]) => {
+      if (
+        plug.defaultConfigDetails &&
+        plug.defaultConfigDetails[key] &&
+        plug.defaultConfigDetails[key].type &&
+        plug.defaultConfigDetails[key].type === 'textarea'
+      ) {
+        try {
+          const parsedValue = JSON.parse(value);
+          config.Config.Plugins[plug.pluginName][key] = parsedValue;
+        } catch (error) {
+          // JSON parsing didn't work, do nothing
+        }
+      }
+    });
     config.ConfigDetails.Plugins[plug.pluginName] = plug.defaultConfigDetails || {};
     plug.init(proxy, config);
   });

@@ -78,6 +78,6 @@
     "react-router-dom": "^4.3.1",
     "request": "^2.88.0",
     "sanitize-filename": "^1.6.1",
-    "semantic-ui-react": "^0.83.0"
+    "semantic-ui-react": "^0.87.1"
   }
 }
