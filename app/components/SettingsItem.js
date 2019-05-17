@@ -33,7 +33,17 @@ class SettingsItem extends React.Component {
   }
 
   changeSetting(e, element) {
-    const value = element.type === 'checkbox' ? element.checked : element.value;
+    let value = element.type === 'checkbox' ? element.checked : element.value;
+
+    if (element.as === 'textarea') {
+      // try to parse the new value
+      try {
+        value = JSON.parse(value);
+      } catch (error) {
+        // JSON.parse didn't work, do nothing
+      }
+    }
+
     if (this.props.section === 'Plugins') {
       config.Config[this.props.section][this.props.pluginName][this.props.setting] = value;
     } else {
@@ -50,6 +60,16 @@ class SettingsItem extends React.Component {
         return <Form.Checkbox {...this.Input.props} label={this.getLabel()} checked={this.state.value} onChange={this.changeSetting.bind(this)} />;
       case 'Select':
         return <Form.Select {...this.Input.props} label={this.getLabel()} value={this.state.value} onChange={this.changeSetting.bind(this)} />;
+      case 'TextArea':
+        // check if this data is JSON and stringify it if that's the case
+        let realValue;
+        try {
+          realValue = JSON.stringify(JSON.parse(this.state.value));
+        } catch (error) {
+          // JSON.parse didn't work, probably no valid JSON or already parsed
+          realValue = this.state.value instanceof Object ? JSON.stringify(this.state.value) : this.state.value;
+        }
+        return <Form.TextArea label={this.getLabel()} value={realValue} onChange={this.changeSetting.bind(this)} />;
       default:
         return <Form.Input {...this.Input.props} label={this.getLabel()} value={this.state.value} onChange={this.changeSetting.bind(this)} />;
     }
