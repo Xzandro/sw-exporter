@@ -254,7 +254,6 @@ module.exports = {
   pluginDescription: 'Syncs your SWARFARM profile automatically and logs data for your account.',
   init(proxyInstance, config) {
     myConfig = config.Config.Plugins[pluginName];
-    apiKey = myConfig.apiKey;
 
     if (myConfig.enabled) {
       proxy = proxyInstance;
