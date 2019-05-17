@@ -68,6 +68,7 @@
   "dependencies": {
     "dateformat": "^3.0.3",
     "electron-json-storage": "^4.1.4",
+    "electron-window-state": "^5.0.3",
     "fast-csv": "^2.4.1",
     "fs-extra": "^7.0.1",
     "http-proxy": "^1.17.0",

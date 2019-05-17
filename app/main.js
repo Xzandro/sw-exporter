@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, Menu, shell } = require('electron');
 const fs = require('fs-extra');
 const storage = require('electron-json-storage');
+const windowStateKeeper = require('electron-window-state');
 const _ = require('lodash');
 const SWProxy = require('./proxy/SWProxy');
 
@@ -27,9 +28,18 @@ let defaultConfigDetails = {
 };
 
 function createWindow() {
+  let mainWindowState = windowStateKeeper({
+    defaultWidth: 800,
+    defaultHeight: 600
+  });
+
   global.win = new BrowserWindow({
     minWidth: 800,
     minHeight: 600,
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+    width: mainWindowState.width,
+    height: mainWindowState.height,
     acceptFirstMouse: true,
     autoHideMenuBar: true
   });
@@ -43,6 +53,8 @@ function createWindow() {
       slashes: true
     })
   );
+
+  mainWindowState.manage(win);
 
   win.webContents.on('new-window', (e, link) => {
     e.preventDefault();
