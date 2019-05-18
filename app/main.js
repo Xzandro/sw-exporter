@@ -94,8 +94,7 @@ ipcMain.on('updateConfig', () => {
 
 ipcMain.on('getFolderLocations', event => {
   event.returnValue = {
-    settings: app.getPath('userData'),
-    plugins: path.join(path.dirname(app.getPath('exe')), 'plugins')
+    settings: app.getPath('userData')
   };
 });
 
@@ -105,11 +104,24 @@ function loadPlugins() {
   // Initialize Plugins
   let plugins = [];
 
-  const pluginDir = path.join(__dirname, 'plugins');
+  const pluginDirs = [path.join(__dirname, 'plugins'), path.join(global.config.Config.App.filesPath, 'plugins')];
 
   // Load each plugin module in the folder
-  fs.readdirSync(pluginDir).forEach(file => {
-    plugins.push(require(path.join(pluginDir, file)));
+  pluginDirs.forEach(dir => {
+    fs.readdirSync(dir).forEach(file => {
+      const plug = require(path.join(dir, file));
+
+      // Check plugin for correct shape
+      if (plug.defaultConfig && plug.pluginName && plug.pluginDescription && typeof plug.init === 'function') {
+        plugins.push(plug);
+      } else {
+        proxy.log({
+          type: 'error',
+          source: 'proxy',
+          message: `Invalid plugin ${file}. Missing one or more required module exports.`
+        });
+      }
+    });
   });
 
   // Initialize plugins
@@ -132,7 +144,15 @@ function loadPlugins() {
       }
     });
     config.ConfigDetails.Plugins[plug.pluginName] = plug.defaultConfigDetails || {};
-    plug.init(proxy, config);
+    try {
+      plug.init(proxy, config);
+    } catch (error) {
+      proxy.log({
+        type: 'error',
+        source: 'proxy',
+        message: `Error initializing ${plug.pluginName}: ${error.message}`
+      });
+    }
   });
 
   return plugins;
@@ -170,6 +190,7 @@ app.on('ready', () => {
     global.config.ConfigDetails = defaultConfigDetails.ConfigDetails;
 
     fs.ensureDirSync(global.config.Config.App.filesPath);
+    fs.ensureDirSync(path.join(global.config.Config.App.filesPath, 'plugins'));
 
     global.plugins = loadPlugins();
 
