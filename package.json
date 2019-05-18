@@ -7,7 +7,7 @@
   "scripts": {
     "start": "electron .",
     "rebuild": "electron-rebuild -f -w sw-exporter",
-    "pack": "build --dir",
+    "pack": "webpack",
     "dist:win64": "build --x64",
     "dist:win32": "build --ia32",
     "dist:mac": "build",
@@ -20,7 +20,8 @@
     "artifactName": "${productName}-${version}-${os}.${ext}",
     "win": {
       "target": [
-        "nsis"
+        "nsis",
+        "portable"
       ]
     },
     "mac": {
