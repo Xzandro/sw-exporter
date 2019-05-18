@@ -109,7 +109,18 @@ function loadPlugins() {
   // Load each plugin module in the folder
   pluginDirs.forEach(dir => {
     fs.readdirSync(dir).forEach(file => {
-      plugins.push(require(path.join(dir, file)));
+      const plug = require(path.join(dir, file));
+
+      // Check plugin for correct shape
+      if (plug.defaultConfig && plug.pluginName && plug.pluginDescription && typeof plug.init === 'function') {
+        plugins.push(plug);
+      } else {
+        proxy.log({
+          type: 'error',
+          source: 'proxy',
+          message: `Invalid plugin ${file}. Missing one or more required module exports.`
+        });
+      }
     });
   });
 
@@ -133,7 +144,15 @@ function loadPlugins() {
       }
     });
     config.ConfigDetails.Plugins[plug.pluginName] = plug.defaultConfigDetails || {};
-    plug.init(proxy, config);
+    try {
+      plug.init(proxy, config);
+    } catch (error) {
+      proxy.log({
+        type: 'error',
+        source: 'proxy',
+        message: `Error initializing ${plug.pluginName}: ${error.message}`
+      });
+    }
   });
 
   return plugins;
@@ -171,6 +190,7 @@ app.on('ready', () => {
     global.config.ConfigDetails = defaultConfigDetails.ConfigDetails;
 
     fs.ensureDirSync(global.config.Config.App.filesPath);
+    fs.ensureDirSync(path.join(global.config.Config.App.filesPath, 'plugins'));
 
     global.plugins = loadPlugins();
 
