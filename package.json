@@ -10,7 +10,7 @@
     "pack": "webpack",
     "dist": "build",
     "dev": "webpack --watch"
-  },
+  }, 
   "build": {
     "productName": "Summoners War Exporter",
     "appId": "com.electron.sw-exporter",
