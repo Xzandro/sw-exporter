@@ -21,3 +21,7 @@ test: off
 environment:
   GH_TOKEN:
     secure: rtwqQ0lpjwUxes3Vnn+KGMqTn1CBUnWwoXdksyqUrJdOdN/dmakG7QYf0qPG2Il/
+
+branches:
+  only:
+    - master
