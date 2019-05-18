@@ -30,14 +30,13 @@ script:
         /bin/bash -c "yarn --link-duplicates --pure-lockfile && yarn release --linux --win"
       npm run pack
       npm run
-    else
-      yarn release
     fi
-    npm run pack
-    npm run dist
+  - npm run pack
+  - npm run dist
+    
 before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
 
 branches:
-  except:
-    - "/^v\\d+\\.\\d+\\.\\d+$/"
+  only:
+    - deployment
