@@ -28,8 +28,6 @@ script:
         -v ~/.cache/electron-builder:/root/.cache/electron-builder \
         electronuserland/builder:wine \
         /bin/bash -c "yarn --link-duplicates --pure-lockfile && yarn release --linux --win"
-      npm run pack
-      npm run
     fi
   - npm run pack
   - npm run dist
