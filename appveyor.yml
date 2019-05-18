@@ -14,7 +14,7 @@ install:
 
 build_script:
   - npm run pack
-  - npm run dist:win64
+  - npm run dist:win
 
 test: off
 
