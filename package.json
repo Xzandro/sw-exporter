@@ -8,9 +8,7 @@
     "start": "electron .",
     "rebuild": "electron-rebuild -f -w sw-exporter",
     "pack": "webpack",
-    "dist:win": "build",
-    "dist:mac": "build",
-    "dist:linux": "build",
+    "dist": "build",
     "dev": "webpack --watch"
   },
   "build": {

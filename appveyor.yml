@@ -14,10 +14,10 @@ install:
 
 build_script:
   - npm run pack
-  - npm run dist:win
+  - npm run dist
 
 test: off
 
 environment:
   GH_TOKEN:
-    secure: XFqikQosNgxPwa3hyYatgFpc0aPs+alSmJDF1Fgw/eGOjSratpQdY1ZSqUwwbkG1
+    secure: rtwqQ0lpjwUxes3Vnn+KGMqTn1CBUnWwoXdksyqUrJdOdN/dmakG7QYf0qPG2Il/
