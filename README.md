@@ -32,25 +32,32 @@ module.exports = {
 }
 ```
 
-The [NodeJS 10 standard library](https://nodejs.org/dist/latest-v10.x/docs/api/) is available to use within your plugin. To receive game events in your plugin, you must subscribe to events from `proxy`. See the See the [example plugin](https://github.com/Xzandro/sw-exporter/blob/external-plugins/app/plugins/example-plugin.js) for the two options to receive events - every game event, or subscribe to specific events. `proxy` is an [EventEmitter](https://nodejs.org/docs/latest-v10.x/api/events.html). `config` is the configuration for the full SW-Exporter application. You can access your specific plugin's configuration like this: `config.Config.Plugins[<pluginName>]`. When in doubt, browse through the [prepackaged plugins](https://github.com/Xzandro/sw-exporter/tree/external-plugins/app/plugins) for examples.
+The [NodeJS 10 standard library](https://nodejs.org/dist/latest-v10.x/docs/api/) is available to use within your plugin. To receive game events, you must subscribe to events from `proxy`. See the See the [example plugin](https://github.com/Xzandro/sw-exporter/blob/external-plugins/app/plugins/example-plugin.js) for the two options to receive events - every game event, or specific events. `proxy` is an [EventEmitter](https://nodejs.org/docs/latest-v10.x/api/events.html). `config` is the configuration for the full SW-Exporter application. You can access your specific plugin's configuration like this: `config.Config.Plugins[<pluginName>]`. When in doubt, browse through the [prepackaged plugins](https://github.com/Xzandro/sw-exporter/tree/external-plugins/app/plugins) for examples.
 
 ### Single Javascript File
 
-The [example plugin](https://github.com/Xzandro/sw-exporter/blob/external-plugins/app/plugins/example-plugin.js) is a fully featured plugin with no dependencies on external libraries.
+The [example plugin](https://github.com/Xzandro/sw-exporter/blob/external-plugins/app/plugins/example-plugin.js) details a barebones plugin with no external dependencies.
 
 ### Full NPM package
 
-See this [example repo](https://github.com/PeteAndersen/example-swex-plugin) for a plugin that requires the [request](https://github.com/request/request) module as a dependency to do something. As long as your package's default export matches the form specified above, you can do anything you like within your package.
+See this [example repo](https://github.com/PeteAndersen/example-swex-plugin) for a plugin that requires the [request](https://github.com/request/request) module as a dependency to do something. As long as your package's default export matches the form specified above, you can do anything you like within your package, including external dependencies. These dependencies must be in a node_modules folder within your plugin directory. The full file structure would look something like this:
+
+```
+> Summoners War Exporter Files\plugins\my-fancy-plugin
+> Summoners War Exporter Files\plugins\my-fancy-plugin\index.js
+> Summoners War Exporter Files\plugins\my-fancy-plugin\other-plugin-code.js
+> Summoners War Exporter Files\plugins\my-fancy-plugin\node_modules
+```
 
 #### Packaging
 
-You can place your plugin as a folder of files in the `plugins` directory and it will work. However, it is recommended for distribution to package your plugin as an [asar](https://github.com/electron/asar) file so your users do not have to deal with the high number of individual files inherent to javascript applications.
+You can place your plugin as a folder of files in the `plugins` directory and it will work. However, it is recommended for distribution to package your plugin as an [asar](https://github.com/electron/asar) file.
 
-To correctly package your plugin, run `$ asar pack <plugin-folder-name> <plugin-name>.asar`. Your asar archive should include all of your javascript code files and a `node_modules` folder with your dependencies.
+To correctly package your plugin, run `$ asar pack <plugin-folder-name> <plugin-name>.asar`. Your asar archive should include all of your javascript code files and a `node_modules` folder with your dependencies. To install your packaged plugin, simply drop the plugin.asar into the plugins folder. The directory structure will look like this:
 
-### Installing Plugins
-
-Place your plugin in the `Summoners War Exporter Files\plugins` directory. The full path of this folder is found in the game settings. SW-Exporter will attempt to load all plugins in this folder on startup and run your `init()` function.
+```
+Summoners War Exporter Files\plugins\my-fancy-plugin.asar
+```
 
 ## Developing SW-Exporter
 
