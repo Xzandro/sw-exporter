@@ -31,4 +31,4 @@ before_cache:
 
 branches:
   only:
-    - deployment
+    - master
