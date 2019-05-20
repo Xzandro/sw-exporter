@@ -24,4 +24,4 @@ environment:
 
 branches:
   only:
-    - master
+    - stable
