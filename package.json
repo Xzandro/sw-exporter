@@ -7,20 +7,30 @@
   "scripts": {
     "start": "electron .",
     "rebuild": "electron-rebuild -f -w sw-exporter",
-    "pack": "build --dir",
-    "dist:win64": "build --x64",
-    "dist:win32": "build --ia32",
-    "dist:mac": "build",
-    "dist:linux": "build",
+    "pack": "webpack",
+    "dist": "build",
     "dev": "webpack --watch"
-  },
+  }, 
   "build": {
     "productName": "Summoners War Exporter",
     "appId": "com.electron.sw-exporter",
     "artifactName": "${productName}-${version}-${os}.${ext}",
     "win": {
       "target": [
-        "nsis"
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
       ]
     },
     "mac": {

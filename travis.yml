@@ -1,0 +1,34 @@
+env:
+  global:
+    - ELECTRON_CACHE=$HOME/.cache/electron
+    - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode9.4
+    - os: linux
+
+language: node_js
+node_js: '10'
+
+cache:
+  directories:
+    - node_modules
+    - $HOME/.cache/electron
+    - $HOME/.cache/electron-builder
+    - $HOME/.npm/_prebuilds
+    
+install:
+  - npm install
+
+script:
+  - npm run pack
+  - npm run dist
+    
+before_cache:
+  - rm -rf $HOME/.cache/electron-builder/wine
+
+branches:
+  only:
+    - master

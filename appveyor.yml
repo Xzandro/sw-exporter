@@ -1,0 +1,27 @@
+image: Visual Studio 2017
+
+platform:
+  - x64
+
+cache:
+  - node_modules
+  - '%APPDATA%\npm-cache'
+  - '%USERPROFILE%\.electron'
+
+install:
+  - ps: Install-Product node 10 x64
+  - npm install
+
+build_script:
+  - npm run pack
+  - npm run dist
+
+test: off
+
+environment:
+  GH_TOKEN:
+    secure: rtwqQ0lpjwUxes3Vnn+KGMqTn1CBUnWwoXdksyqUrJdOdN/dmakG7QYf0qPG2Il/
+
+branches:
+  only:
+    - master
