@@ -93,7 +93,7 @@ After that you have several possibilities.
 
 ### Windows
 
-For Windows you can build a Portable or Setup version (default: Setup). That's changeable via the package.json.
+For Windows you can build a Portable or Setup version (default: Both will build). That's changeable via the package.json.
 
 ```
 "win": {
@@ -105,27 +105,26 @@ For Windows you can build a Portable or Setup version (default: Setup). That's c
 
 Just change nsis to portable.
 
-Building the packages
+Building the packages (ia32 & x64 will be included in one executable automatically)
 
 ```
-$ npm run dist:win32
-$ npm run dist:win64
+$ npm run dist
 ```
 
 ### Linux
 
-An AppImage package file will be build which is compatible with most common linux os.
+An AppImage & snap package file will be build which is compatible with most common linux os.
 
 ```
-$ npm run dist:linux
+$ npm run dist
 ```
 
 ### Mac
 
-A typical DMG package file will be build.
+A typical DMG package file and a zip file will be build.
 
 ```
-$ npm run dist:mac
+$ npm run dist
 ```
 
 ## Setting up on a VPS
