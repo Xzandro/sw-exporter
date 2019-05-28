@@ -41,7 +41,10 @@ function createWindow() {
     width: mainWindowState.width,
     height: mainWindowState.height,
     acceptFirstMouse: true,
-    autoHideMenuBar: true
+    autoHideMenuBar: true,
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
 
   global.mainWindowId = win.id;
