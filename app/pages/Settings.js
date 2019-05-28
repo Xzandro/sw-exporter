@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Checkbox, Grid, Header, Form, Icon, Popup, Segment } from 'semantic-ui-react';
+import { Button, Checkbox, Grid, Header, Input, Form, Icon, Popup, Segment } from 'semantic-ui-react';
 import SettingsPlugin from '../components/SettingsPlugin';
 import SettingsItem from '../components/SettingsItem';
 
@@ -75,6 +75,7 @@ class Settings extends React.Component {
             </Form.Group>
             <Form.Group widths={2}>
               <SettingsItem section="App" setting="clearLogOnLogin" Input={<Checkbox />} />
+              <SettingsItem section="App" setting="maxLogEntries" Input={<Input />} />
             </Form.Group>
           </Form>
         </Segment>

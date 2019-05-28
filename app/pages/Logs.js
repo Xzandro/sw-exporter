@@ -53,10 +53,10 @@ class Logs extends React.Component {
   }
 
   render() {
-    const LogEntries = this.state.entries.map((entry, i) => {
+    const LogEntries = this.state.entries.map(entry => {
       if (entry.type !== 'debug' || config.Config.App.debug) {
         return (
-          <Feed key={i} className="log" size="small">
+          <Feed key={entry.id} className="log" size="small">
             <Feed.Event>
               <Feed.Content>
                 <Feed.Summary>
