@@ -167,7 +167,7 @@ class SWProxy extends EventEmitter {
     entry.date = new Date().toLocaleTimeString();
     this.logEntries = [entry, ...this.logEntries];
 
-    const maxLogEntries = parseInt(config.Config.App.maxLogEntries);
+    const maxLogEntries = parseInt(config.Config.App.maxLogEntries) || 0;
     if (this.logEntries.length > maxLogEntries && maxLogEntries !== 0) {
       this.logEntries.pop();
     }
