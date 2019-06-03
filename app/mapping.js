@@ -871,6 +871,9 @@ module.exports = {
       22914: 'Emily',
       22915: 'Bella',
 
+      23005: 'Vampire Lord',
+      23015: 'Eirgar',
+
       15105: 'Devilmon',
       14314: 'Rainbowmon',
 
