@@ -4,6 +4,7 @@ const httpProxy = require('http-proxy');
 const os = require('os');
 const net = require('net');
 const url = require('url');
+const uuidv4 = require('uuid/v4');
 
 const { decrypt_request, decrypt_response } = require('./smon_decryptor');
 
@@ -114,15 +115,11 @@ class SWProxy extends EventEmitter {
     this.httpServer.on('connect', (req, socket) => {
       const serverUrl = url.parse(`https://${req.url}`);
 
-      const srvSocket = net.connect(
-        serverUrl.port,
-        serverUrl.hostname,
-        () => {
-          socket.write('HTTP/1.1 200 Connection Established\r\n' + 'Proxy-agent: Node-Proxy\r\n' + '\r\n');
-          srvSocket.pipe(socket);
-          socket.pipe(srvSocket);
-        }
-      );
+      const srvSocket = net.connect(serverUrl.port, serverUrl.hostname, () => {
+        socket.write('HTTP/1.1 200 Connection Established\r\n' + 'Proxy-agent: Node-Proxy\r\n' + '\r\n');
+        srvSocket.pipe(socket);
+        socket.pipe(srvSocket);
+      });
 
       srvSocket.on('error', () => {});
 
@@ -164,8 +161,16 @@ class SWProxy extends EventEmitter {
       return;
     }
 
+    // add unique id for performance reasons
+    entry.id = uuidv4();
+
     entry.date = new Date().toLocaleTimeString();
     this.logEntries = [entry, ...this.logEntries];
+
+    const maxLogEntries = parseInt(config.Config.App.maxLogEntries) || 0;
+    if (this.logEntries.length > maxLogEntries && maxLogEntries !== 0) {
+      this.logEntries.pop();
+    }
 
     win.webContents.send('logupdated', this.logEntries);
   }
