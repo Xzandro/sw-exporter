@@ -166,6 +166,7 @@ function loadPlugins() {
 }
 
 app.on('ready', () => {
+  app.setAppUserModelId(process.execPath);
   createWindow();
 
   if (process.platform === 'darwin') {
