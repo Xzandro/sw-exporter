@@ -19,6 +19,7 @@ module.exports = {
     switch (command) {
       case 'BattleDungeonResult':
       case 'BattleScenarioResult':
+      case 'BattleDimensionHoleDungeonResult':
         if (resp.win_lose === 1) {
           const reward = resp.reward ? resp.reward : {};
 
@@ -140,8 +141,8 @@ module.exports = {
   mountStarsHtml(rune) {
     let count = 0;
     let html = '<div class="star-line">';
-
-    while (count < rune.class) {
+    let runeClass = gMapping.isAncient(rune) ? rune.class - 10 : rune.class;
+    while (count < runeClass) {
       html = html.concat('<span class="star"><img src="../assets/icons/star-unawakened.png" /></span>');
       count += 1;
     }

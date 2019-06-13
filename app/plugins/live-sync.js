@@ -26,6 +26,7 @@ module.exports = {
         break;
       case 'BattleDungeonResult':
       case 'BattleScenarioResult':
+      case 'BattleDimensionHoleDungeonResult':
         this.logDungeon(proxy, req, resp);
         break;
       case 'SellRune':

@@ -956,7 +956,13 @@ module.exports = {
       2: 'Magic',
       3: 'Rare',
       4: 'Hero',
-      5: 'Legend'
+      5: 'Legend',
+      // ancient rune qualities
+      11: 'Common',
+      12: 'Magic',
+      13: 'Rare',
+      14: 'Hero',
+      15: 'Legend'
     },
     mainstat: {
       1: {
@@ -1406,7 +1412,13 @@ module.exports = {
   },
   dungeon: {
     1001: 'Hall of Dark',
+    1101: 'Sanctuary of Dreaming Fairies',
+    1201: 'Ellunia Remains (Fairy)',
+    1202: 'Ellunia Remains (Pixie)',
     2001: 'Hall of Fire',
+    2101: 'Forest of Roaring Beasts',
+    2201: 'Karzhan Remains (Warbear)',
+    2202: 'Karzhan Remains (Inugami)',
     3001: 'Hall of Water',
     4001: 'Hall of Wind',
     5001: 'Hall of Magic',
@@ -1489,7 +1501,8 @@ module.exports = {
     let ratio = 0.0;
 
     // main stat
-    ratio += this.rune.mainstat[rune.pri_eff[0]].max[rune.class] / this.rune.mainstat[rune.pri_eff[0]].max[6];
+    ratio +=
+      this.rune.mainstat[rune.pri_eff[0]].max[this.isAncient(rune) ? rune.class - 10 : rune.class] / this.rune.mainstat[rune.pri_eff[0]].max[6];
 
     // sub stats
     rune.sec_eff.forEach(stat => {
@@ -1529,5 +1542,14 @@ module.exports = {
     };
 
     return effectTypeStrings[type];
+  },
+  isAncient(item) {
+    if (item.craft_type) {
+      // craft
+      return item.craft_type === 5 || item.craft_type === 6;
+    } else if (item.class) {
+      // rune
+      return item.class > 10;
+    }
   }
 };
