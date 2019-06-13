@@ -14,6 +14,11 @@ module.exports = {
       10113: 'Aeilene',
       10114: 'Neal',
       10115: 'Sorin',
+      10131: 'Elucia',
+      10132: 'Iselia',
+      10133: 'Aeilene',
+      10134: 'Neal',
+      10135: 'Sorin',
 
       102: 'Imp',
       10211: 'Fynn',
@@ -28,6 +33,11 @@ module.exports = {
       10313: 'Shannon',
       10314: 'Cheryl',
       10315: 'Camaryn',
+      10331: 'Kacey',
+      10332: 'Tatu',
+      10333: 'Shannon',
+      10334: 'Cheryl',
+      10335: 'Camaryn',
 
       104: 'Yeti',
       10411: 'Kunda',
@@ -56,6 +66,11 @@ module.exports = {
       10713: 'Ramagos',
       10714: 'Lusha',
       10715: 'Gorgo',
+      10731: 'Dagora',
+      10732: 'Ursha',
+      10733: 'Ramagos',
+      10734: 'Lusha',
+      10735: 'Gorgo',
 
       108: 'Elemental',
       10811: 'Daharenos',
@@ -77,6 +92,11 @@ module.exports = {
       11013: 'Ramahan',
       11014: 'Belladeon',
       11015: 'Kro',
+      11031: 'Icaru',
+      11032: 'Raoq',
+      11033: 'Ramahan',
+      11034: 'Belladeon',
+      11035: 'Kro',
 
       111: 'Salamander',
       11111: 'Kaimann',
@@ -871,6 +891,9 @@ module.exports = {
       22914: 'Emily',
       22915: 'Bella',
 
+      23005: 'Vampire Lord',
+      23015: 'Eirgar',
+
       15105: 'Devilmon',
       14314: 'Rainbowmon',
 
@@ -933,7 +956,13 @@ module.exports = {
       2: 'Magic',
       3: 'Rare',
       4: 'Hero',
-      5: 'Legend'
+      5: 'Legend',
+      // ancient rune qualities
+      11: 'Common',
+      12: 'Magic',
+      13: 'Rare',
+      14: 'Hero',
+      15: 'Legend'
     },
     mainstat: {
       1: {
@@ -1383,7 +1412,13 @@ module.exports = {
   },
   dungeon: {
     1001: 'Hall of Dark',
+    1101: 'Sanctuary of Dreaming Fairies',
+    1201: 'Ellunia Remains (Fairy)',
+    1202: 'Ellunia Remains (Pixie)',
     2001: 'Hall of Fire',
+    2101: 'Forest of Roaring Beasts',
+    2201: 'Karzhan Remains (Warbear)',
+    2202: 'Karzhan Remains (Inugami)',
     3001: 'Hall of Water',
     4001: 'Hall of Wind',
     5001: 'Hall of Magic',
@@ -1466,7 +1501,8 @@ module.exports = {
     let ratio = 0.0;
 
     // main stat
-    ratio += this.rune.mainstat[rune.pri_eff[0]].max[rune.class] / this.rune.mainstat[rune.pri_eff[0]].max[6];
+    ratio +=
+      this.rune.mainstat[rune.pri_eff[0]].max[this.isAncient(rune) ? rune.class - 10 : rune.class] / this.rune.mainstat[rune.pri_eff[0]].max[6];
 
     // sub stats
     rune.sec_eff.forEach(stat => {
@@ -1506,5 +1542,14 @@ module.exports = {
     };
 
     return effectTypeStrings[type];
+  },
+  isAncient(item) {
+    if (item.craft_type) {
+      // craft
+      return item.craft_type === 5 || item.craft_type === 6;
+    } else if (item.class) {
+      // rune
+      return item.class > 10;
+    }
   }
 };

@@ -32,11 +32,11 @@ module.exports = {
 }
 ```
 
-The [NodeJS 10 standard library](https://nodejs.org/dist/latest-v10.x/docs/api/) is available to use within your plugin. To receive game events, you must subscribe to events from `proxy`. See the [example plugin](https://github.com/Xzandro/sw-exporter/blob/external-plugins/app/plugins/example-plugin.js) for the two options to receive events - every game event, or specific events. `proxy` is an [EventEmitter](https://nodejs.org/docs/latest-v10.x/api/events.html). `config` is the configuration for the full SW-Exporter application. You can access your specific plugin's configuration like this: `config.Config.Plugins[<pluginName>]`. When in doubt, browse through the [prepackaged plugins](https://github.com/Xzandro/sw-exporter/tree/external-plugins/app/plugins) for examples.
+The [NodeJS 10 standard library](https://nodejs.org/dist/latest-v10.x/docs/api/) is available to use within your plugin. To receive game events, you must subscribe to events from `proxy`. See the [example plugin](https://github.com/Xzandro/sw-exporter/blob/master/app/plugins/example-plugin.js) for the two options to receive events - every game event, or specific events. `proxy` is an [EventEmitter](https://nodejs.org/docs/latest-v10.x/api/events.html). `config` is the configuration for the full SW-Exporter application. You can access your specific plugin's configuration like this: `config.Config.Plugins[<pluginName>]`. When in doubt, browse through the [prepackaged plugins](https://github.com/Xzandro/sw-exporter/tree/master/app/plugins) for examples.
 
 ### Single Javascript File
 
-The [example plugin](https://github.com/Xzandro/sw-exporter/blob/external-plugins/app/plugins/example-plugin.js) details a barebones plugin with no external dependencies.
+The [example plugin](https://github.com/Xzandro/sw-exporter/blob/master/app/plugins/example-plugin.js) details a barebones plugin with no external dependencies.
 
 ### Full NPM package
 

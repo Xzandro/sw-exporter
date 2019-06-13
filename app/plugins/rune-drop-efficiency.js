@@ -19,6 +19,7 @@ module.exports = {
     switch (command) {
       case 'BattleDungeonResult':
       case 'BattleScenarioResult':
+      case 'BattleDimensionHoleDungeonResult':
         if (resp.win_lose === 1) {
           const reward = resp.reward ? resp.reward : {};
 
@@ -131,7 +132,9 @@ module.exports = {
 
               <div class="content">
                 ${starHtml}
-                <div class="header">${gMapping.rune.sets[rune.set_id]} Rune (${rune.slot_no}) ${gMapping.rune.effectTypes[rune.pri_eff[0]]}</div>
+                <div class="header">${gMapping.isAncient(rune) ? 'Ancient ' : ''}${gMapping.rune.sets[rune.set_id]} Rune (${rune.slot_no}) ${
+      gMapping.rune.effectTypes[rune.pri_eff[0]]
+    }</div>
                 <div class="description">Efficiency: ${efficiency.current}%. ${rune.upgrade_curr < 12 ? `Max: ${efficiency.max}%` : ''}</div>
               </div>
             </div>`;
@@ -140,8 +143,8 @@ module.exports = {
   mountStarsHtml(rune) {
     let count = 0;
     let html = '<div class="star-line">';
-
-    while (count < rune.class) {
+    let runeClass = gMapping.isAncient(rune) ? rune.class - 10 : rune.class;
+    while (count < runeClass) {
       html = html.concat('<span class="star"><img src="../assets/icons/star-unawakened.png" /></span>');
       count += 1;
     }
