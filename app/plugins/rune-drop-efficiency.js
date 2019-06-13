@@ -132,7 +132,9 @@ module.exports = {
 
               <div class="content">
                 ${starHtml}
-                <div class="header">${gMapping.rune.sets[rune.set_id]} Rune (${rune.slot_no}) ${gMapping.rune.effectTypes[rune.pri_eff[0]]}</div>
+                <div class="header">${gMapping.isAncient(rune) ? 'Ancient ' : ''}${gMapping.rune.sets[rune.set_id]} Rune (${rune.slot_no}) ${
+      gMapping.rune.effectTypes[rune.pri_eff[0]]
+    }</div>
                 <div class="description">Efficiency: ${efficiency.current}%. ${rune.upgrade_curr < 12 ? `Max: ${efficiency.max}%` : ''}</div>
               </div>
             </div>`;
