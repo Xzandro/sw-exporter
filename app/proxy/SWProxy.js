@@ -1,10 +1,14 @@
 const EventEmitter = require('events');
-const http = require('http');
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
 const httpProxy = require('http-proxy');
 const os = require('os');
 const net = require('net');
 const url = require('url');
 const uuidv4 = require('uuid/v4');
+const Proxy = require('http-mitm-proxy');
+const proxy = Proxy();
 
 const { decrypt_request, decrypt_response } = require('./smon_decryptor');
 
@@ -17,114 +21,27 @@ class SWProxy extends EventEmitter {
     this.addresses = [];
   }
   start(port) {
-    const self = this; // so event callbacks can access this SWProxy class
+    proxy.onError(function(ctx, err, errorKind) {
+      // ctx may be null
+      var url = ctx && ctx.clientToProxyRequest ? ctx.clientToProxyRequest.url : '';
+      console.error(errorKind + ' on ' + url + ':', err);
+    });
 
-    if (port === undefined) {
-      port = 8080;
-    }
+    proxy.onRequest(function(ctx, callback) {
+      if (ctx.clientToProxyRequest.headers.host == 'www.google.com' && ctx.clientToProxyRequest.url.indexOf('/search') == 0) {
+        ctx.use(Proxy.gunzip);
 
-    let parsedRequests = [];
-
-    this.proxy = httpProxy.createProxyServer({}).on('proxyRes', (proxyResp, req) => {
-      let respChunks = [];
-
-      if (req.url.indexOf('qpyou.cn/api/gateway_c2.php') >= 0) {
-        proxyResp.on('data', chunk => {
-          respChunks.push(chunk);
-        });
-
-        proxyResp.on('end', () => {
-          let respData;
-          try {
-            respData = decrypt_response(respChunks.join());
-          } catch (e) {
-            // Error decrypting the data, log and do not fire an event
-            self.log({ type: 'debug', source: 'proxy', message: `Error decrypting response data - ignoring. ${e}` });
-            return;
-          }
-
-          const { command } = respData;
-
-          if (parsedRequests[command]) {
-            // We have a complete request/response pair
-            const reqData = parsedRequests[command];
-
-            if (config.Config.App.clearLogOnLogin && (command === 'HubUserLogin' || command === 'GuestLogin')) {
-              self.clearLogs();
-            }
-
-            // Emit events, one for the specific API command and one for all commands
-            self.emit(command, reqData, respData);
-            self.emit('apiCommand', reqData, respData);
-            delete parsedRequests[command];
-          }
+        ctx.onResponseData(function(ctx, chunk, callback) {
+          chunk = new Buffer(chunk.toString().replace(/<a.*?<\/a>/g, '<a>Pwned!</a>'));
+          return callback(null, chunk);
         });
       }
+      return callback();
     });
 
-    this.proxy.on('error', (error, req, resp) => {
-      resp.writeHead(500, {
-        'Content-Type': 'text/plain'
-      });
+    proxy.listen({ port})
 
-      resp.end('Something went wrong.');
-    });
-
-    this.httpServer = http
-      .createServer((req, resp) => {
-        // Request has been intercepted from game client
-        let reqChunks = [];
-        if (req.url.indexOf('qpyou.cn/api/gateway_c2.php') >= 0) {
-          req.on('data', chunk => {
-            reqChunks.push(chunk);
-          });
-          req.on('end', () => {
-            // Parse the request
-            let reqData;
-            try {
-              reqData = decrypt_request(reqChunks.join());
-            } catch (e) {
-              // Error decrypting the data, log and do not fire an event
-              self.log({ type: 'debug', source: 'proxy', message: `Error decrypting request data - ignoring. ${e}` });
-              return;
-            }
-
-            const { command } = reqData;
-
-            // Add command request to an object so we can handle multiple requests at a time
-            parsedRequests[command] = reqData;
-          });
-        }
-
-        this.proxy.web(req, resp, { target: req.url, prependPath: false });
-      })
-      .listen(port, () => {
-        this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
-        if (process.env.autostart) {
-          console.log(`SW Exporter Proxy is listening on port ${port}`);
-        }
-        win.webContents.send('proxyStarted');
-      });
-
-    this.httpServer.on('error', e => {
-      if (e.code === 'EADDRINUSE') {
-        self.log({ type: 'warning', source: 'proxy', message: 'Port is in use from another process. Try another port.' });
-      }
-    });
-
-    this.httpServer.on('connect', (req, socket) => {
-      const serverUrl = url.parse(`https://${req.url}`);
-
-      const srvSocket = net.connect(serverUrl.port, serverUrl.hostname, () => {
-        socket.write('HTTP/1.1 200 Connection Established\r\n' + 'Proxy-agent: Node-Proxy\r\n' + '\r\n');
-        srvSocket.pipe(socket);
-        socket.pipe(srvSocket);
-      });
-
-      srvSocket.on('error', () => {});
-
-      socket.on('error', () => {});
-    });
+    
   }
 
   stop() {
