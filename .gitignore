@@ -1,3 +1,4 @@
+.http-mitm-proxy
 node_modules/
 dist/
 .idea/
