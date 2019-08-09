@@ -22,9 +22,6 @@ body {
   border-bottom: none;
   border-left: none;
 }
-.main-menu .item.right button {
-  margin-left: 15px !important;
-}
 
 .rune .content .star-line .star img {
   width: 11px;
