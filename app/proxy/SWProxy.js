@@ -1,8 +1,7 @@
 const EventEmitter = require('events');
-const https = require('https');
-const fs = require('fs');
+const { app } = require('electron');
+const fs = require('fs-extra');
 const path = require('path');
-const httpProxy = require('http-proxy');
 const os = require('os');
 const net = require('net');
 const url = require('url');
@@ -15,41 +14,55 @@ class SWProxy extends EventEmitter {
   constructor() {
     super();
     this.httpServer = null;
-    this.proxy = Proxy();
+    this.proxy = null;
     this.logEntries = [];
     this.addresses = [];
   }
   start(port) {
+    console.log(app.getPath('userData'));
     const self = this;
+    this.proxy = Proxy();
 
-    this.proxy.onError(function(ctx, err, errorKind) {
-      // ctx may be null
-      var url = ctx && ctx.clientToProxyRequest ? ctx.clientToProxyRequest.url : '';
-      console.error(errorKind + ' on ' + url + ':', err);
+    this.proxy.onError(function(ctx, e, errorKind) {
+      if (e.code === 'EADDRINUSE') {
+        self.log({ type: 'warning', source: 'proxy', message: 'Port is in use from another process. Try another port.' });
+      }
     });
 
     this.proxy.onRequest(function(ctx, callback) {
       if (ctx.clientToProxyRequest.url.includes('/api/gateway_c2.php')) {
-        ctx.chunks = [];
+        ctx.SWRequestChunks = [];
+        ctx.SWResponseChunks = [];
+        ctx.onRequestData(function(ctx, chunk, callback) {
+          ctx.SWRequestChunks.push(chunk);
+          return callback(null, chunk);
+        });
+
         ctx.onResponseData(function(ctx, chunk, callback) {
-          console.log(chunk.toString());
-          ctx.chunks.push(chunk.toString());
+          ctx.SWResponseChunks.push(chunk);
           return callback(null, chunk);
         });
         ctx.onResponseEnd(function(ctx, callback) {
           let reqData;
+          let respData;
 
           try {
-            reqData = decrypt_request(ctx.chunks.join());
+            reqData = decrypt_request(Buffer.concat(ctx.SWRequestChunks).toString());
+            respData = decrypt_response(Buffer.concat(ctx.SWResponseChunks).toString());
           } catch (e) {
             // Error decrypting the data, log and do not fire an event
-            //console.log(e)
             self.log({ type: 'debug', source: 'proxy', message: `Error decrypting request data - ignoring. ${e}` });
             return callback();
           }
 
-          const { command } = reqData;
-          console.log(command);
+          const { command } = respData;
+          if (config.Config.App.clearLogOnLogin && (command === 'HubUserLogin' || command === 'GuestLogin')) {
+            self.clearLogs();
+          }
+
+          // Emit events, one for the specific API command and one for all commands
+          self.emit(command, reqData, respData);
+          self.emit('apiCommand', reqData, respData);
           return callback();
         });
       }
@@ -70,13 +83,18 @@ class SWProxy extends EventEmitter {
         socket.on('error', () => {});
       }
     });
-    this.proxy.listen({ port });
+    this.proxy.listen({ port, sslCaDir: path.join(app.getPath('userData'), 'swcerts') });
+
+    this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
+    if (process.env.autostart) {
+      console.log(`SW Exporter Proxy is listening on port ${port}`);
+    }
+    win.webContents.send('proxyStarted');
   }
 
   stop() {
     this.proxy.close();
-    this.httpServer.close();
-
+    this.proxy = null;
     win.webContents.send('proxyStopped');
     this.log({ type: 'info', source: 'proxy', message: 'Proxy stopped' });
   }
@@ -96,7 +114,7 @@ class SWProxy extends EventEmitter {
   }
 
   isRunning() {
-    if (this.httpServer && this.httpServer.address()) {
+    if (this.proxy) {
       return true;
     }
     return false;
