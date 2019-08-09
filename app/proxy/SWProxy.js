@@ -8,7 +8,6 @@ const net = require('net');
 const url = require('url');
 const uuidv4 = require('uuid/v4');
 const Proxy = require('http-mitm-proxy');
-const proxy = Proxy();
 
 const { decrypt_request, decrypt_response } = require('./smon_decryptor');
 
@@ -16,32 +15,62 @@ class SWProxy extends EventEmitter {
   constructor() {
     super();
     this.httpServer = null;
-    this.proxy = null;
+    this.proxy = Proxy();
     this.logEntries = [];
     this.addresses = [];
   }
   start(port) {
-    proxy.onError(function(ctx, err, errorKind) {
+    const self = this;
+
+    this.proxy.onError(function(ctx, err, errorKind) {
       // ctx may be null
       var url = ctx && ctx.clientToProxyRequest ? ctx.clientToProxyRequest.url : '';
       console.error(errorKind + ' on ' + url + ':', err);
     });
 
-    proxy.onRequest(function(ctx, callback) {
-      if (ctx.clientToProxyRequest.headers.host == 'www.google.com' && ctx.clientToProxyRequest.url.indexOf('/search') == 0) {
-        ctx.use(Proxy.gunzip);
-
+    this.proxy.onRequest(function(ctx, callback) {
+      if (ctx.clientToProxyRequest.url.includes('/api/gateway_c2.php')) {
+        ctx.chunks = [];
         ctx.onResponseData(function(ctx, chunk, callback) {
-          chunk = new Buffer(chunk.toString().replace(/<a.*?<\/a>/g, '<a>Pwned!</a>'));
+          console.log(chunk.toString());
+          ctx.chunks.push(chunk.toString());
           return callback(null, chunk);
+        });
+        ctx.onResponseEnd(function(ctx, callback) {
+          let reqData;
+
+          try {
+            reqData = decrypt_request(ctx.chunks.join());
+          } catch (e) {
+            // Error decrypting the data, log and do not fire an event
+            //console.log(e)
+            self.log({ type: 'debug', source: 'proxy', message: `Error decrypting request data - ignoring. ${e}` });
+            return callback();
+          }
+
+          const { command } = reqData;
+          console.log(command);
+          return callback();
         });
       }
       return callback();
     });
+    this.proxy.onConnect(function(req, socket, head, callback) {
+      const serverUrl = url.parse(`https://${req.url}`);
+      if (req.url.includes('qpyou.cn')) {
+        return callback();
+      } else {
+        const srvSocket = net.connect(serverUrl.port, serverUrl.hostname, () => {
+          socket.write('HTTP/1.1 200 Connection Established\r\n' + 'Proxy-agent: Node-Proxy\r\n' + '\r\n');
+          srvSocket.pipe(socket);
+          socket.pipe(srvSocket);
+        });
+        srvSocket.on('error', () => {});
 
-    proxy.listen({ port})
-
-    
+        socket.on('error', () => {});
+      }
+    });
+    this.proxy.listen({ port });
   }
 
   stop() {
