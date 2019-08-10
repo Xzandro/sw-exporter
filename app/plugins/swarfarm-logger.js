@@ -1,9 +1,21 @@
-const fs = require('fs');
 const requestLib = require('request');
 
 const SWARFARM_URL = 'https://swarfarm.com/api/v2/';
 const pluginName = 'SwarfarmLogger';
-let request, acceptedCommands, apiKey, proxy, myConfig;
+let request, acceptedCommands, proxy, apiKey;
+
+const trimApiKey = inputApiObject => {
+  // Trims whitespace from input API key. Only works for plain string input.
+  if (inputApiObject instanceof Object) {
+    // JSON input must be done correctly by the user and is not trimmed.
+    return inputApiObject;
+  } else {
+    return inputApiObject.trim();
+  }
+};
+
+const apiKeyRegex = RegExp('^[a-z0-9]{40}$'); // Exactly 40 hex characters
+const apiKeyIsValid = key => apiKeyRegex.test(key);
 
 const getApiKey = wizardId => {
   if (apiKey instanceof Object) {
@@ -15,12 +27,22 @@ const getApiKey = wizardId => {
 
 const setRequestAuth = (opts, wizardId) => {
   const token = getApiKey(wizardId);
-  if (token) {
+  if (apiKeyIsValid(token)) {
     opts = Object.assign(opts, {
       headers: {
         Authorization: `Token ${token}`
       }
     });
+  } else {
+    // Only raise error message if some text is present
+    if (token) {
+      proxy.log({
+        type: 'warning',
+        source: 'plugin',
+        name: pluginName,
+        message: 'Invalid API key. Copy/paste it from SWARFARM profile settings. Logging without API key until it is updated.'
+      });
+    }
   }
 
   return opts;
@@ -28,37 +50,28 @@ const setRequestAuth = (opts, wizardId) => {
 
 const getApiCommands = () => {
   // Get list of commands from server
-  try {
+
+  proxy.log({
+    type: 'debug',
+    source: 'plugin',
+    name: pluginName,
+    message: 'Retrieving list of accepted log types from SWARFARM...'
+  });
+
+  request.get('data_logs/', (error, response, body) => {
+    if (!error && response.statusCode === 200) {
+      acceptedCommands = JSON.parse(body);
+    }
+
     proxy.log({
-      type: 'debug',
+      type: 'success',
       source: 'plugin',
       name: pluginName,
-      message: 'Retrieving list of accepted log types from SWARFARM...'
+      message: `Looking for the following commands to log: ${Object.keys(acceptedCommands)
+        .filter(cmd => cmd != '__version')
+        .join(', ')}`
     });
-
-    request.get('data_logs/', (error, response, body) => {
-      if (!error && response.statusCode === 200) {
-        acceptedCommands = JSON.parse(body);
-      }
-
-      proxy.log({
-        type: 'success',
-        source: 'plugin',
-        name: pluginName,
-        message: `Looking for the following commands to log: ${Object.keys(acceptedCommands)
-          .filter(cmd => cmd != '__version')
-          .join(', ')}`
-      });
-    });
-  } catch (error) {
-    proxy.log({
-      type: 'error',
-      source: 'plugin',
-      name: pluginName,
-      message: 'Unable to retrieve accepted log types. SWARFARM logging is disabled.'
-    });
-    myConfig.enabled = false;
-  }
+  });
 };
 
 const processLog = (req, resp) => {
@@ -253,32 +266,62 @@ module.exports = {
   pluginName,
   pluginDescription: 'Syncs your SWARFARM profile automatically and logs data for your account.',
   init(proxyInstance, config) {
-    myConfig = config.Config.Plugins[pluginName];
-
-    if (myConfig.enabled) {
+    if (config.Config.Plugins[pluginName].enabled) {
       proxy = proxyInstance;
       request = requestLib.defaults({ baseUrl: SWARFARM_URL });
-      apiKey = myConfig.apiKey;
+      config.Config.Plugins[pluginName].apiKey = trimApiKey(config.Config.Plugins[pluginName].apiKey);
 
-      if (!apiKey) {
-        // Warning message to user to prompt to set API key.
-        proxy.log({
-          type: 'warning',
-          source: 'plugin',
-          name: pluginName,
-          message:
-            'You have not configured a SWARFARM API key in Settings. Logs will attempt to be associated to your SWARFARM account via in-game account ID, but this is not guaranteed to work.'
-        });
+      if (!config.Config.Plugins[pluginName].apiKey) {
+        if (config.Config.Plugins[pluginName].profileSync) {
+          // Error message to user indicating profile sync will not work without API key
+          proxy.log({
+            type: 'error',
+            source: 'plugin',
+            name: pluginName,
+            message:
+              'An API key is required for SWARFARM profile sync and recommended for data logging. Copy it into settings from your SWARFARM Edit Profile page to enable this feature.'
+          });
+        } else {
+          // Warning message to user to prompt to set API key.
+          proxy.log({
+            type: 'warning',
+            source: 'plugin',
+            name: pluginName,
+            message:
+              'You have not configured a SWARFARM API key in Settings. Logs will attempt to be associated to your SWARFARM account via in-game account ID, but this is not guaranteed to work.'
+          });
+        }
       }
 
-      getApiCommands();
+      try {
+        getApiCommands();
+      } catch (error) {
+        proxy.log({
+          type: 'error',
+          source: 'plugin',
+          name: pluginName,
+          message: 'Unable to retrieve accepted log types. SWARFARM logging is disabled.'
+        });
+      }
       setInterval(getApiCommands, 60 * 60 * 1000); // Refresh API commands every hour
 
       proxy.on('apiCommand', (req, resp) => {
-        processLog(req, resp);
+        // Update API key from settings each log event in case it changed
+        apiKey = config.Config.Plugins[pluginName].apiKey;
+
+        try {
+          processLog(req, resp);
+        } catch (error) {
+          proxy.log({
+            type: 'error',
+            source: 'plugin',
+            name: pluginName,
+            message: 'Error submitting log event to SWARFARM.'
+          });
+        }
 
         // Profile sync if enabled
-        if (myConfig.profileSync) {
+        if (config.Config.Plugins[pluginName].profileSync) {
           uploadProfile(req, resp);
         }
       });
