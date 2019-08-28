@@ -39,6 +39,10 @@ class Head extends React.Component {
     }
   }
 
+  getCert() {
+    ipcRenderer.send('getCert');
+  }
+
   changePort(e) {
     const port = Number(e.target.value);
     config.Config.Proxy.port = port;
@@ -56,6 +60,7 @@ class Head extends React.Component {
           <Input label="Port" defaultValue={config.Config.Proxy.port} onChange={this.changePort.bind(this)} />
         </Menu.Item>
         <Menu.Item position="right">
+          <Button content="Get Cert" icon="share" labelPosition="right" onClick={this.getCert.bind(this)} />
           <Button
             content={this.state.proxyRunning ? 'Stop Proxy' : 'Start Proxy'}
             icon={this.state.proxyRunning ? 'stop' : 'play'}
