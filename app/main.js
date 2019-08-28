@@ -89,6 +89,25 @@ ipcMain.on('proxyStop', () => {
   proxy.stop();
 });
 
+ipcMain.on('getCert', async () => {
+  const fileExists = await fs.pathExists(path.join(app.getPath('userData'), 'swcerts', 'certs', 'ca.pem'));
+  if (fileExists) {
+    const copyPath = path.join(global.config.Config.App.filesPath, 'cert', 'ca.pem');
+    await fs.copy(path.join(app.getPath('userData'), 'swcerts', 'certs', 'ca.pem'), copyPath);
+    proxy.log({
+      type: 'success',
+      source: 'proxy',
+      message: `Certificate copied to ${copyPath}.`
+    });
+  } else {
+    proxy.log({
+      type: 'info',
+      source: 'proxy',
+      message: 'No certificate available yet. You might have to start the proxy once and then try again.'
+    });
+  }
+});
+
 ipcMain.on('logGetEntries', event => {
   event.returnValue = proxy.getLogEntries();
 });
