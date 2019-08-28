@@ -92,14 +92,12 @@ ipcMain.on('proxyStop', () => {
 ipcMain.on('getCert', async () => {
   const fileExists = await fs.pathExists(path.join(app.getPath('userData'), 'swcerts', 'certs', 'ca.pem'));
   if (fileExists) {
-    await fs.copy(
-      path.join(app.getPath('userData'), 'swcerts', 'certs', 'ca.pem'),
-      path.join(app.getPath('desktop'), `${app.getName()} Files`, 'cert', 'ca.pem')
-    );
+    const copyPath = path.join(global.config.Config.App.filesPath, 'cert', 'ca.pem');
+    await fs.copy(path.join(app.getPath('userData'), 'swcerts', 'certs', 'ca.pem'), copyPath);
     proxy.log({
       type: 'success',
       source: 'proxy',
-      message: `Certificate copied to ${path.join(app.getPath('desktop'), `${app.getName()} Files`, 'cert', 'ca.pem')}.`
+      message: `Certificate copied to ${copyPath}.`
     });
   } else {
     proxy.log({
