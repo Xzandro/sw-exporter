@@ -2,12 +2,12 @@
 name: Bug report
 about: Create a report to help us improve
 title: "[BUG]"
-labels: bug
+labels: ''
 assignees: ''
 
 ---
 
-**Please don't report issue that are not relevant to SWEX. Especially now that are more steps involved which you can read on [reddit](https://www.reddit.com/r/summonerswar/comments/cnwaq5/swex_0027_attempt_to_restore_export_functionality/). To get more information, join the [Discord](https://discord.gg/JMBSZRA).**
+**Please don't report issues that are not relevant to SWEX. Especially now that are more steps involved which you can read on [reddit](https://www.reddit.com/r/summonerswar/comments/cnwaq5/swex_0027_attempt_to_restore_export_functionality/). To get more information, join the [Discord](https://discord.gg/JMBSZRA).**
 
 **Describe the bug**
 A clear and concise description of what the bug is.
