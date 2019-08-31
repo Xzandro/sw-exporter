@@ -19,7 +19,6 @@ class SWProxy extends EventEmitter {
     this.addresses = [];
   }
   start(port) {
-    console.log(app.getPath('userData'));
     const self = this;
     this.proxy = Proxy();
 
@@ -83,9 +82,10 @@ class SWProxy extends EventEmitter {
         socket.on('error', () => {});
       }
     });
-    this.proxy.listen({ port, sslCaDir: path.join(app.getPath('userData'), 'swcerts') });
+    this.proxy.listen({ port, sslCaDir: path.join(app.getPath('userData'), 'swcerts') }, e => {
+      this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
+    });
 
-    this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
     if (process.env.autostart) {
       console.log(`SW Exporter Proxy is listening on port ${port}`);
     }
