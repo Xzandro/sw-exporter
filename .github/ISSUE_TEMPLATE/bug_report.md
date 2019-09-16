@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-**Please don't report issues that are not relevant to SWEX. Especially now that are more steps involved which you can read on [reddit](https://www.reddit.com/r/summonerswar/comments/cnwaq5/swex_0027_attempt_to_restore_export_functionality/). To get more information, join the [Discord](https://discord.gg/JMBSZRA).**
+**Please don't report issues that are not relevant to SWEX. Especially now that are more steps involved which you can read on [reddit](https://www.reddit.com/r/summonerswar/comments/cxwkav/summoners_war_exporter_swex_everything_you_need/). To get more information, join the [Discord](https://discord.gg/JMBSZRA).**
 
 **Describe the bug**
 A clear and concise description of what the bug is.
