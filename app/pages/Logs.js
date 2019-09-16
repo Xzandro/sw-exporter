@@ -23,14 +23,6 @@ class Logs extends React.Component {
     ipcRenderer.removeAllListeners('logupdated');
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.entries.length === nextState.entries.length) {
-      return false;
-    }
-
-    return true;
-  }
-
   update(entries) {
     this.setState({ entries });
   }
