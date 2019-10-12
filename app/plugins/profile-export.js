@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const sanitize = require('sanitize-filename');
+const MISSING_DATA_ERROR =
+  'No file created. Data was missing during the Export process. This happens sometimes, when com2us failes to include important data during the request. Normally this fixes itself after a few tries.';
 
 module.exports = {
   defaultConfig: {
@@ -12,9 +14,14 @@ module.exports = {
   },
   pluginName: 'ProfileExport',
   pluginDescription: 'Exports your monster and rune data.',
+  missingDataError:
+    'No file created. Data was missing during the Export process. This happens sometimes, when com2us failes to include important data during the request. Normally this fixes itself after a few tries.',
   init(proxy, config) {
     proxy.on('HubUserLogin', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {
+        if (!this.checkData(resp)) {
+          return proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: MISSING_DATA_ERROR });
+        }
         if (config.Config.Plugins[this.pluginName].sortData) {
           resp = this.sortUserData(resp);
         }
@@ -23,6 +30,9 @@ module.exports = {
     });
     proxy.on('GuestLogin', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {
+        if (!this.checkData(resp)) {
+          return proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: MISSING_DATA_ERROR });
+        }
         if (config.Config.Plugins[this.pluginName].sortData) {
           resp = this.sortUserData(resp);
         }
@@ -43,6 +53,15 @@ module.exports = {
     outFile.write(JSON.stringify(resp, true, 2));
     outFile.end();
     proxy.log({ type: 'success', source: 'plugin', name: this.pluginName, message: 'Saved profile data to '.concat(filename) });
+  },
+  checkData(data) {
+    // Sometimes com2us doesn't include al lthe required data in the request
+    // Most notably is the missing of the building_list object.
+    // So lets return false if it's undefined
+    if (!data.building_list) {
+      return false;
+    }
+    return true;
   },
   sortUserData(data) {
     // get storage building id
