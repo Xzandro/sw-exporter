@@ -19,7 +19,7 @@ module.exports = {
   init(proxy, config) {
     proxy.on('HubUserLogin', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {
-        if (this.checkData(resp)) {
+        if (!this.checkData(resp)) {
           return proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: MISSING_DATA_ERROR });
         }
         if (config.Config.Plugins[this.pluginName].sortData) {
