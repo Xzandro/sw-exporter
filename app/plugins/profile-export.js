@@ -14,8 +14,6 @@ module.exports = {
   },
   pluginName: 'ProfileExport',
   pluginDescription: 'Exports your monster and rune data.',
-  missingDataError:
-    'No file created. Data was missing during the Export process. This happens sometimes, when com2us failes to include important data during the request. Normally this fixes itself after a few tries.',
   init(proxy, config) {
     proxy.on('HubUserLogin', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {
