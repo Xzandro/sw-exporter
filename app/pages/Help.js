@@ -53,6 +53,14 @@ class Help extends React.Component {
         </ol>
         <h3>iOS</h3>
         <ol>
+            <li>Click on "get cert" in the Proxy</li>
+            <li>Copy the ca.pem file from your personal folder (lookup settings of the proxy) to your device (icloud, mail, imessage)</li>
+            <li>Find the file ca.pem on your device and tap it</li>
+            <li>Switch to settings -> general -> profiles and search for NodeMITMProxyCA and tap Install in the upper right corner</li>
+            <li>After installed it showes "verified"</li>
+            <li>Switch to settings -> general -> about -> Certificate Trust Settings</li>
+            <li>Activate the certificate by activating the switch</li>
+        <ol>
           <li>Open Settings and select Wi-Fi</li>
           <li>Tap the Wi-Fi network you are currently connected to</li>
           <li>
