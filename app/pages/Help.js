@@ -60,6 +60,7 @@ class Help extends React.Component {
             <li>After installed it showes "verified"</li>
             <li>Switch to settings -> general -> about -> Certificate Trust Settings</li>
             <li>Activate the certificate by activating the switch</li>
+        </ol>
         <ol>
           <li>Open Settings and select Wi-Fi</li>
           <li>Tap the Wi-Fi network you are currently connected to</li>
