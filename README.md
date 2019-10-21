@@ -1,20 +1,21 @@
+# French Version
 # Summoner's War Exporter
 
-This tool will parse intercepted data from Summoner's War and extract information on the monsters and runes of the user. It works just like SWProxy and the focus was to write a smooth proxy, that runs fast and to fix common glitches with SWProxy (SW starting problems, errors on event pages etc.). You can even turn on Summoners War Exporter for normal surfing, because it doesnt really influence other pages much.
+Cet outil analysera les données interceptées de la Guerre des Invocateurs et extraira des informations sur les monstres et les runes de l'utilisateur. Il fonctionne exactement comme SWProxy et l'objectif était d'écrire un proxy lisse, qui fonctionne rapidement et de corriger les problèmes courants avec SWProxy (problèmes de démarrage de SW, erreurs sur les pages d'événements, etc). Vous pouvez même activer Summoners War Exporter pour surfer normalement, car cela n'influence pas vraiment les autres pages.
 
 ![swex](http://i.imgur.com/NQGNNaF.png)
 
 ## Downloading and Installation
 
-1. Go to the [latest release](https://github.com/Xzandro/sw-exporter/releases/latest).
-2. Download the package for your computer OS. Windows also offers a portable version which does not require installation.
-3. Run it!
+1. Allez à la[dernière version] (https://github.com/Xzandro/sw-exporter/releases/latest).
+2. Téléchargez le paquet pour votre système d'exploitation. Windows propose également une version portable qui ne nécessite pas d'installation.
+3. Exécutez-le !
 
-Further instructions are available in the Help section of Summoner's War Exporter
+D'autres instructions sont disponibles dans la section Aide de Summoner's War Exporter.
 
 ## Developing Plugins
 
-You can create your own plugins that will receive in-game events and data. What you do with that data is up to your imagination. There are two options for creating a plugin - a single javascript file, or a full NPM package. Your plugin must export the following by default:
+Vous pouvez créer vos propres plugins qui recevront les événements et les données du jeu. Ce que vous faites de ces données dépend de votre imagination. Il y a deux options pour créer un plugin - un seul fichier javascript, ou un paquet NPM complet. Votre plugin doit exporter ce qui suit par défaut :
 
 ```javascript
 module.exports = {
@@ -32,15 +33,15 @@ module.exports = {
 }
 ```
 
-The [NodeJS 10 standard library](https://nodejs.org/dist/latest-v10.x/docs/api/) is available to use within your plugin. To receive game events, you must subscribe to events from `proxy`. See the [example plugin](https://github.com/Xzandro/sw-exporter/blob/master/app/plugins/example-plugin.js) for the two options to receive events - every game event, or specific events. `proxy` is an [EventEmitter](https://nodejs.org/docs/latest-v10.x/api/events.html). `config` is the configuration for the full SW-Exporter application. You can access your specific plugin's configuration like this: `config.Config.Plugins[<pluginName>]`. When in doubt, browse through the [prepackaged plugins](https://github.com/Xzandro/sw-exporter/tree/master/app/plugins) for examples.
+La[bibliothèque standard NodeJS 10](https://nodejs.org/dist/latest-v10.x/docs/api/) est disponible dans votre plugin. Pour recevoir les événements du jeu, vous devez vous abonner aux événements de `proxy'. Voir le[exemple de plugin](https://github.com/Xzandro/sw-exporter/blob/master/app/plugins/example-plugin.js) pour les deux options pour recevoir les événements - chaque événement de jeu ou des événements spécifiques. proxy " est un[EventEmitter](https://nodejs.org/docs/latest-v10.x/api/events.html). configuration" est la configuration de l'application SW-Exporter complète. Vous pouvez accéder à la configuration de votre plugin spécifique comme ceci : `config.Config.Plugins[<pluginName>]`. En cas de doute, parcourez les[plugins préemballés] (https://github.com/Xzandro/sw-exporter/tree/master/app/plugins) pour des exemples.
 
 ### Single Javascript File
 
-The [example plugin](https://github.com/Xzandro/sw-exporter/blob/master/app/plugins/example-plugin.js) details a barebones plugin with no external dependencies.
+Le[plugin exemple](https://github.com/Xzandro/sw-exporter/blob/master/app/plugins/example-plugin.js) détaille un plugin barebones sans dépendances externes.
 
 ### Full NPM package
 
-See this [example repo](https://github.com/PeteAndersen/example-swex-plugin) for a plugin that requires the [request](https://github.com/request/request) module as a dependency to do something. As long as your package's default export matches the form specified above, you can do anything you like within your package, including external dependencies. These dependencies must be in a node_modules folder within your plugin directory. The full file structure would look something like this:
+Voir cet[exemple de repo](https://github.com/PeteAndersen/example-swex-plugin) pour un plugin qui nécessite le module[request](https://github.com/request/request) comme dépendance pour faire quelque chose. Tant que l'exportation par défaut de votre paquet correspond au formulaire spécifié ci-dessus, vous pouvez faire tout ce que vous voulez dans votre paquet, y compris les dépendances externes. Ces dépendances doivent se trouver dans un dossier node_modules dans le répertoire de votre plugin. La structure complète du fichier ressemblerait à ceci :
 
 ```
 > Summoners War Exporter Files\plugins\my-fancy-plugin
@@ -51,9 +52,9 @@ See this [example repo](https://github.com/PeteAndersen/example-swex-plugin) for
 
 #### Packaging
 
-You can place your plugin as a folder of files in the `plugins` directory and it will work. However, it is recommended for distribution to package your plugin as an [asar](https://github.com/electron/asar) file.
+Vous pouvez placer votre plugin sous forme de dossier de fichiers dans le répertoire `plugins' et il fonctionnera. Cependant, il est recommandé de distribuer votre plugin sous la forme d'un fichier[asar](https://github.com/electron/asar).
 
-To correctly package your plugin, run `$ asar pack <plugin-folder-name> <plugin-name>.asar`. Your asar archive should include all of your javascript code files and a `node_modules` folder with your dependencies. To install your packaged plugin, simply drop the plugin.asar into the plugins folder. The directory structure will look like this:
+Pour empaqueter correctement votre plugin, exécutez `$ asar pack <nom-dossier-plugin> <nom-plugin>.asar`. Votre archive asar doit inclure tous vos fichiers de code javascript et un dossier `node_modules' avec vos dépendances. Pour installer votre plugin packagé, déposez simplement le plugin.asar dans le dossier plugins. La structure du répertoire ressemblera à ceci :
 
 ```
 Summoners War Exporter Files\plugins\my-fancy-plugin.asar
@@ -61,7 +62,7 @@ Summoners War Exporter Files\plugins\my-fancy-plugin.asar
 
 ## Developing SW-Exporter
 
-Install [node.js](https://nodejs.org/).
+Installer [node.js](https://nodejs.org/).
 
 ```
 $ git clone https://github.com/Xzandro/sw-exporter.git
@@ -71,30 +72,28 @@ $ npm run dev
 $ npm start
 ```
 
-And you are ready to develop. We use ESLint for linting so make sure there are no linting errors before you submit a PR please.
+Et vous êtes prêt à vous développer. Nous utilisons ESLint pour les peluches, donc assurez-vous qu'il n'y a pas d'erreurs de peluches avant de soumettre un PR.
 
 ## Building Packages
+Au début, vous devez garder à l'esprit que vous ne pouvez construire des paquets que pour votre système d'exploitation d'occasion actuel !
 
-At first you need to keep in mind that you can only build packages for your current used OS!
-
-It is also important that the bundle.js is generated & update-to-date. You can accomplish that via
+Il est également important que le bundle.js soit généré et mis à jour. Vous pouvez y parvenir par le biais de
 
 ```
 $ npm run dev
 ```
 
-to start the Development script or just do
+pour lancer le script de développement ou simplement faire
 
 ```
 $ webpack
 ```
 
-After that you have several possibilities.
+Après cela, vous avez plusieurs possibilités.
 
 ### Windows
 
-For Windows you can build a Portable or Setup version (default: Both will build). That's changeable via the package.json.
-
+Pour Windows, vous pouvez créer une version Portable ou Setup (par défaut : Les deux seront créés). C'est modifiable via le paquet.json.
 ```
 "win": {
   "target": [
@@ -103,9 +102,9 @@ For Windows you can build a Portable or Setup version (default: Both will build)
 }
 ```
 
-Just change nsis to portable.
+Il suffit de changer nsis en portable.
 
-Building the packages (ia32 & x64 will be included in one executable automatically)
+Construire les paquets (ia32 & x64 seront inclus dans un exécutable automatiquement)
 
 ```
 $ npm run dist
@@ -113,7 +112,7 @@ $ npm run dist
 
 ### Linux
 
-An AppImage & snap package file will be build which is compatible with most common linux os.
+Un fichier de paquet AppImage & snap sera compilé qui est compatible avec la plupart des systèmes linux courants.
 
 ```
 $ npm run dist
@@ -121,17 +120,16 @@ $ npm run dist
 
 ### Mac
 
-A typical DMG package file and a zip file will be build.
-
+Un fichier de paquet DMG typique et un fichier zip seront compilés.
 ```
 $ npm run dist
 ```
 
 ## Setting up on a VPS
 
-Basically the same like for the Development environment, but you need to set two process enrionment variables:
+Fondamentalement, c'est la même chose que pour l'environnement de développement, mais vous devez définir deux variables d'enrionment de processus :
 
-1. port (set this to your liking)
-2. autostart (set this to true or 1, so that the proxy will start automatically)
+1. port (réglez ce paramètre à votre convenance)
+2. autostart (réglez ce paramètre sur true ou 1, pour que le proxy démarre automatiquement)
 
-Make sure you open the specific port in your firewall. This isnt ideal, because the UI, chromium, electron and the frontend will be loaded regardless. It's the best we can get without splitting off electron though.
+Assurez-vous d'ouvrir le port spécifique dans votre pare-feu. Ce n'est pas idéal, car l'interface utilisateur, le chrome, l'électron et le frontend seront chargés quand même. C'est le mieux que l'on puisse obtenir sans pour autant séparer les électrons.
