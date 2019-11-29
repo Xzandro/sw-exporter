@@ -307,6 +307,11 @@ module.exports = {
       14013: 'Shakan',
       14014: 'Eshir',
       14015: 'Jultan',
+      14031: 'Vigor',
+      14032: 'Garoche',
+      14033: 'Shakan',
+      14034: 'Eshir',
+      14035: 'Jultan',
 
       141: 'Phantom Thief',
       14111: 'Luer',
@@ -370,6 +375,11 @@ module.exports = {
       15013: 'Naomi',
       15014: 'Xiao Ling',
       15015: 'Miho',
+      15031: 'Mina',
+      15032: 'Mei',
+      15033: 'Naomi',
+      15034: 'Xiao Ling',
+      15035: 'Miho',
 
       152: 'Vagabond',
       15211: 'Allen',
