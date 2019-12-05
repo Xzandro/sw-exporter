@@ -171,7 +171,7 @@ function loadPlugins() {
     });
     config.ConfigDetails.Plugins[plug.pluginName] = plug.defaultConfigDetails || {};
     try {
-      plug.init(proxy, config);
+      plug.init(proxy, config, BrowserWindow);
     } catch (error) {
       proxy.log({
         type: 'error',
