@@ -69,6 +69,13 @@ function createWindow() {
   });
 }
 
+class BrowserWindowProxy extends BrowserWindow {
+  constructor(options) {
+    super(options);
+    win.on('close', () => { this.destroy(); }); //maybe different handling for Mac
+  }
+}
+
 const proxy = new SWProxy();
 
 proxy.on('error', () => {});
@@ -171,7 +178,7 @@ function loadPlugins() {
     });
     config.ConfigDetails.Plugins[plug.pluginName] = plug.defaultConfigDetails || {};
     try {
-      plug.init(proxy, config, BrowserWindow);
+      plug.init(proxy, config, BrowserWindowProxy);
     } catch (error) {
       proxy.log({
         type: 'error',
