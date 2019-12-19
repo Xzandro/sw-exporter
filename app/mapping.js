@@ -927,6 +927,19 @@ module.exports = {
       23414: 'Pheneka',
       23415: 'Onyx',
 
+      235: 'Beast Rider',
+      23511: 'Barbara',
+      23512: 'Masha',
+      23513: 'Savannah',
+      23514: 'Narsha',
+      23515: 'Xiana',
+      236: 'Beast Rider',
+      23611: 'Barbara',
+      23612: 'Masha',
+      23613: 'Savannah',
+      23614: 'Narsha',
+      23615: 'Xiana',
+
       15105: 'Devilmon',
       14314: 'Rainbowmon',
 
