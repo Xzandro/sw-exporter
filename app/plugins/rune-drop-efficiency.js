@@ -28,6 +28,19 @@ module.exports = {
           }
         }
         break;
+      case 'BattleDungeonResult_V2':
+        if (resp.win_lose === 1) {
+          const rewards = resp.changed_item_list ? resp.changed_item_list : [];
+
+          if (rewards) {
+            rewards.forEach(reward => {
+              if (reward.type === 8) {
+                runesInfo.push(this.logRuneDrop(reward.info));
+              }
+            });
+          }
+        }
+        break;
       case 'UpgradeRune': {
         const originalLevel = req.upgrade_curr;
         const newLevel = resp.rune.upgrade_curr;
