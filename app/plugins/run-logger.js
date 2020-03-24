@@ -53,6 +53,27 @@ module.exports = {
       }
     });
   },
+
+  getRuneData(rune) {
+    const runeDrop = {
+      drop: 'Rune',
+      grade: `${rune.class}*`,
+      sell_value: rune.sell_value,
+      set: gMapping.rune.sets[rune.set_id],
+      slot: rune.slot_no,
+      efficiency: gMapping.getRuneEfficiency(rune).current,
+      rarity: gMapping.rune.class[rune.sec_eff.length],
+      main_stat: gMapping.getRuneEffect(rune.pri_eff),
+      prefix_stat: gMapping.getRuneEffect(rune.prefix_eff)
+    };
+
+    rune.sec_eff.forEach((substat, i) => {
+      runeDrop[`sub${i + 1}`] = gMapping.getRuneEffect(substat);
+    });
+
+    return runeDrop;
+  },
+
   getItem(crate) {
     if (crate.random_scroll && crate.random_scroll.item_master_id === 1) {
       return { drop: `Unknown Scroll x${crate.random_scroll.item_quantity}` };
@@ -85,23 +106,7 @@ module.exports = {
       return { drop: `Summoning Piece ${gMapping.getMonsterName(crate.summon_pieces.item_master_id)} x${crate.summon_pieces.item_quantity}` };
     }
     if (crate.rune) {
-      const runeDrop = {
-        drop: 'Rune',
-        grade: `${crate.rune.class}*`,
-        sell_value: crate.rune.sell_value,
-        set: gMapping.rune.sets[crate.rune.set_id],
-        slot: crate.rune.slot_no,
-        efficiency: gMapping.getRuneEfficiency(crate.rune).current,
-        rarity: gMapping.rune.class[crate.rune.sec_eff.length],
-        main_stat: gMapping.getRuneEffect(crate.rune.pri_eff),
-        prefix_stat: gMapping.getRuneEffect(crate.rune.prefix_eff)
-      };
-
-      crate.rune.sec_eff.forEach((substat, i) => {
-        runeDrop[`sub${i + 1}`] = gMapping.getRuneEffect(substat);
-      });
-
-      return runeDrop;
+      return this.getRuneData(crate.rune);
     }
 
     return { drop: 'Unknown Drop' };
@@ -111,10 +116,10 @@ module.exports = {
     // currently only supports the first item of the rewards list
     const reward = rewards[0];
     if (reward.view.item_master_id === 1) {
-      return { drop: `Unknown Scroll x${reward.info.item_quantity}` };
+      return { drop: `Unknown Scroll x${reward.view.item_quantity}` };
     }
     if (reward.view.item_master_id === 8) {
-      return { drop: `Summoning Stones x${reward.info.item_quantity}` };
+      return { drop: `Summoning Stones x${reward.view.item_quantity}` };
     }
     if (reward.view.item_master_id === 2) {
       return { drop: 'Mystical Scroll' };
@@ -126,29 +131,13 @@ module.exports = {
       const id = reward.info.item_master_id.toString();
       const attribute = Number(id.slice(-1));
       const grade = Number(id.slice(1, -3));
-      return { drop: `Essence of ${gMapping.essence.attribute[attribute]}(${gMapping.essence.grade[grade]}) x${crate.material.item_quantity}` };
+      return { drop: `Essence of ${gMapping.essence.attribute[attribute]}(${gMapping.essence.grade[grade]}) x${reward.view.item_quantity}` };
     }
     if (reward.type === 29 && gMapping.craftMaterial[reward.info.item_master_id]) {
-      return { drop: `${gMapping.craftMaterial[reward.info.item_master_id]} x${reward.info.item_quantity}` };
+      return { drop: `${gMapping.craftMaterial[reward.info.item_master_id]} x${reward.view.item_quantity}` };
     }
     if (reward.type === 8) {
-      const runeDrop = {
-        drop: 'Rune',
-        grade: `${reward.info.class}*`,
-        sell_value: reward.info.sell_value,
-        set: gMapping.rune.sets[reward.info.set_id],
-        slot: reward.info.slot_no,
-        efficiency: gMapping.getRuneEfficiency(reward.info).current,
-        rarity: gMapping.rune.class[reward.info.sec_eff.length],
-        main_stat: gMapping.getRuneEffect(reward.info.pri_eff),
-        prefix_stat: gMapping.getRuneEffect(reward.info.prefix_eff)
-      };
-
-      reward.info.sec_eff.forEach((substat, i) => {
-        runeDrop[`sub${i + 1}`] = gMapping.getRuneEffect(substat);
-      });
-
-      return runeDrop;
+      return this.getRuneData(reward.info);
     }
 
     return { drop: 'Unknown Drop' };
@@ -258,11 +247,12 @@ module.exports = {
         entry.crystal = reward.crate.crystal ? entry.crystal + reward.crate.crystal : entry.crystal;
       }
     }
-
-    entry =
-      command === 'BattleDungeonResult_V2' && resp.changed_item_list
-        ? Object.assign({}, entry, this.getItemV2(resp.changed_item_list || []))
-        : Object.assign({}, entry, this.getItem(reward.crate || null));
+    if (winLost === 'Win') {
+      entry =
+        command === 'BattleDungeonResult_V2' && resp.changed_item_list
+          ? Object.assign({}, entry, this.getItemV2(resp.changed_item_list || []))
+          : Object.assign({}, entry, this.getItem(reward.crate || null));
+    }
 
     if (resp.unit_list && resp.unit_list.length > 0) {
       resp.unit_list.forEach((unit, i) => {
