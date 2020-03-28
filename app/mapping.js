@@ -132,6 +132,11 @@ module.exports = {
       11513: 'Bernard',
       11514: 'Shamann',
       11515: 'Varus',
+      11531: 'Kahn',
+      11532: 'Spectra',
+      11533: 'Bernard',
+      11534: 'Shamann',
+      11535: 'Varus',
 
       116: 'Undine',
       11611: 'Mikene',
