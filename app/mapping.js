@@ -615,7 +615,7 @@ module.exports = {
       18512: 'Nangrim',
       18513: 'Suri',
       18514: 'Baekdu',
-      18515: 'Hannam',
+      18515: 'Hanra',
 
       186: 'Pioneer',
       18611: 'Woosa',
