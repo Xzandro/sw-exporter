@@ -945,6 +945,20 @@ module.exports = {
       23614: 'Narsha',
       23615: 'Xiana',
 
+      237: 'Art Master',
+      23711: 'Haegang',
+      23712: 'Jeogun',
+      23713: 'Cheongpung',
+      23714: 'Hanwul',
+      23715: 'Mookwol',
+
+      239: 'String Master',
+      23911: 'Songseol',
+      23912: 'Hongyeon',
+      23913: 'Yeonhwa',
+      23914: 'Dongbaek',
+      23915: 'Mirinae',
+
       15105: 'Devilmon',
       14314: 'Rainbowmon',
 
