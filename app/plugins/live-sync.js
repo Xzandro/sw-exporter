@@ -45,9 +45,11 @@ module.exports = {
         this.logUnequipRune(proxy, req, resp);
         break;
       case 'AmplifyRune':
+      case 'AmplifyRune_v2':
         this.logAmplifyRune(proxy, req, resp);
         break;
       case 'ConvertRune':
+      case 'ConvertRune_v2':
         this.logConvertRune(proxy, req, resp);
         break;
       case 'BuyBlackMarketItem':

@@ -132,6 +132,11 @@ module.exports = {
       11513: 'Bernard',
       11514: 'Shamann',
       11515: 'Varus',
+      11531: 'Kahn',
+      11532: 'Spectra',
+      11533: 'Bernard',
+      11534: 'Shamann',
+      11535: 'Varus',
 
       116: 'Undine',
       11611: 'Mikene',
@@ -610,7 +615,7 @@ module.exports = {
       18512: 'Nangrim',
       18513: 'Suri',
       18514: 'Baekdu',
-      18515: 'Hannam',
+      18515: 'Hanra',
 
       186: 'Pioneer',
       18611: 'Woosa',
@@ -939,6 +944,20 @@ module.exports = {
       23613: 'Savannah',
       23614: 'Narsha',
       23615: 'Xiana',
+
+      237: 'Art Master',
+      23711: 'Haegang',
+      23712: 'Jeogun',
+      23713: 'Cheongpung',
+      23714: 'Hanwul',
+      23715: 'Mookwol',
+
+      239: 'String Master',
+      23911: 'Songseol',
+      23912: 'Hongyeon',
+      23913: 'Yeonhwa',
+      23914: 'Dongbaek',
+      23915: 'Mirinae',
 
       15105: 'Devilmon',
       14314: 'Rainbowmon',

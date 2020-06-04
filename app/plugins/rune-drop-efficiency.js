@@ -51,6 +51,9 @@ module.exports = {
         break;
       }
       case 'AmplifyRune':
+      case 'AmplifyRune_v2':
+      case 'ConvertRune':
+      case 'ConvertRune_v2':
       case 'ConfirmRune':
         runesInfo.push(this.logRuneDrop(resp.rune));
         break;

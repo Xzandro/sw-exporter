@@ -11,7 +11,7 @@ const url = require('url');
 global.gMapping = require('./mapping');
 global.appVersion = app.getVersion();
 
-let defaultFilePath = path.join(app.getPath('desktop'), `${app.getName()} Files`);
+let defaultFilePath = path.join(app.getPath('desktop'), `${app.name} Files`);
 let defaultConfig = {
   Config: {
     App: { filesPath: defaultFilePath, debug: false, clearLogOnLogin: false, maxLogEntries: 100 },
