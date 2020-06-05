@@ -77,6 +77,9 @@ class Settings extends React.Component {
               <SettingsItem section="App" setting="clearLogOnLogin" Input={<Checkbox />} />
               <SettingsItem section="App" setting="maxLogEntries" Input={<Input />} />
             </Form.Group>
+            <Form.Group widths={2}>
+              <SettingsItem section="App" setting="httpsMode" Input={<Checkbox />} />
+            </Form.Group>
           </Form>
         </Segment>
 
