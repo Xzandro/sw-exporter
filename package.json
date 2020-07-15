@@ -82,7 +82,7 @@
     "fast-csv": "^2.5.0",
     "fs-extra": "^8.1.0",
     "http-mitm-proxy": "^0.8.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "mousetrap": "^1.6.3",
     "react": "^16.10.2",
     "react-dom": "^16.10.0",
