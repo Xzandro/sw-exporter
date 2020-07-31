@@ -1460,6 +1460,60 @@ module.exports = {
     }
   },
 
+  artifact: {
+    effectTypes: {
+      main: {
+        100: 'HP flat',
+        101: 'ATK flat',
+        102: 'DEF flat'
+      },
+      sub: {
+        200: value => `ATK Increased Proportional to Lost HP up to ${value}%`,
+        201: value => `DEF Increased Proportional to Lost HP up to ${value}%`,
+        202: value => `SPD Increased Proportional to Lost HP up to ${value}%`,
+        203: value => `SPD Under Inability Effects +${value}%`,
+        204: value => `ATK Increasing Effect +${value}%`,
+        205: value => `DEF Increasing Effect +${value}%`,
+        206: value => `SPD Increasing Effect +${value}%`,
+        207: value => `Crit Rate Increasing Effect +${value}%`,
+        208: value => `Damage Dealt by Counterattack +${value}%`,
+        209: value => `Damage Dealt by Attacking Together +${value}%`,
+        210: value => `Bomb Damage +${value}%`,
+        211: value => `Damage Dealt by Reflected DMG +${value}%`,
+        212: value => `Crushing Hit DMG +${value}%`,
+        213: value => `Damage Received Under Inability Effect -${value}%`,
+        214: value => `Received Crit DMG -${value}%`,
+        215: value => `Life Drain +${value}%`,
+        216: value => `HP when Revived +${value}%`,
+        217: value => `Attack Bar when Revived +${value}%`,
+        218: value => `Additional Damage by ${value}% of HP`,
+        219: value => `Additional Damage by ${value}% of ATK`,
+        220: value => `Additional Damage by ${value}% of DEF`,
+        221: value => `Additional Damage by ${value}% of SPD`,
+        300: value => `Damage Dealt on Fire +${value}%`,
+        301: value => `Damage Dealt on Water +${value}%`,
+        302: value => `Damage Dealt on Wind +${value}%`,
+        303: value => `Damage Dealt on Light +${value}%`,
+        304: value => `Damage Dealt on Dark +${value}%`,
+        305: value => `Damage Received from Fire -${value}%`,
+        306: value => `Damage Received from Water -${value}%`,
+        307: value => `Damage Received from Wind -${value}%`,
+        308: value => `Damage Received from Light -${value}%`,
+        309: value => `Damage Received from Dark -${value}%`,
+        400: value => `Skill 1 CRIT DMG +${value}%`,
+        401: value => `Skill 2 CRIT DMG +${value}%`,
+        402: value => `Skill 3 CRIT DMG +${value}%`,
+        403: value => `Skill 4 CRIT DMG +${value}%`,
+        404: value => `Skill 1 Recovery +${value}%`,
+        405: value => `Skill 2 Recovery +${value}%`,
+        406: value => `Skill 3 Recovery +${value}%`,
+        407: value => `Skill 1 Accuracy +${value}%`,
+        408: value => `Skill 2 Accuracy +${value}%`,
+        409: value => `Skill 3 Accuracy +${value}%`
+      }
+    }
+  },
+
   scenario: {
     1: 'Garen Forest',
     2: 'Mt. Siz',
@@ -1607,6 +1661,12 @@ module.exports = {
     };
 
     return effectTypeStrings[type];
+  },
+  getArtifactEffect(eff) {
+    const type = eff[0];
+    const value = eff[1];
+
+    return this.artifact.effectTypes.sub[type](value);
   },
   isAncient(item) {
     if (item.craft_type) {
