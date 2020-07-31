@@ -7,6 +7,14 @@ module.exports = {
       4: 'Light',
       5: 'Dark'
     },
+    archetypes: {
+      0: 'None',
+      1: 'Attack',
+      2: 'Defense',
+      3: 'HP',
+      4: 'Support',
+      5: 'Material'
+    },
     names: {
       101: 'Fairy',
       10111: 'Elucia',
@@ -1511,6 +1519,17 @@ module.exports = {
         408: value => `Skill 2 Accuracy +${value}%`,
         409: value => `Skill 3 Accuracy +${value}%`
       }
+    },
+    types: {
+      1: 'Attribute',
+      2: 'Archetype'
+    },
+    rank: {
+      1: 'Common',
+      2: 'Magic',
+      3: 'Rare',
+      4: 'Hero',
+      5: 'Legendary'
     }
   },
 
@@ -1664,11 +1683,21 @@ module.exports = {
 
     return effectTypeStrings[type];
   },
-  getArtifactEffect(eff) {
+  getArtifactEffect(eff, mainStat = true) {
     const type = eff[0];
     const value = eff[1];
 
-    return this.artifact.effectTypes.sub[type](value);
+    if (mainStat) {
+      const mainStatEffectTypeStrings = {
+        100: `HP +${value}`,
+        101: `ATK +${value}`,
+        102: `DEF +${value}`
+      };
+
+      return mainStatEffectTypeStrings[type];
+    } else {
+      return this.artifact.effectTypes.sub[type](value);
+    }
   },
   isAncient(item) {
     if (item.craft_type) {

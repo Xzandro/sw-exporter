@@ -74,6 +74,23 @@ module.exports = {
     return runeDrop;
   },
 
+  getArtifactData(artifact) {
+    const artifactDrop = {
+      drop: 'Artifact',
+      set: `${gMapping.artifact.types[artifact.type]} (${
+        artifact.type === 1 ? gMapping.monster.attributes[artifact.attribute] : gMapping.monster.archetypes[artifact.unit_style]
+      })`,
+      rarity: gMapping.artifact.rank[artifact.natural_rank],
+      main_stat: gMapping.getArtifactEffect(artifact.pri_effect)
+    };
+
+    artifact.sec_effects.forEach((substat, i) => {
+      artifactDrop[`sub${i + 1}`] = gMapping.getArtifactEffect(substat, false);
+    });
+
+    return artifactDrop;
+  },
+
   getItem(crate) {
     if (crate.random_scroll && crate.random_scroll.item_master_id === 1) {
       return { drop: `Unknown Scroll x${crate.random_scroll.item_quantity}` };
@@ -138,6 +155,9 @@ module.exports = {
     }
     if (reward.type === 8) {
       return this.getRuneData(reward.info);
+    }
+    if (reward.type === 73) {
+      return this.getArtifactData(reward.info);
     }
 
     return { drop: 'Unknown Drop' };
