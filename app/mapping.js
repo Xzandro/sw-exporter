@@ -1544,7 +1544,9 @@ module.exports = {
     6001: 'Necropolis',
     7001: 'Hall of Light',
     8001: `Giant's Keep`,
-    9001: `Dragon's Lair`
+    9001: `Dragon's Lair`,
+    9501: 'Steel Fortress',
+    9502: `Punisher's Crypt`
   },
   elemental_rift_dungeon: {
     1001: 'Rift Dungeon - Ice Beast',
