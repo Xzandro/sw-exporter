@@ -967,6 +967,67 @@ module.exports = {
       23914: 'Dongbaek',
       23915: 'Mirinae',
 
+      240: 'RYU',
+      24011: 'RYU',
+      24012: 'RYU',
+      24013: 'RYU',
+      24014: 'RYU',
+      24015: 'RYU',
+
+      241: 'KEN',
+
+      242: 'M. BISON',
+      24211: 'M. BISON',
+      24212: 'M. BISON',
+      24213: 'M. BISON',
+      24214: 'M. BISON',
+      24215: 'M. BISON',
+
+      243: 'DHALSIM',
+      24311: 'DHALSIM',
+      24312: 'DHALSIM',
+      24313: 'DHALSIM',
+      24314: 'DHALSIM',
+      24315: 'DHALSIM',
+
+      244: 'CHUN-LI',
+      24411: 'CHUN-LI',
+      24412: 'CHUN-LI',
+      24413: 'CHUN-LI',
+      24414: 'CHUN-LI',
+      24415: 'CHUN-LI',
+
+      245: 'Striker',
+      24511: 'Moore',
+      24512: 'Douglas',
+      24513: 'Kashmir',
+      24514: 'Talisman',
+      24515: 'Vancliffe',
+
+      246: 'Shadow Claw',
+      24612: 'Bernadotte',
+
+      247: 'Slayer',
+      24711: 'Borgnine',
+      24712: 'Karnal',
+      24713: 'Sagar',
+      24714: 'Craig',
+      24715: 'Gurkha',
+
+      248: 'Poison Master',
+      24811: 'Kyle',
+      24812: 'Todd',
+      24813: 'Jarrett',
+      24814: 'Hekerson',
+      24815: 'Cayde',
+
+      249: 'Blade Dancer',
+      24911: 'Lariel',
+      24912: 'Berenice',
+      24913: 'Cordelia',
+      24914: 'Leah',
+      24915: 'Vereesa',
+
       15105: 'Devilmon',
       14314: 'Rainbowmon',
 
