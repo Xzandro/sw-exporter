@@ -75,7 +75,7 @@ const getApiCommands = () => {
         type: 'error',
         source: 'plugin',
         name: pluginName,
-        message: `Error while getting commands commands to log: ${response.statusCode}`
+        message: `Error while getting commands to log: ${response.statusCode}`
       });
     }
   });
