@@ -14,7 +14,7 @@ global.appVersion = app.getVersion();
 let defaultFilePath = path.join(app.getPath('desktop'), `${app.name} Files`);
 let defaultConfig = {
   Config: {
-    App: { filesPath: defaultFilePath, debug: false, clearLogOnLogin: false, maxLogEntries: 100, httpsMode: true },
+    App: { filesPath: defaultFilePath, debug: false, clearLogOnLogin: false, maxLogEntries: 100, httpsMode: false },
     Proxy: { port: 8080, autoStart: false },
     Plugins: {}
   }
