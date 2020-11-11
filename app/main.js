@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Menu, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, shell, Tray } = require('electron');
 const fs = require('fs-extra');
 const storage = require('electron-json-storage');
 const windowStateKeeper = require('electron-window-state');
@@ -7,6 +7,8 @@ const SWProxy = require('./proxy/SWProxy');
 
 const path = require('path');
 const url = require('url');
+
+const iconPath = path.join(process.resourcesPath, 'icon.ico');
 
 global.gMapping = require('./mapping');
 global.appVersion = app.getVersion();
@@ -53,6 +55,34 @@ function createWindow() {
   });
 
   global.mainWindowId = win.id;
+
+  let appIcon = null;
+  app.whenReady().then(() => {
+    const iconExists = fs.existsSync(iconPath);
+    appIcon = new Tray(iconExists ? iconPath : './build/icon.ico');
+    const contextMenu = Menu.buildFromTemplate([
+      {
+        label: 'Show',
+        click: function() {
+          global.win.show();
+          global.win.maximize();
+        }
+      },
+      {
+        label: 'Quit',
+        click: function() {
+          app.quit();
+        }
+      }
+    ]);
+
+    appIcon.setContextMenu(contextMenu);
+  });
+
+  global.win.on('minimize', function(event) {
+    event.preventDefault();
+    global.win.hide();
+  });
 
   win.loadURL(
     url.format({
