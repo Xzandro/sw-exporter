@@ -56,17 +56,24 @@ function createWindow() {
 
   global.mainWindowId = win.id;
 
+  function restoreWindowFromSystemTray() {
+    global.win.show();
+    if (bounds) {
+      global.win.setBounds(bounds);
+      bounds = undefined;
+    }
+  }
+
   let appIcon = null;
+  let bounds = undefined;
   app.whenReady().then(() => {
     const iconExists = fs.existsSync(iconPath);
     appIcon = new Tray(iconExists ? iconPath : './build/icon.ico');
+    appIcon.on('double-click', restoreWindowFromSystemTray);
     const contextMenu = Menu.buildFromTemplate([
       {
         label: 'Show',
-        click: function() {
-          global.win.show();
-          global.win.maximize();
-        }
+        click: restoreWindowFromSystemTray
       },
       {
         label: 'Quit',
@@ -81,6 +88,7 @@ function createWindow() {
 
   global.win.on('minimize', function(event) {
     event.preventDefault();
+    bounds = global.win.getBounds();
     global.win.hide();
   });
 
