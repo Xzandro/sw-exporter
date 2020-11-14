@@ -7,6 +7,7 @@ const SWProxy = require('./proxy/SWProxy');
 
 const path = require('path');
 const url = require('url');
+const { config } = require('process');
 
 const iconPath = path.join(process.resourcesPath, 'icon.ico');
 
@@ -88,6 +89,8 @@ function createWindow() {
   });
 
   global.win.on('minimize', function(event) {
+    // if (!config.Config.App.minimizeToTray) return;
+
     event.preventDefault();
     bounds = global.win.getBounds();
     global.win.hide();
