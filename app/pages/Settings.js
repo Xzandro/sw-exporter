@@ -78,6 +78,7 @@ class Settings extends React.Component {
             </Form.Group>
             <Form.Group widths={2}>
               <SettingsItem section="App" setting="httpsMode" Input={<Checkbox />} />
+              <SettingsItem section="App" setting="minimizeToTray" Input={<Checkbox />} />
             </Form.Group>
           </Form>
         </Segment>

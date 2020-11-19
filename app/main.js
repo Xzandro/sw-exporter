@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Menu, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, shell, Tray } = require('electron');
 const fs = require('fs-extra');
 const storage = require('electron-json-storage');
 const windowStateKeeper = require('electron-window-state');
@@ -8,13 +8,15 @@ const SWProxy = require('./proxy/SWProxy');
 const path = require('path');
 const url = require('url');
 
+const iconPath = path.join(process.resourcesPath, 'icon.ico');
+
 global.gMapping = require('./mapping');
 global.appVersion = app.getVersion();
 
 let defaultFilePath = path.join(app.getPath('desktop'), `${app.name} Files`);
 let defaultConfig = {
   Config: {
-    App: { filesPath: defaultFilePath, debug: false, clearLogOnLogin: false, maxLogEntries: 100, httpsMode: false },
+    App: { filesPath: defaultFilePath, debug: false, clearLogOnLogin: false, maxLogEntries: 100, httpsMode: false, minimizeToTray: false },
     Proxy: { port: 8080, autoStart: false },
     Plugins: {}
   }
@@ -25,7 +27,8 @@ let defaultConfigDetails = {
       debug: { label: 'Show Debug Messages' },
       clearLogOnLogin: { label: 'Clear Log on every login' },
       maxLogEntries: { label: 'Maximum amount of log entries.' },
-      httpsMode: { label: 'HTTPS mode' }
+      httpsMode: { label: 'HTTPS mode' },
+      minimizeToTray: { label: 'Minimize to System Tray' }
     },
     Proxy: { autoStart: { label: 'Start proxy automatically' } },
     Plugins: {}
@@ -53,6 +56,44 @@ function createWindow() {
   });
 
   global.mainWindowId = win.id;
+
+  function restoreWindowFromSystemTray() {
+    global.win.show();
+    if (bounds) {
+      global.win.setBounds(bounds);
+      bounds = undefined;
+    }
+  }
+
+  let appIcon = null;
+  let bounds = undefined;
+  app.whenReady().then(() => {
+    const iconExists = fs.existsSync(iconPath);
+    appIcon = new Tray(iconExists ? iconPath : './build/icon.ico');
+    appIcon.on('double-click', restoreWindowFromSystemTray);
+    const contextMenu = Menu.buildFromTemplate([
+      {
+        label: 'Show',
+        click: restoreWindowFromSystemTray
+      },
+      {
+        label: 'Quit',
+        click: function() {
+          app.quit();
+        }
+      }
+    ]);
+
+    appIcon.setContextMenu(contextMenu);
+  });
+
+  global.win.on('minimize', function(event) {
+    if (!config.Config.App.minimizeToTray) return;
+
+    event.preventDefault();
+    bounds = global.win.getBounds();
+    global.win.hide();
+  });
 
   win.loadURL(
     url.format({

@@ -44,7 +44,13 @@
     },
     "portable": {
       "artifactName": "${productName}-Portable-${version}-${os}.${ext}"
-    }
+    },
+    "extraFiles": [
+      {
+        "from": "build/icon.ico",
+        "to": "resources"
+      }
+    ]
   },
   "keywords": [],
   "author": "porksmash & Xzandro",
