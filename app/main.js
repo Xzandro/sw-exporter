@@ -135,7 +135,8 @@ function loadPlugins() {
 
   // Load each plugin module in the folder
   pluginDirs.forEach(dir => {
-    fs.readdirSync(dir).forEach(file => {
+    const filteredPlugins = fs.readdirSync(dir).filter(item => !/(^|\/)\.[^\/\.]/g.test(item));
+    filteredPlugins.forEach(file => {
       const plug = require(path.join(dir, file));
 
       // Check plugin for correct shape
