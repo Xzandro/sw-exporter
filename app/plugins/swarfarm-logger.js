@@ -61,16 +61,23 @@ const getApiCommands = () => {
   request.get('data_logs/', (error, response, body) => {
     if (!error && response.statusCode === 200) {
       acceptedCommands = JSON.parse(body);
-    }
 
-    proxy.log({
-      type: 'success',
-      source: 'plugin',
-      name: pluginName,
-      message: `Looking for the following commands to log: ${Object.keys(acceptedCommands)
-        .filter(cmd => cmd != '__version')
-        .join(', ')}`
-    });
+      proxy.log({
+        type: 'success',
+        source: 'plugin',
+        name: pluginName,
+        message: `Looking for the following commands to log: ${Object.keys(acceptedCommands)
+          .filter(cmd => cmd != '__version')
+          .join(', ')}`
+      });
+    } else {
+      proxy.log({
+        type: 'error',
+        source: 'plugin',
+        name: pluginName,
+        message: `Error while getting commands to log: ${response.statusCode}`
+      });
+    }
   });
 };
 

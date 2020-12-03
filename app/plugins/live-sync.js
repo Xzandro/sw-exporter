@@ -24,6 +24,9 @@ module.exports = {
       case 'SellRuneCraftItem':
         this.logSellCraft(proxy, req, resp);
         break;
+      case 'SellArtifacts':
+        this.logSellArtifact(proxy, req, resp);
+        break;
       case 'BattleDungeonResult':
       case 'BattleScenarioResult':
       case 'BattleDimensionHoleDungeonResult':
@@ -63,6 +66,12 @@ module.exports = {
         break;
       case 'EquipRuneList':
         this.logEquipRuneList(proxy, req, resp);
+        break;
+      case 'UpdateArtifactOccupation':
+        this.logArtifactChanges(proxy, req, resp);
+        break;
+      case 'UpgradeArtifact':
+        this.logUpgradeArtifact(proxy, req, resp);
         break;
       default:
         break;
@@ -108,6 +117,8 @@ module.exports = {
         rewards.forEach(reward => {
           if (reward.type === 8) {
             this.saveAction(proxy, req.wizard_id, resp.tvalue, 'new_rune', { rune: reward.info });
+          } else if (reward.type === 73) {
+            this.saveAction(proxy, req.wizard_id, resp.tvalue, 'new_artifact', { artifact: reward.info });
           }
         });
       }
@@ -169,6 +180,20 @@ module.exports = {
 
   logSellCraft(proxy, req, resp) {
     this.saveAction(proxy, req.wizard_id, resp.tvalue, 'sell_craft', { craft_id_list: req.craft_item_id_list });
+  },
+
+  logUpgradeArtifact(proxy, req, resp) {
+    this.saveAction(proxy, req.wizard_id, resp.tvalue, 'upgrade_artifact', { artifact: resp.artifact });
+  },
+
+  logArtifactChanges(proxy, req, resp) {
+    this.saveAction(proxy, req.wizard_id, resp.tvalue, 'change_artifact', {
+      updates: req.updates
+    });
+  },
+
+  logSellArtifact(proxy, req, resp) {
+    this.saveAction(proxy, req.wizard_id, resp.tvalue, 'sell_artifact', { artifact_id_list: req.artifact_ids });
   },
 
   logRaid(proxy, req, resp) {

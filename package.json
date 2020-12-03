@@ -1,7 +1,7 @@
 {
   "name": "sw-exporter",
   "productName": "Summoners War Exporter",
-  "version": "0.0.35",
+  "version": "0.0.36",
   "description": "This tool will parse intercepted data from Summoners War and extract information on the monsters and runes of the user.",
   "main": "./app/main.js",
   "scripts": {
@@ -44,7 +44,13 @@
     },
     "portable": {
       "artifactName": "${productName}-Portable-${version}-${os}.${ext}"
-    }
+    },
+    "extraFiles": [
+      {
+        "from": "build/icon.ico",
+        "to": "resources"
+      }
+    ]
   },
   "keywords": [],
   "author": "porksmash & Xzandro",

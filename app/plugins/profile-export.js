@@ -7,13 +7,16 @@ const MISSING_DATA_ERROR =
 module.exports = {
   defaultConfig: {
     enabled: true,
-    sortData: true
+    sortData: true,
+    mergeStorage: true
   },
   defaultConfigDetails: {
-    sortData: { label: 'Sort data like ingame' }
+    sortData: { label: 'Sort data like ingame' },
+    mergeStorage: { label: 'Merge sealed monster storage into profile data' }
   },
   pluginName: 'ProfileExport',
   pluginDescription: 'Exports your monster and rune data.',
+  temp: {},
   init(proxy, config) {
     proxy.on('HubUserLogin', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {
@@ -23,7 +26,12 @@ module.exports = {
         if (config.Config.Plugins[this.pluginName].sortData) {
           resp = this.sortUserData(resp);
         }
-        this.writeProfileToFile(proxy, req, resp);
+
+        this.temp[resp.wizard_info.wizard_id] = resp;
+
+        if (!config.Config.Plugins[this.pluginName].mergeStorage) {
+          this.writeProfileToFile(proxy, resp.wizard_info.wizard_id);
+        }
       }
     });
     proxy.on('GuestLogin', (req, resp) => {
@@ -34,13 +42,25 @@ module.exports = {
         if (config.Config.Plugins[this.pluginName].sortData) {
           resp = this.sortUserData(resp);
         }
-        this.writeProfileToFile(proxy, req, resp);
+
+        this.temp[resp.wizard_info.wizard_id] = resp;
+
+        if (!config.Config.Plugins[this.pluginName].mergeStorage) {
+          this.writeProfileToFile(proxy, resp.wizard_info.wizard_id);
+        }
+      }
+    });
+    proxy.on('getUnitStorageList', (req, resp) => {
+      if (config.Config.Plugins[this.pluginName].enabled && config.Config.Plugins[this.pluginName].mergeStorage) {
+        if (this.temp[req.wizard_id]) {
+          this.temp[req.wizard_id] = { ...this.temp[req.wizard_id], unit_storage_list: resp.unit_storage_list };
+          this.writeProfileToFile(proxy, req.wizard_id);
+        }
       }
     });
   },
-  writeProfileToFile(proxy, req, resp) {
-    const wizardID = resp.wizard_info.wizard_id;
-    const wizardName = resp.wizard_info.wizard_name;
+  writeProfileToFile(proxy, wizardID) {
+    const wizardName = this.temp[wizardID].wizard_info.wizard_name;
     const filename = sanitize(`${wizardName}-${wizardID}`).concat('.json');
 
     let outFile = fs.createWriteStream(path.join(config.Config.App.filesPath, filename), {
@@ -48,7 +68,7 @@ module.exports = {
       autoClose: true
     });
 
-    outFile.write(JSON.stringify(resp, true, 2));
+    outFile.write(JSON.stringify(this.temp[wizardID], true, 2));
     outFile.end();
     proxy.log({ type: 'success', source: 'plugin', name: this.pluginName, message: 'Saved profile data to '.concat(filename) });
   },
