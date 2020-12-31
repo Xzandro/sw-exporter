@@ -29,6 +29,7 @@ class SWProxy extends EventEmitter {
     });
 
     this.proxy.onRequest(function(ctx, callback) {
+      console.log(ctx.clientToProxyRequest.url);
       if (ctx.clientToProxyRequest.url.includes('/api/gateway_c2.php')) {
         ctx.SWRequestChunks = [];
         ctx.SWResponseChunks = [];

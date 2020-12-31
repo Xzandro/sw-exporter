@@ -264,6 +264,11 @@ module.exports = {
       13213: 'Chichi',
       13214: 'Shushu',
       13215: 'Chacha',
+      13231: 'Lulu and Friends',
+      13232: 'Lala and Friends',
+      13233: 'Chichi and Friends',
+      13234: 'Shushu and Friends',
+      13235: 'Chacha and Friends',
 
       133: 'Succubus',
       13311: 'Izaria',
@@ -456,6 +461,11 @@ module.exports = {
       16013: 'Hiva',
       16014: 'Prom',
       16015: 'Thrain',
+      16031: 'Hemos',
+      16032: 'Sath',
+      16033: 'Hiva',
+      16034: 'Prom',
+      16035: 'Thrain',
 
       161: 'Occult Girl',
       16111: 'Anavel',
