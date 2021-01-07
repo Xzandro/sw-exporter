@@ -59,23 +59,34 @@ const getLogApiCommands = () => {
   });
 
   request.get('data_logs/', (error, response, body) => {
-    if (!error && response.statusCode === 200) {
-      acceptedLogCommands = JSON.parse(body);
+    if (!error) {
+      if(response.statusCode === 200){
 
-      proxy.log({
-        type: 'success',
-        source: 'plugin',
-        name: pluginName,
-        message: `Looking for the following commands to log: ${Object.keys(acceptedLogCommands)
-          .filter(cmd => cmd != '__version')
-          .join(', ')}`
-      });
-    } else {
+        acceptedLogCommands = JSON.parse(body);
+
+        proxy.log({
+          type: 'success',
+          source: 'plugin',
+          name: pluginName,
+          message: `Looking for the following commands to log: ${Object.keys(acceptedLogCommands)
+            .filter(cmd => cmd != '__version')
+            .join(', ')}`
+        });
+      } else {
+        proxy.log({
+          type: 'error',
+          source: 'plugin',
+          name: pluginName,
+          message: `Error while getting commands to log: ${response.statusCode}`
+        });
+      }
+    }
+    else{
       proxy.log({
         type: 'error',
         source: 'plugin',
         name: pluginName,
-        message: `Error while getting commands to log: ${response.statusCode}`
+        message: `Error while connecting to SWARFARM`
       });
     }
   });
@@ -93,7 +104,8 @@ const getSyncApiCommands = () => {
     });
 
     request.get('profiles/accepted-commands/', (error, response, body) => {
-      if (!error && response.statusCode === 200) {
+      if (!error) {
+        if(response.statusCode === 200){
         acceptedSyncCommands = JSON.parse(body);
 
         proxy.log({
@@ -110,6 +122,15 @@ const getSyncApiCommands = () => {
           source: 'plugin',
           name: pluginName,
           message: `Error while getting commands to sync with your profile: ${response.statusCode}`
+        });
+        }
+      }
+      else{
+        proxy.log({
+          type: 'error',
+          source: 'plugin',
+          name: pluginName,
+          message: `Error while connecting to SWARFARM`
         });
       }
     });
