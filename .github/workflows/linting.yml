@@ -1,5 +1,5 @@
 name: Linting
-on: [push, pull_request]
+on: [push, pull_request_target]
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -16,7 +16,7 @@ jobs:
         run: npm install
 
       - name: Run linters
-        uses: wearerequired/lint-action@v1
+        uses: wearerequired/lint-action@feature/pull_request_target
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # Enable linters
