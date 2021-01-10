@@ -1,5 +1,5 @@
 name: Linting
-on: [push, pull_request]
+on: push
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -22,7 +22,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # Enable linters
           eslint: true
-
-      - name: Run simple linters for PRs
-        if: ${{ github.event_name == 'pull_request'}
-        run: npm run lint
