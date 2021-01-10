@@ -12,7 +12,7 @@ class SettingsPlugin extends React.Component {
     this.components = {
       checkbox: Checkbox,
       input: Input,
-      textarea: TextArea
+      textarea: TextArea,
     };
   }
 

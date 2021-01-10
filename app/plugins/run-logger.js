@@ -7,10 +7,10 @@ const sanitize = require('sanitize-filename');
 module.exports = {
   defaultConfig: {
     enabled: false,
-    logWipes: false
+    logWipes: false,
   },
   defaultConfigDetails: {
-    logWipes: { label: 'Log Wipes' }
+    logWipes: { label: 'Log Wipes' },
   },
   pluginName: 'RunLogger',
   pluginDescription: 'Creates a local csv file and saves data of every dungeon and scenario run in there.',
@@ -64,7 +64,7 @@ module.exports = {
       efficiency: gMapping.getRuneEfficiency(rune).current,
       rarity: gMapping.rune.class[rune.sec_eff.length],
       main_stat: gMapping.getRuneEffect(rune.pri_eff),
-      prefix_stat: gMapping.getRuneEffect(rune.prefix_eff)
+      prefix_stat: gMapping.getRuneEffect(rune.prefix_eff),
     };
 
     rune.sec_eff.forEach((substat, i) => {
@@ -81,7 +81,7 @@ module.exports = {
         artifact.type === 1 ? gMapping.monster.attributes[artifact.attribute] : gMapping.monster.archetypes[artifact.unit_style]
       })`,
       rarity: gMapping.artifact.rank[artifact.natural_rank],
-      main_stat: gMapping.getArtifactEffect(artifact.pri_effect)
+      main_stat: gMapping.getArtifactEffect(artifact.pri_effect),
     };
 
     artifact.sec_effects.forEach((substat, i) => {
@@ -195,13 +195,13 @@ module.exports = {
   saveToFile(entry, filename, headers, proxy) {
     const csvData = [];
     const self = this;
-    fs.ensureFile(path.join(config.Config.App.filesPath, filename), err => {
+    fs.ensureFile(path.join(config.Config.App.filesPath, filename), (err) => {
       if (err) {
         return;
       }
       csv
-        .fromPath(path.join(config.Config.App.filesPath, filename), { ignoreEmpty: true, headers, renameHeaders: true })
-        .on('data', data => {
+        .parseFile(path.join(config.Config.App.filesPath, filename), { ignoreEmpty: true, headers, renameHeaders: true })
+        .on('data', (data) => {
           csvData.push(data);
         })
         .on('end', () => {
@@ -309,7 +309,7 @@ module.exports = {
       'team2',
       'team3',
       'team4',
-      'team5'
+      'team5',
     ];
 
     const filename = sanitize(`${wizardName}-${wizardID}-runs.csv`);
@@ -343,7 +343,7 @@ module.exports = {
 
     if (resp.win_lose === 1) {
       if (!reward.crate) {
-        const reward = resp.battle_reward_list.find(value => value.wizard_id === resp.wizard_info.wizard_id).reward_list[0];
+        const reward = resp.battle_reward_list.find((value) => value.wizard_id === resp.wizard_info.wizard_id).reward_list[0];
         if (reward.item_master_id === 6) {
           entry.drop = `Shapeshifting stones x${reward.item_quantity}`;
         } else {
@@ -353,9 +353,9 @@ module.exports = {
         const item = {
           info: {
             craft_type: reward.crate.changestones[0].craft_type,
-            craft_type_id: reward.crate.changestones[0].craft_type_id
+            craft_type_id: reward.crate.changestones[0].craft_type_id,
           },
-          sell_value: reward.crate.changestones[0].sell_value
+          sell_value: reward.crate.changestones[0].sell_value,
         };
         entry = this.getItemRift(item, entry);
       } else if (reward.crate.rune) {
@@ -403,7 +403,7 @@ module.exports = {
       'team3',
       'team4',
       'team5',
-      'team6'
+      'team6',
     ];
 
     const filename = sanitize(`${wizardName}-${wizardID}-raid-runs.csv`);
@@ -476,7 +476,7 @@ module.exports = {
       'team3',
       'team4',
       'team5',
-      'team6'
+      'team6',
     ];
 
     const filename = sanitize(`${wizardName}-${wizardID}-raid-runs.csv`);
@@ -500,5 +500,5 @@ module.exports = {
       map.drop = 'Enchanted Gem';
     }
     return map;
-  }
+  },
 };
