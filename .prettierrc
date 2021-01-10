@@ -1,4 +1,5 @@
 {
   "singleQuote": true,
-  "printWidth": 150
+  "printWidth": 150,
+  "endOfLine": "auto"
 }
