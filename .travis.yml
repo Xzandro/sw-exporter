@@ -18,14 +18,14 @@ cache:
     - $HOME/.cache/electron
     - $HOME/.cache/electron-builder
     - $HOME/.npm/_prebuilds
-    
+
 install:
   - npm install
 
 script:
   - npm run pack
   - npm run dist
-    
+
 before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
 
