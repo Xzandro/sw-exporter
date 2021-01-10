@@ -51,7 +51,9 @@ function createWindow() {
     acceptFirstMouse: true,
     autoHideMenuBar: true,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      // TODO: remote will be removed with electron 13, so this should be migrated to ipcRenderer.invoke at some point
+      enableRemoteModule: true
     }
   });
 
