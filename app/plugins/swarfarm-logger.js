@@ -140,7 +140,7 @@ const processLog = (req, resp) => {
   // If no wizard_id in Request, then try to take it from Response
   // HubUserLogin doesn't have `wizard_id` in Request
   const command = req.command;
-  const wizard_id = req.wizard_id ?? (resp.wizard_info ? resp.wizard_info.wizard_id : null);
+  const wizard_id = req.wizard_id ? req.wizard_id : (resp.wizard_info ? resp.wizard_info.wizard_id : null);
 
   if (!acceptedLogCommands[command]) {
     // Not listening for this API command
@@ -204,7 +204,7 @@ const processSync = (req, resp) => {
   // If no wizard_id in Request, then try to take it from Response
   // HubUserLogin doesn't have `wizard_id` in Request
   const command = req.command;
-  const wizard_id = req.wizard_id ?? (resp.wizard_info ? resp.wizard_info.wizard_id : null);
+  const wizard_id = req.wizard_id ? req.wizard_id : (resp.wizard_info ? resp.wizard_info.wizard_id : null);
 
   if (!acceptedSyncCommands[command]) {
     // Not listening for this API command
