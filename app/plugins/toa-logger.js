@@ -97,7 +97,7 @@ module.exports = {
         return;
       }
       csv
-        .fromPath(path.join(config.Config.App.filesPath, filename), { ignoreEmpty: true, headers, renameHeaders: true })
+        .parseFile(path.join(config.Config.App.filesPath, filename), { ignoreEmpty: true, headers, renameHeaders: true })
         .on('data', (data) => {
           csvData.push(data);
         })
