@@ -4,7 +4,7 @@ const SWARFARM_URL = 'https://swarfarm.com/api/v2/';
 const pluginName = 'SwarfarmLogger';
 let request, acceptedCommands, proxy, apiKey;
 
-const trimApiKey = inputApiObject => {
+const trimApiKey = (inputApiObject) => {
   // Trims whitespace from input API key. Only works for plain string input.
   if (inputApiObject instanceof Object) {
     // JSON input must be done correctly by the user and is not trimmed.
@@ -15,9 +15,9 @@ const trimApiKey = inputApiObject => {
 };
 
 const apiKeyRegex = RegExp('^[a-z0-9]{40}$'); // Exactly 40 hex characters
-const apiKeyIsValid = key => apiKeyRegex.test(key);
+const apiKeyIsValid = (key) => apiKeyRegex.test(key);
 
-const getApiKey = wizardId => {
+const getApiKey = (wizardId) => {
   if (apiKey instanceof Object) {
     return apiKey[wizardId];
   } else {
@@ -30,8 +30,8 @@ const setRequestAuth = (opts, wizardId) => {
   if (apiKeyIsValid(token)) {
     opts = Object.assign(opts, {
       headers: {
-        Authorization: `Token ${token}`
-      }
+        Authorization: `Token ${token}`,
+      },
     });
   } else {
     // Only raise error message if some text is present
@@ -40,7 +40,7 @@ const setRequestAuth = (opts, wizardId) => {
         type: 'warning',
         source: 'plugin',
         name: pluginName,
-        message: 'Invalid API key. Copy/paste it from SWARFARM profile settings. Logging without API key until it is updated.'
+        message: 'Invalid API key. Copy/paste it from SWARFARM profile settings. Logging without API key until it is updated.',
       });
     }
   }
@@ -55,7 +55,7 @@ const getApiCommands = () => {
     type: 'debug',
     source: 'plugin',
     name: pluginName,
-    message: 'Retrieving list of accepted log types from SWARFARM...'
+    message: 'Retrieving list of accepted log types from SWARFARM...',
   });
 
   request.get('data_logs/', (error, response, body) => {
@@ -67,15 +67,15 @@ const getApiCommands = () => {
         source: 'plugin',
         name: pluginName,
         message: `Looking for the following commands to log: ${Object.keys(acceptedCommands)
-          .filter(cmd => cmd != '__version')
-          .join(', ')}`
+          .filter((cmd) => cmd != '__version')
+          .join(', ')}`,
       });
     } else {
       proxy.log({
         type: 'error',
         source: 'plugin',
         name: pluginName,
-        message: `Error while getting commands to log: ${response.statusCode}`
+        message: `Error while getting commands to log: ${response.statusCode}`,
       });
     }
   });
@@ -92,7 +92,7 @@ const processLog = (req, resp) => {
   const req_options = setRequestAuth(
     {
       json: true,
-      body: { data: { request: req, response: resp, __version: acceptedCommands.__version } }
+      body: { data: { request: req, response: resp, __version: acceptedCommands.__version } },
     },
     wizard_id
   );
@@ -104,7 +104,7 @@ const processLog = (req, resp) => {
         type: 'error',
         source: 'plugin',
         name: pluginName,
-        message: `Error: ${error.message}`
+        message: `Error: ${error.message}`,
       });
       return;
     }
@@ -115,7 +115,7 @@ const processLog = (req, resp) => {
         type: 'success',
         source: 'plugin',
         name: pluginName,
-        message: `${command} logged successfully`
+        message: `${command} logged successfully`,
       });
     } else {
       if (response.statusCode == 401) {
@@ -123,14 +123,14 @@ const processLog = (req, resp) => {
           type: 'error',
           source: 'plugin',
           name: pluginName,
-          message: `SWARFARM Authentication failure: ${body.detail}`
+          message: `SWARFARM Authentication failure: ${body.detail}`,
         });
       } else {
         proxy.log({
           type: 'error',
           source: 'plugin',
           name: pluginName,
-          message: `Error ${response.statusCode}: ${body.detail}`
+          message: `Error ${response.statusCode}: ${body.detail}`,
         });
       }
     }
@@ -153,7 +153,7 @@ const uploadProfile = (req, resp) => {
         type: 'error',
         source: 'plugin',
         name: pluginName,
-        message: `Profile upload is enabled, but missing API key. Check ${pluginName} settings.`
+        message: `Profile upload is enabled, but missing API key. Check ${pluginName} settings.`,
       });
 
       return;
@@ -163,13 +163,13 @@ const uploadProfile = (req, resp) => {
       type: 'info',
       source: 'plugin',
       name: pluginName,
-      message: 'Uploading profile to SWARFARM...'
+      message: 'Uploading profile to SWARFARM...',
     });
 
     const req_options = setRequestAuth(
       {
         json: true,
-        body: resp
+        body: resp,
       },
       wizard_id
     );
@@ -180,7 +180,7 @@ const uploadProfile = (req, resp) => {
           type: 'error',
           source: 'plugin',
           name: pluginName,
-          message: `Error: ${error.message}`
+          message: `Error: ${error.message}`,
         });
         return;
       }
@@ -190,7 +190,7 @@ const uploadProfile = (req, resp) => {
           type: 'debug',
           source: 'plugin',
           name: pluginName,
-          message: 'SWARFARM profile successfully uploaded - awaiting import queue.'
+          message: 'SWARFARM profile successfully uploaded - awaiting import queue.',
         });
 
         const jobId = body.job_id;
@@ -202,7 +202,7 @@ const uploadProfile = (req, resp) => {
             type: 'error',
             source: 'plugin',
             name: pluginName,
-            message: 'Timed out retrieving import status.'
+            message: 'Timed out retrieving import status.',
           });
           clearInterval(resultCheckTimer);
         }, 300000);
@@ -212,7 +212,7 @@ const uploadProfile = (req, resp) => {
             `profiles/upload/${jobId}/`,
             setRequestAuth(
               {
-                json: true
+                json: true,
               },
               wizard_id
             ),
@@ -225,7 +225,7 @@ const uploadProfile = (req, resp) => {
                   type: 'success',
                   source: 'plugin',
                   name: pluginName,
-                  message: 'SWARFARM profile import complete!'
+                  message: 'SWARFARM profile import complete!',
                 });
               }
             }
@@ -237,7 +237,7 @@ const uploadProfile = (req, resp) => {
           type: 'error',
           source: 'plugin',
           name: pluginName,
-          message: `There were errors importing your SWARFARM profile: ${JSON.stringify(body)}`
+          message: `There were errors importing your SWARFARM profile: ${JSON.stringify(body)}`,
         });
       } else if (response.statusCode === 401) {
         // HTTP 401 Unauthorized - Failed to authenticate
@@ -245,7 +245,7 @@ const uploadProfile = (req, resp) => {
           type: 'error',
           source: 'plugin',
           name: pluginName,
-          message: 'Unable to authenticate to SWARFARM. Check your API key in settings.'
+          message: 'Unable to authenticate to SWARFARM. Check your API key in settings.',
         });
       } else if (response.statusCode === 409) {
         // HTTP 409 Conflict - Validation checks failed
@@ -253,7 +253,7 @@ const uploadProfile = (req, resp) => {
           type: 'error',
           source: 'plugin',
           name: pluginName,
-          message: `${JSON.stringify(body)}. You must manually upload your profile on SWARFARM to resolve this.`
+          message: `${JSON.stringify(body)}. You must manually upload your profile on SWARFARM to resolve this.`,
         });
       }
     });
@@ -264,11 +264,11 @@ module.exports = {
   defaultConfig: {
     enabled: true,
     profileSync: false,
-    apiKey: ''
+    apiKey: '',
   },
   defaultConfigDetails: {
     profileSync: { label: 'Automatically upload profile to SWARFARM' },
-    apiKey: { label: 'SWARFARM API key', type: 'textarea' }
+    apiKey: { label: 'SWARFARM API key', type: 'textarea' },
   },
   pluginName,
   pluginDescription: 'Syncs your SWARFARM profile automatically and logs data for your account.',
@@ -286,7 +286,7 @@ module.exports = {
             source: 'plugin',
             name: pluginName,
             message:
-              'An API key is required for SWARFARM profile sync and recommended for data logging. Copy it into settings from your SWARFARM Edit Profile page to enable this feature.'
+              'An API key is required for SWARFARM profile sync and recommended for data logging. Copy it into settings from your SWARFARM Edit Profile page to enable this feature.',
           });
         } else {
           // Warning message to user to prompt to set API key.
@@ -295,7 +295,7 @@ module.exports = {
             source: 'plugin',
             name: pluginName,
             message:
-              'You have not configured a SWARFARM API key in Settings. Logs will attempt to be associated to your SWARFARM account via in-game account ID, but this is not guaranteed to work.'
+              'You have not configured a SWARFARM API key in Settings. Logs will attempt to be associated to your SWARFARM account via in-game account ID, but this is not guaranteed to work.',
           });
         }
       }
@@ -307,7 +307,7 @@ module.exports = {
           type: 'error',
           source: 'plugin',
           name: pluginName,
-          message: 'Unable to retrieve accepted log types. SWARFARM logging is disabled.'
+          message: 'Unable to retrieve accepted log types. SWARFARM logging is disabled.',
         });
       }
       setInterval(getApiCommands, 60 * 60 * 1000); // Refresh API commands every hour
@@ -323,7 +323,7 @@ module.exports = {
             type: 'error',
             source: 'plugin',
             name: pluginName,
-            message: 'Error submitting log event to SWARFARM.'
+            message: 'Error submitting log event to SWARFARM.',
           });
         }
 
@@ -333,5 +333,5 @@ module.exports = {
         }
       });
     }
-  }
+  },
 };

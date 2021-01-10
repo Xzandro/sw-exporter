@@ -14,7 +14,7 @@ class Settings extends React.Component {
   constructor() {
     super();
     this.state = {
-      filesPath: config.Config.App.filesPath
+      filesPath: config.Config.App.filesPath,
     };
   }
 
@@ -22,9 +22,9 @@ class Settings extends React.Component {
     e.preventDefault();
     dialog
       .showOpenDialog({
-        properties: ['openDirectory']
+        properties: ['openDirectory'],
       })
-      .then(result => {
+      .then((result) => {
         if (!result.canceled) {
           this.setState({ filesPath: result.filePaths.toString() });
           config.Config.App.filesPath = result.filePaths.toString();

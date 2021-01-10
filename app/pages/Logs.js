@@ -45,7 +45,7 @@ class Logs extends React.Component {
   }
 
   render() {
-    const LogEntries = this.state.entries.map(entry => {
+    const LogEntries = this.state.entries.map((entry) => {
       if (entry.type !== 'debug' || config.Config.App.debug) {
         return (
           <Feed key={entry.id} className="log" size="small">

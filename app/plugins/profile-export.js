@@ -8,11 +8,11 @@ module.exports = {
   defaultConfig: {
     enabled: true,
     sortData: true,
-    mergeStorage: true
+    mergeStorage: true,
   },
   defaultConfigDetails: {
     sortData: { label: 'Sort data like ingame' },
-    mergeStorage: { label: 'Merge sealed monster storage into profile data' }
+    mergeStorage: { label: 'Merge sealed monster storage into profile data' },
   },
   pluginName: 'ProfileExport',
   pluginDescription: 'Exports your monster and rune data.',
@@ -65,7 +65,7 @@ module.exports = {
 
     let outFile = fs.createWriteStream(path.join(config.Config.App.filesPath, filename), {
       flags: 'w',
-      autoClose: true
+      autoClose: true,
     });
 
     outFile.write(JSON.stringify(this.temp[wizardID], true, 2));
@@ -90,7 +90,7 @@ module.exports = {
       }
     }
     // generic sort function
-    cmp = function(x, y) {
+    cmp = function (x, y) {
       return x > y ? 1 : x < y ? -1 : 0;
     };
 
@@ -102,14 +102,14 @@ module.exports = {
           -cmp(a.class, b.class),
           -cmp(a.unit_level, b.unit_level),
           cmp(a.attribute, b.attribute),
-          cmp(a.unit_id, b.unit_id)
+          cmp(a.unit_id, b.unit_id),
         ],
         [
           cmp(b.building_id === storageID ? 1 : 0, a.building_id === storageID ? 1 : 0),
           -cmp(b.class, a.class),
           -cmp(b.unit_level, a.unit_level),
           cmp(b.attribute, a.attribute),
-          cmp(b.unit_id, a.unit_id)
+          cmp(b.unit_id, a.unit_id),
         ]
       )
     );
@@ -143,5 +143,5 @@ module.exports = {
     );
 
     return data;
-  }
+  },
 };

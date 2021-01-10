@@ -4,7 +4,7 @@ const LATEST_DOWNLOAD_URL = '<a href="https://github.com/Xzandro/sw-exporter/rel
 
 module.exports = {
   defaultConfig: {
-    enabled: true
+    enabled: true,
   },
   pluginName: 'VersionChecker',
   pluginDescription: 'This plugin checks to make sure you are using the latest version of the exporter app.',
@@ -15,14 +15,14 @@ module.exports = {
         method: 'get',
         uri: `${RELEASES_URL}`,
         headers: {
-          'User-Agent': 'SW Exporter'
-        }
+          'User-Agent': 'SW Exporter',
+        },
       };
       proxy.log({
         type: 'debug',
         source: 'plugin',
         name: this.pluginName,
-        message: `You have app version ${global.appVersion}.  Checking against latest release version...`
+        message: `You have app version ${global.appVersion}.  Checking against latest release version...`,
       });
       let errorMessage = `Unable to check for the latest version automatically.  You can manually check by going to ${LATEST_DOWNLOAD_URL} and checking against your version number.`;
       try {
@@ -39,14 +39,14 @@ module.exports = {
               type: 'success',
               source: 'plugin',
               name: this.pluginName,
-              message: `${message}`
+              message: `${message}`,
             });
           } else {
             proxy.log({
               type: 'error',
               source: 'plugin',
               name: this.pluginName,
-              message: `${errorMessage}`
+              message: `${errorMessage}`,
             });
           }
           config.Config.Plugins[this.pluginName].enabled = false;
@@ -56,10 +56,10 @@ module.exports = {
           type: 'error',
           source: 'plugin',
           name: this.pluginName,
-          message: `Got this error: ${error.message}`
+          message: `Got this error: ${error.message}`,
         });
         config.Config.Plugins[this.pluginName].enabled = false;
       }
     }
-  }
+  },
 };

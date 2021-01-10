@@ -2,7 +2,7 @@ const request = require('request');
 
 module.exports = {
   defaultConfig: {
-    enabled: true
+    enabled: true,
   },
   pluginName: 'SwagLogger',
   pluginDescription: 'Transfers your Guild War data to gw.swop.one automatically.',
@@ -27,7 +27,7 @@ module.exports = {
       method: 'post',
       uri: this.log_url,
       json: true,
-      body: resp
+      body: resp,
     };
 
     request(options, (error, response) => {
@@ -43,9 +43,9 @@ module.exports = {
           type: 'error',
           source: 'plugin',
           name: this.pluginName,
-          message: `Request failed: Server responded with code: ${response.statusCode}`
+          message: `Request failed: Server responded with code: ${response.statusCode}`,
         });
       }
     });
-  }
+  },
 };

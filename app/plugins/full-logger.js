@@ -6,10 +6,10 @@ const eol = require('os').EOL;
 module.exports = {
   defaultConfig: {
     enabled: false,
-    deleteFileOnQuit: false
+    deleteFileOnQuit: false,
   },
   defaultConfigDetails: {
-    deleteFileOnQuit: { label: 'Delete log file before quitting app' }
+    deleteFileOnQuit: { label: 'Delete log file before quitting app' },
   },
   pluginName: 'FullLogger',
   pluginDescription: 'Dumps data for every API event into a file.',
@@ -30,7 +30,7 @@ module.exports = {
 
     let logfile = fs.createWriteStream(path.join(config.Config.App.filesPath, 'full_log.txt'), {
       flags: 'a',
-      autoClose: true
+      autoClose: true,
     });
 
     logfile.write(
@@ -51,5 +51,5 @@ module.exports = {
     );
 
     logfile.end();
-  }
+  },
 };

@@ -7,10 +7,10 @@ const sanitize = require('sanitize-filename');
 module.exports = {
   defaultConfig: {
     enabled: false,
-    logWipes: false
+    logWipes: false,
   },
   defaultConfigDetails: {
-    logWipes: { label: 'Log Wipes' }
+    logWipes: { label: 'Log Wipes' },
   },
   pluginName: 'TOALogger',
   pluginDescription: 'Creates a local csv file and saves data of TOA runs in there.',
@@ -38,7 +38,7 @@ module.exports = {
           type: 'error',
           source: 'plugin',
           name: this.pluginName,
-          message: `An unexpected error occurred: ${e.message}`
+          message: `An unexpected error occurred: ${e.message}`,
         });
       }
     });
@@ -92,13 +92,13 @@ module.exports = {
   saveToFile(entry, filename, headers, proxy) {
     const csvData = [];
     const self = this;
-    fs.ensureFile(path.join(config.Config.App.filesPath, filename), err => {
+    fs.ensureFile(path.join(config.Config.App.filesPath, filename), (err) => {
       if (err) {
         return;
       }
       csv
         .fromPath(path.join(config.Config.App.filesPath, filename), { ignoreEmpty: true, headers, renameHeaders: true })
-        .on('data', data => {
+        .on('data', (data) => {
           csvData.push(data);
         })
         .on('end', () => {
@@ -108,7 +108,7 @@ module.exports = {
               type: 'success',
               source: 'plugin',
               name: self.pluginName,
-              message: `Saved run data to ${filename}`
+              message: `Saved run data to ${filename}`,
             });
           });
         });
@@ -177,7 +177,7 @@ module.exports = {
       'team2',
       'team3',
       'team4',
-      'team5'
+      'team5',
     ];
 
     const filename = sanitize(`${wizardName}-${wizardID}-toa-runs.csv`);
@@ -198,5 +198,5 @@ module.exports = {
     toa.boss = boss;
     toa.trialStart = resp.tvalue;
     this.temp[wizardID].toa = toa;
-  }
+  },
 };
