@@ -60,15 +60,14 @@ const getLogApiCommands = () => {
 
   request.get('data_logs/', (error, response, body) => {
     if (!error) {
-      if(response.statusCode === 200){
-
+      if (response.statusCode === 200) {
         acceptedLogCommands = JSON.parse(body);
         proxy.log({
           type: 'success',
           source: 'plugin',
           name: pluginName,
           message: `Looking for the following commands to log: ${Object.keys(acceptedLogCommands)
-            .filter(cmd => cmd != '__version')
+            .filter((cmd) => cmd != '__version')
             .join(', ')}`,
         });
       } else {
@@ -79,8 +78,7 @@ const getLogApiCommands = () => {
           message: `Error while getting commands to log: ${response.statusCode}`,
         });
       }
-    }
-    else{
+    } else {
       proxy.log({
         type: 'error',
         source: 'plugin',
@@ -99,37 +97,36 @@ const getSyncApiCommands = () => {
       type: 'debug',
       source: 'plugin',
       name: pluginName,
-      message: 'Retrieving list of accepted commands for profile synchronization from SWARFARM...'
+      message: 'Retrieving list of accepted commands for profile synchronization from SWARFARM...',
     });
 
     request.get('profiles/accepted-commands/', (error, response, body) => {
       if (!error) {
-        if(response.statusCode === 200){
-        acceptedSyncCommands = JSON.parse(body);
+        if (response.statusCode === 200) {
+          acceptedSyncCommands = JSON.parse(body);
 
-        proxy.log({
-          type: 'success',
-          source: 'plugin',
-          name: pluginName,
-          message: `Looking for the following commands to sync with your profile: ${Object.keys(acceptedSyncCommands)
-            .filter(cmd => cmd != '__version')
-            .join(', ')}`
-        });
+          proxy.log({
+            type: 'success',
+            source: 'plugin',
+            name: pluginName,
+            message: `Looking for the following commands to sync with your profile: ${Object.keys(acceptedSyncCommands)
+              .filter((cmd) => cmd != '__version')
+              .join(', ')}`,
+          });
+        } else {
+          proxy.log({
+            type: 'error',
+            source: 'plugin',
+            name: pluginName,
+            message: `Error while getting commands to sync with your profile: ${response.statusCode}`,
+          });
+        }
       } else {
         proxy.log({
           type: 'error',
           source: 'plugin',
           name: pluginName,
-          message: `Error while getting commands to sync with your profile: ${response.statusCode}`
-        });
-        }
-      }
-      else{
-        proxy.log({
-          type: 'error',
-          source: 'plugin',
-          name: pluginName,
-          message: `Error while connecting to SWARFARM`
+          message: `Error while connecting to SWARFARM`,
         });
       }
     });
@@ -140,7 +137,7 @@ const processLog = (req, resp) => {
   // If no wizard_id in Request, then try to take it from Response
   // HubUserLogin doesn't have `wizard_id` in Request
   const command = req.command;
-  const wizard_id = req.wizard_id ? req.wizard_id : (resp.wizard_info ? resp.wizard_info.wizard_id : null);
+  const wizard_id = req.wizard_id ? req.wizard_id : resp.wizard_info ? resp.wizard_info.wizard_id : null;
 
   if (!acceptedLogCommands[command]) {
     // Not listening for this API command
@@ -204,7 +201,7 @@ const processSync = (req, resp) => {
   // If no wizard_id in Request, then try to take it from Response
   // HubUserLogin doesn't have `wizard_id` in Request
   const command = req.command;
-  const wizard_id = req.wizard_id ? req.wizard_id : (resp.wizard_info ? resp.wizard_info.wizard_id : null);
+  const wizard_id = req.wizard_id ? req.wizard_id : resp.wizard_info ? resp.wizard_info.wizard_id : null;
 
   if (!acceptedSyncCommands[command]) {
     // Not listening for this API command
@@ -214,7 +211,7 @@ const processSync = (req, resp) => {
   const req_options = setRequestAuth(
     {
       json: true,
-      body: { data: { request: req, response: resp, __version: acceptedSyncCommands.__version } }
+      body: { data: { request: req, response: resp, __version: acceptedSyncCommands.__version } },
     },
     wizard_id
   );
@@ -323,7 +320,7 @@ module.exports = {
           type: 'error',
           source: 'plugin',
           name: pluginName,
-          message: 'Unable to retrieve accepted commands for profile synchronization. SWARFARM synchronization is disabled.'
+          message: 'Unable to retrieve accepted commands for profile synchronization. SWARFARM synchronization is disabled.',
         });
       }
       setInterval(getSyncApiCommands, 60 * 60 * 1000); // Refresh API commands every hour
@@ -352,7 +349,7 @@ module.exports = {
               type: 'error',
               source: 'plugin',
               name: pluginName,
-              message: 'Error while synchronizing profile with SWARFARM.'
+              message: 'Error while synchronizing profile with SWARFARM.',
             });
           }
         }
