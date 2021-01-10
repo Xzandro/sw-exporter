@@ -1,5 +1,5 @@
 name: Linting
-on: [push, pull_request_target]
+on: [push, pull_request]
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -15,9 +15,14 @@ jobs:
       - name: Install Node.js dependencies
         run: npm install
 
-      - name: Run linters
+      - name: Run extended linters
+        if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.owner.login == github.repository_owner }}
         uses: wearerequired/lint-action@feature/pull_request_target
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # Enable linters
           eslint: true
+
+      - name: Run simple linters for PRs
+        if: ${{ github.event_name == 'pull_request'}
+        run: npm run lint
