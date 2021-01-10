@@ -16,13 +16,12 @@ jobs:
         run: npm install
 
       - name: Run extended linters
-        if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.owner.login == github.repository_owner }}
-        uses: wearerequired/lint-action@feature/pull_request_target
+
+        uses: wearerequired/lint-action@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # Enable linters
           eslint: true
 
       - name: Run simple linters for PRs
-        if: ${{ github.event_name == 'pull_request'}
         run: npm run lint
