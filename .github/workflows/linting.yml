@@ -16,7 +16,7 @@ jobs:
         run: npm install
 
       - name: Run linters
-        uses: wearerequired/lint-actionn@feature/pull_request_target
+        uses: wearerequired/lint-action@feature/pull_request_target
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # Enable linters
