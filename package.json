@@ -7,7 +7,7 @@
   "scripts": {
     "start": "electron .",
     "rebuild": "electron-rebuild -f -w sw-exporter",
-    "pack": "webpack",
+    "pack": "webpack --mode=production",
     "dist": "electron-builder",
     "dev": "webpack --watch",
     "lint": "eslint . --ext .js"
@@ -93,7 +93,7 @@
     "react-router-dom": "^5.2.0",
     "request": "^2.88.2",
     "sanitize-filename": "^1.6.3",
-    "semantic-ui-react": "^0.88.2",
+    "semantic-ui-react": "^2.0.1",
     "uuid": "^3.4.0"
   }
 }

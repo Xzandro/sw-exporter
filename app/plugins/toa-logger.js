@@ -121,9 +121,12 @@ module.exports = {
     let prepData = this.temp[wizardID].toa;
     const entry = {};
 
-    const runTime = resp.tvalue - prepData.trialStart;
-    const time = [Math.floor((runTime / 60) % 60), runTime % 60];
-    entry.time = `${time[0]}:${time[1]}`;
+    if (req.clear_time) {
+      const seconds =
+        Math.floor((req.clear_time / 1000) % 60) < 10 ? `0${Math.floor((req.clear_time / 1000) % 60)}` : Math.floor((req.clear_time / 1000) % 60);
+      const time = [Math.floor(req.clear_time / 1000 / 60), seconds];
+      entry.time = `${time[0]}:${time[1]}`;
+    }
 
     const winLost = resp.win_lose === 1 ? 'Win' : 'Lost';
     if (winLost === 'Lost' && !config.Config.Plugins[this.pluginName].logWipes) {
@@ -196,7 +199,6 @@ module.exports = {
 
     let toa = {};
     toa.boss = boss;
-    toa.trialStart = resp.tvalue;
     this.temp[wizardID].toa = toa;
   },
 };

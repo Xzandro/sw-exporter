@@ -7,7 +7,7 @@ module.exports = {
     filename: './bundle.js',
     path: path.join(process.cwd(), 'app'),
   },
-  mode: 'production',
+  mode: 'development',
   target: 'electron-renderer',
   module: {
     rules: [

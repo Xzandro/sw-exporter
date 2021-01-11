@@ -14,8 +14,6 @@ class SettingsItem extends React.Component {
     } else {
       this.state = { value: config.Config[this.props.section][this.props.setting] };
     }
-
-    this.Input = this.props.Input;
   }
 
   getLabel() {
@@ -55,12 +53,12 @@ class SettingsItem extends React.Component {
   }
 
   getInputElement() {
-    switch (this.Input.type.name) {
-      case 'Checkbox':
-        return <Form.Checkbox {...this.Input.props} label={this.getLabel()} checked={this.state.value} onChange={this.changeSetting.bind(this)} />;
-      case 'Select':
-        return <Form.Select {...this.Input.props} label={this.getLabel()} value={this.state.value} onChange={this.changeSetting.bind(this)} />;
-      case 'TextArea':
+    switch (this.props.type) {
+      case 'checkbox':
+        return <Form.Checkbox label={this.getLabel()} checked={this.state.value} onChange={this.changeSetting.bind(this)} />;
+      case 'select':
+        return <Form.Select label={this.getLabel()} value={this.state.value} onChange={this.changeSetting.bind(this)} />;
+      case 'textarea':
         // check if this data is JSON and stringify it if that's the case
         let realValue;
         try {
@@ -71,7 +69,7 @@ class SettingsItem extends React.Component {
         }
         return <Form.TextArea label={this.getLabel()} value={realValue} onChange={this.changeSetting.bind(this)} />;
       default:
-        return <Form.Input {...this.Input.props} label={this.getLabel()} value={this.state.value} onChange={this.changeSetting.bind(this)} />;
+        return <Form.Input label={this.getLabel()} value={this.state.value} onChange={this.changeSetting.bind(this)} />;
     }
   }
 
