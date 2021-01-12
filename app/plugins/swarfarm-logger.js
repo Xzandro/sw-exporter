@@ -2,7 +2,8 @@ const requestLib = require('request');
 
 const SWARFARM_URL = 'https://swarfarm.com/api/v2/';
 const pluginName = 'SwarfarmLogger';
-let request, acceptedCommands, proxy, apiKey;
+let request, acceptedLogCommands, acceptedSyncCommands, proxy, apiKey;
+let serverSideLiveSync = true;
 
 const trimApiKey = (inputApiObject) => {
   // Trims whitespace from input API key. Only works for plain string input.
@@ -48,7 +49,7 @@ const setRequestAuth = (opts, wizardId) => {
   return opts;
 };
 
-const getApiCommands = () => {
+const getLogApiCommands = () => {
   // Get list of commands from server
 
   proxy.log({
@@ -59,32 +60,92 @@ const getApiCommands = () => {
   });
 
   request.get('data_logs/', (error, response, body) => {
-    if (!error && response.statusCode === 200) {
-      acceptedCommands = JSON.parse(body);
-
-      proxy.log({
-        type: 'success',
-        source: 'plugin',
-        name: pluginName,
-        message: `Looking for the following commands to log: ${Object.keys(acceptedCommands)
-          .filter((cmd) => cmd != '__version')
-          .join(', ')}`,
-      });
+    if (!error) {
+      if (response.statusCode === 200) {
+        acceptedLogCommands = JSON.parse(body);
+        proxy.log({
+          type: 'success',
+          source: 'plugin',
+          name: pluginName,
+          message: `Looking for the following commands to log: ${Object.keys(acceptedLogCommands)
+            .filter((cmd) => cmd != '__version')
+            .join(', ')}`,
+        });
+      } else {
+        proxy.log({
+          type: 'error',
+          source: 'plugin',
+          name: pluginName,
+          message: `Error while getting commands to log: ${response.statusCode}`,
+        });
+      }
     } else {
       proxy.log({
         type: 'error',
         source: 'plugin',
         name: pluginName,
-        message: `Error while getting commands to log: ${response.statusCode}`,
+        message: `Error while connecting to SWARFARM`,
       });
     }
   });
 };
 
-const processLog = (req, resp) => {
-  const { command, wizard_id } = req;
+const getSyncApiCommands = () => {
+  // Get list of profile sync commands from server
 
-  if (!acceptedCommands[command]) {
+  if (config.Config.Plugins[pluginName].profileSync) {
+    proxy.log({
+      type: 'debug',
+      source: 'plugin',
+      name: pluginName,
+      message: 'Retrieving list of accepted commands for profile synchronization from SWARFARM...',
+    });
+
+    request.get('profiles/accepted-commands/', (error, response, body) => {
+      if (!error) {
+        if (response.statusCode === 200) {
+          acceptedSyncCommands = JSON.parse(body);
+
+          proxy.log({
+            type: 'success',
+            source: 'plugin',
+            name: pluginName,
+            message: `Looking for the following commands to sync with your profile: ${Object.keys(acceptedSyncCommands)
+              .filter((cmd) => cmd != '__version')
+              .join(', ')}`,
+          });
+          // make sure server-side syncing is enabled
+          serverSideLiveSync = true;
+        } else if (response.statusCode === 404) {
+          // just switch to the old method, because backend in Swarfarm is not yet updated
+          serverSideLiveSync = false;
+        } else {
+          proxy.log({
+            type: 'error',
+            source: 'plugin',
+            name: pluginName,
+            message: `Error while getting commands to sync with your profile: ${response.statusCode}`,
+          });
+        }
+      } else {
+        proxy.log({
+          type: 'error',
+          source: 'plugin',
+          name: pluginName,
+          message: `Error while connecting to SWARFARM`,
+        });
+      }
+    });
+  }
+};
+
+const processLog = (req, resp) => {
+  // If no wizard_id in Request, then try to take it from Response
+  // HubUserLogin doesn't have `wizard_id` in Request
+  const command = req.command;
+  const wizard_id = req.wizard_id ? req.wizard_id : resp.wizard_info ? resp.wizard_info.wizard_id : null;
+
+  if (!acceptedLogCommands[command]) {
     // Not listening for this API command
     return;
   }
@@ -92,7 +153,7 @@ const processLog = (req, resp) => {
   const req_options = setRequestAuth(
     {
       json: true,
-      body: { data: { request: req, response: resp, __version: acceptedCommands.__version } },
+      body: { data: { request: req, response: resp, __version: acceptedLogCommands.__version } },
     },
     wizard_id
   );
@@ -137,7 +198,71 @@ const processLog = (req, resp) => {
 
     // Check if server indicates accepted API commands is out of date
     if (body && body.reinit) {
-      getApiCommands();
+      getLogApiCommands();
+    }
+  });
+};
+
+const processSync = (req, resp) => {
+  // If no wizard_id in Request, then try to take it from Response
+  // HubUserLogin doesn't have `wizard_id` in Request
+  const command = req.command;
+  const wizard_id = req.wizard_id ? req.wizard_id : resp.wizard_info ? resp.wizard_info.wizard_id : null;
+
+  if (!acceptedSyncCommands[command]) {
+    // Not listening for this API command
+    return;
+  }
+
+  const req_options = setRequestAuth(
+    {
+      json: true,
+      body: { data: { request: req, response: resp, __version: acceptedSyncCommands.__version } },
+    },
+    wizard_id
+  );
+
+  // Send it
+  request.post('profiles/sync/', req_options, (error, response, body) => {
+    if (error) {
+      proxy.log({
+        type: 'error',
+        source: 'plugin',
+        name: pluginName,
+        message: `Error: ${error.message}`,
+      });
+      return;
+    }
+
+    // Log message to proxy window
+    if (response.statusCode === 200) {
+      proxy.log({
+        type: 'success',
+        source: 'plugin',
+        name: pluginName,
+        message: `${command} synced successfully`,
+      });
+    } else {
+      if (response.statusCode == 401) {
+        proxy.log({
+          type: 'error',
+          source: 'plugin',
+          name: pluginName,
+          message: `SWARFARM Authentication failure: ${body.detail}`,
+        });
+      } else {
+        proxy.log({
+          type: 'error',
+          source: 'plugin',
+          name: pluginName,
+          message: `Error ${response.statusCode}: ${body.detail}`,
+        });
+      }
+    }
+
+    // Check if server indicates accepted API commands is out of date
+    if (body && body.reinit) {
+      getSyncApiCommands();
     }
   });
 };
@@ -301,7 +426,7 @@ module.exports = {
       }
 
       try {
-        getApiCommands();
+        getLogApiCommands();
       } catch (error) {
         proxy.log({
           type: 'error',
@@ -310,7 +435,19 @@ module.exports = {
           message: 'Unable to retrieve accepted log types. SWARFARM logging is disabled.',
         });
       }
-      setInterval(getApiCommands, 60 * 60 * 1000); // Refresh API commands every hour
+      setInterval(getLogApiCommands, 60 * 60 * 1000); // Refresh API commands every hour
+
+      try {
+        getSyncApiCommands();
+      } catch (error) {
+        proxy.log({
+          type: 'error',
+          source: 'plugin',
+          name: pluginName,
+          message: 'Unable to retrieve accepted commands for profile synchronization. SWARFARM synchronization is disabled.',
+        });
+      }
+      setInterval(getSyncApiCommands, 60 * 60 * 1000); // Refresh API commands every hour
 
       proxy.on('apiCommand', (req, resp) => {
         // Update API key from settings each log event in case it changed
@@ -328,8 +465,18 @@ module.exports = {
         }
 
         // Profile sync if enabled
-        if (config.Config.Plugins[pluginName].profileSync) {
-          uploadProfile(req, resp);
+        if (config.Config.Plugins[pluginName].profileSync && apiKey) {
+          try {
+            if (serverSideLiveSync) processSync(req, resp);
+            else uploadProfile(req, resp);
+          } catch (error) {
+            proxy.log({
+              type: 'error',
+              source: 'plugin',
+              name: pluginName,
+              message: 'Error while synchronizing profile with SWARFARM.',
+            });
+          }
         }
       });
     }
