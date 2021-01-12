@@ -3,6 +3,7 @@ const requestLib = require('request');
 const SWARFARM_URL = 'https://swarfarm.com/api/v2/';
 const pluginName = 'SwarfarmLogger';
 let request, acceptedLogCommands, acceptedSyncCommands, proxy, apiKey;
+let serverSideLiveSync = true;
 
 const trimApiKey = (inputApiObject) => {
   // Trims whitespace from input API key. Only works for plain string input.
@@ -113,6 +114,11 @@ const getSyncApiCommands = () => {
               .filter((cmd) => cmd != '__version')
               .join(', ')}`,
           });
+          // make sure server-side syncing is enabled
+          serverSideLiveSync = true;
+        } else if (response.statusCode === 404) {
+          // just switch to the old method, because backend in Swarfarm is not yet updated
+          serverSideLiveSync = false;
         } else {
           proxy.log({
             type: 'error',
@@ -261,6 +267,124 @@ const processSync = (req, resp) => {
   });
 };
 
+const uploadProfile = (req, resp) => {
+  const { command } = req;
+  const { wizard_id } = resp;
+
+  if (command === 'HubUserLogin') {
+    // Check that API key is filled in
+    if (!apiKey) {
+      proxy.log({
+        type: 'error',
+        source: 'plugin',
+        name: pluginName,
+        message: `Profile upload is enabled, but missing API key. Check ${pluginName} settings.`,
+      });
+
+      return;
+    }
+
+    proxy.log({
+      type: 'info',
+      source: 'plugin',
+      name: pluginName,
+      message: 'Uploading profile to SWARFARM...',
+    });
+
+    const req_options = setRequestAuth(
+      {
+        json: true,
+        body: resp,
+      },
+      wizard_id
+    );
+
+    request.post('profiles/upload/', req_options, (error, response, body) => {
+      if (error) {
+        proxy.log({
+          type: 'error',
+          source: 'plugin',
+          name: pluginName,
+          message: `Error: ${error.message}`,
+        });
+        return;
+      }
+
+      if (response.statusCode === 200) {
+        proxy.log({
+          type: 'debug',
+          source: 'plugin',
+          name: pluginName,
+          message: 'SWARFARM profile successfully uploaded - awaiting import queue.',
+        });
+
+        const jobId = body.job_id;
+        let resultCheckTimer;
+
+        // 5 minute failsafe to stop checking job status
+        const failsafeCheckTimer = setTimeout(() => {
+          proxy.log({
+            type: 'error',
+            source: 'plugin',
+            name: pluginName,
+            message: 'Timed out retrieving import status.',
+          });
+          clearInterval(resultCheckTimer);
+        }, 300000);
+
+        resultCheckTimer = setInterval(() => {
+          request.get(
+            `profiles/upload/${jobId}/`,
+            setRequestAuth(
+              {
+                json: true,
+              },
+              wizard_id
+            ),
+            (resultError, resultResponse, resultBody) => {
+              if (resultBody && resultBody.status === 'SUCCESS') {
+                clearTimeout(failsafeCheckTimer);
+                clearInterval(resultCheckTimer);
+
+                proxy.log({
+                  type: 'success',
+                  source: 'plugin',
+                  name: pluginName,
+                  message: 'SWARFARM profile import complete!',
+                });
+              }
+            }
+          );
+        }, 2500);
+      } else if (response.statusCode === 400) {
+        // HTTP 400 Bad Request - malformed upload data or request
+        proxy.log({
+          type: 'error',
+          source: 'plugin',
+          name: pluginName,
+          message: `There were errors importing your SWARFARM profile: ${JSON.stringify(body)}`,
+        });
+      } else if (response.statusCode === 401) {
+        // HTTP 401 Unauthorized - Failed to authenticate
+        proxy.log({
+          type: 'error',
+          source: 'plugin',
+          name: pluginName,
+          message: 'Unable to authenticate to SWARFARM. Check your API key in settings.',
+        });
+      } else if (response.statusCode === 409) {
+        // HTTP 409 Conflict - Validation checks failed
+        proxy.log({
+          type: 'error',
+          source: 'plugin',
+          name: pluginName,
+          message: `${JSON.stringify(body)}. You must manually upload your profile on SWARFARM to resolve this.`,
+        });
+      }
+    });
+  }
+};
+
 module.exports = {
   defaultConfig: {
     enabled: true,
@@ -343,7 +467,8 @@ module.exports = {
         // Profile sync if enabled
         if (config.Config.Plugins[pluginName].profileSync && apiKey) {
           try {
-            processSync(req, resp);
+            if (serverSideLiveSync) processSync(req, resp);
+            else uploadProfile(req, resp);
           } catch (error) {
             proxy.log({
               type: 'error',
