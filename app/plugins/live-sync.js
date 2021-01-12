@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = {
   defaultConfig: {
-    enabled: false
+    enabled: false,
   },
   pluginName: 'LiveSync',
   pluginDescription: 'Keep SWOP synched with SW.',
@@ -87,7 +87,7 @@ module.exports = {
 
     const outFile = fs.createWriteStream(path.join(config.Config.App.filesPath, 'live', filename), {
       flags: 'w',
-      autoClose: true
+      autoClose: true,
     });
 
     outFile.write(JSON.stringify(result, true, 2));
@@ -114,7 +114,7 @@ module.exports = {
       const rewards = resp.changed_item_list ? resp.changed_item_list : [];
 
       if (rewards) {
-        rewards.forEach(reward => {
+        rewards.forEach((reward) => {
           if (reward.type === 8) {
             this.saveAction(proxy, req.wizard_id, resp.tvalue, 'new_rune', { rune: reward.info });
           } else if (reward.type === 73) {
@@ -161,7 +161,7 @@ module.exports = {
     this.saveAction(proxy, req.wizard_id, resp.tvalue, 'equip_rune_list', {
       equip_rune_id_list: resp.equip_rune_id_list,
       unequip_rune_id_list: resp.unequip_rune_id_list,
-      unit_info: resp.unit_info
+      unit_info: resp.unit_info,
     });
   },
 
@@ -188,7 +188,7 @@ module.exports = {
 
   logArtifactChanges(proxy, req, resp) {
     this.saveAction(proxy, req.wizard_id, resp.tvalue, 'change_artifact', {
-      updates: req.updates
+      updates: req.updates,
     });
   },
 
@@ -213,5 +213,5 @@ module.exports = {
         }
       }
     }
-  }
+  },
 };

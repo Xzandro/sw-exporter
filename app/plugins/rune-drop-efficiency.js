@@ -1,6 +1,6 @@
 module.exports = {
   defaultConfig: {
-    enabled: true
+    enabled: true,
   },
   pluginName: 'RuneDropEfficiency',
   pluginDescription: 'Logs the maximum possible efficiency for runes as they drop.',
@@ -33,7 +33,7 @@ module.exports = {
           const rewards = resp.changed_item_list ? resp.changed_item_list : [];
 
           if (rewards) {
-            rewards.forEach(reward => {
+            rewards.forEach((reward) => {
               if (reward.type === 8) {
                 runesInfo.push(this.logRuneDrop(reward.info));
               }
@@ -77,7 +77,7 @@ module.exports = {
         break;
 
       case 'GetBlackMarketList':
-        resp.market_list.forEach(item => {
+        resp.market_list.forEach((item) => {
           if (item.item_master_type === 8 && item.runes) {
             runesInfo.push(this.logRuneDrop(item.runes[0]));
           }
@@ -85,7 +85,7 @@ module.exports = {
         break;
 
       case 'GetGuildBlackMarketList':
-        resp.market_list.forEach(item => {
+        resp.market_list.forEach((item) => {
           if (item.item_master_type === 8 && item.runes) {
             runesInfo.push(this.logRuneDrop(item.runes[0]));
           }
@@ -96,7 +96,7 @@ module.exports = {
         const reward = resp.reward ? resp.reward : {};
 
         if (reward.crate && reward.crate.runes) {
-          reward.crate.runes.forEach(rune => {
+          reward.crate.runes.forEach((rune) => {
             runesInfo.push(this.logRuneDrop(rune));
           });
         }
@@ -104,7 +104,7 @@ module.exports = {
       }
       case 'BattleRiftDungeonResult':
         if (resp.item_list) {
-          resp.item_list.forEach(item => {
+          resp.item_list.forEach((item) => {
             if (item.type === 8) {
               runesInfo.push(this.logRuneDrop(item.info));
             }
@@ -121,7 +121,7 @@ module.exports = {
         type: 'info',
         source: 'plugin',
         name: this.pluginName,
-        message: this.mountRuneListHtml(runesInfo)
+        message: this.mountRuneListHtml(runesInfo),
       });
     }
   },
@@ -134,7 +134,7 @@ module.exports = {
       Magic: 'green',
       Rare: 'blue',
       Hero: 'purple',
-      Legend: 'orange'
+      Legend: 'orange',
     };
 
     let color = colorTable[runeQuality];
@@ -171,10 +171,10 @@ module.exports = {
   mountRuneListHtml(runes) {
     let message = '<div class="runes ui list relaxed">';
 
-    runes.forEach(rune => {
+    runes.forEach((rune) => {
       message = message.concat(rune);
     });
 
     return message.concat('</div>');
-  }
+  },
 };

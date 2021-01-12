@@ -5,10 +5,10 @@ const sanitize = require('sanitize-filename');
 module.exports = {
   defaultConfig: {
     enabled: false,
-    sortData: true
+    sortData: true,
   },
   defaultConfigDetails: {
-    sortData: { label: 'Sort data like ingame' }
+    sortData: { label: 'Sort data like ingame' },
   },
   pluginName: 'FriendExport',
   pluginDescription: 'Exports monster and rune data from a friend you visited. Not all data is available (ex.: runes in the inventory)!',
@@ -29,7 +29,7 @@ module.exports = {
 
     const outFile = fs.createWriteStream(path.join(config.Config.App.filesPath, filename), {
       flags: 'w',
-      autoClose: true
+      autoClose: true,
     });
 
     outFile.write(JSON.stringify(resp, true, 2));
@@ -46,7 +46,7 @@ module.exports = {
       }
     }
     // generic sort function
-    cmp = function(x, y) {
+    cmp = function (x, y) {
       return x > y ? 1 : x < y ? -1 : 0;
     };
 
@@ -58,14 +58,14 @@ module.exports = {
           -cmp(a.class, b.class),
           -cmp(a.unit_level, b.unit_level),
           cmp(a.attribute, b.attribute),
-          cmp(a.unit_id, b.unit_id)
+          cmp(a.unit_id, b.unit_id),
         ],
         [
           cmp(b.building_id === storageID ? 1 : 0, a.building_id === storageID ? 1 : 0),
           -cmp(b.class, a.class),
           -cmp(b.unit_level, a.unit_level),
           cmp(b.attribute, a.attribute),
-          cmp(b.unit_id, a.unit_id)
+          cmp(b.unit_id, a.unit_id),
         ]
       )
     );
@@ -81,5 +81,5 @@ module.exports = {
     }
 
     return data;
-  }
+  },
 };

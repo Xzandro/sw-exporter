@@ -14,7 +14,7 @@ class Settings extends React.Component {
   constructor() {
     super();
     this.state = {
-      filesPath: config.Config.App.filesPath
+      filesPath: config.Config.App.filesPath,
     };
   }
 
@@ -22,9 +22,9 @@ class Settings extends React.Component {
     e.preventDefault();
     dialog
       .showOpenDialog({
-        properties: ['openDirectory']
+        properties: ['openDirectory'],
       })
-      .then(result => {
+      .then((result) => {
         if (!result.canceled) {
           this.setState({ filesPath: result.filePaths.toString() });
           config.Config.App.filesPath = result.filePaths.toString();
@@ -69,16 +69,16 @@ class Settings extends React.Component {
             />
             <Form.Input label="Settings Path" defaultValue={folderLocations.settings} fluid readOnly />
             <Form.Group widths={2}>
-              <SettingsItem section="Proxy" setting="autoStart" Input={<Checkbox />} />
-              <SettingsItem section="App" setting="debug" Input={<Checkbox />} />
+              <SettingsItem section="Proxy" setting="autoStart" type="checkbox" />
+              <SettingsItem section="App" setting="debug" type="checkbox" />
             </Form.Group>
             <Form.Group widths={2}>
-              <SettingsItem section="App" setting="clearLogOnLogin" Input={<Checkbox />} />
-              <SettingsItem section="App" setting="maxLogEntries" Input={<Input />} />
+              <SettingsItem section="App" setting="clearLogOnLogin" type="checkbox" />
+              <SettingsItem section="App" setting="maxLogEntries" type="input" />
             </Form.Group>
             <Form.Group widths={2}>
-              <SettingsItem section="App" setting="httpsMode" Input={<Checkbox />} />
-              <SettingsItem section="App" setting="minimizeToTray" Input={<Checkbox />} />
+              <SettingsItem section="App" setting="httpsMode" type="checkbox" />
+              <SettingsItem section="App" setting="minimizeToTray" type="checkbox" />
             </Form.Group>
           </Form>
         </Segment>

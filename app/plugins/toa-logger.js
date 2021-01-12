@@ -7,10 +7,10 @@ const sanitize = require('sanitize-filename');
 module.exports = {
   defaultConfig: {
     enabled: false,
-    logWipes: false
+    logWipes: false,
   },
   defaultConfigDetails: {
-    logWipes: { label: 'Log Wipes' }
+    logWipes: { label: 'Log Wipes' },
   },
   pluginName: 'TOALogger',
   pluginDescription: 'Creates a local csv file and saves data of TOA runs in there.',
@@ -38,7 +38,7 @@ module.exports = {
           type: 'error',
           source: 'plugin',
           name: this.pluginName,
-          message: `An unexpected error occurred: ${e.message}`
+          message: `An unexpected error occurred: ${e.message}`,
         });
       }
     });
@@ -92,13 +92,13 @@ module.exports = {
   saveToFile(entry, filename, headers, proxy) {
     const csvData = [];
     const self = this;
-    fs.ensureFile(path.join(config.Config.App.filesPath, filename), err => {
+    fs.ensureFile(path.join(config.Config.App.filesPath, filename), (err) => {
       if (err) {
         return;
       }
       csv
-        .fromPath(path.join(config.Config.App.filesPath, filename), { ignoreEmpty: true, headers, renameHeaders: true })
-        .on('data', data => {
+        .parseFile(path.join(config.Config.App.filesPath, filename), { ignoreEmpty: true, headers, renameHeaders: true })
+        .on('data', (data) => {
           csvData.push(data);
         })
         .on('end', () => {
@@ -108,7 +108,7 @@ module.exports = {
               type: 'success',
               source: 'plugin',
               name: self.pluginName,
-              message: `Saved run data to ${filename}`
+              message: `Saved run data to ${filename}`,
             });
           });
         });
@@ -121,9 +121,12 @@ module.exports = {
     let prepData = this.temp[wizardID].toa;
     const entry = {};
 
-    const runTime = resp.tvalue - prepData.trialStart;
-    const time = [Math.floor((runTime / 60) % 60), runTime % 60];
-    entry.time = `${time[0]}:${time[1]}`;
+    if (req.clear_time) {
+      const seconds =
+        Math.floor((req.clear_time / 1000) % 60) < 10 ? `0${Math.floor((req.clear_time / 1000) % 60)}` : Math.floor((req.clear_time / 1000) % 60);
+      const time = [Math.floor(req.clear_time / 1000 / 60), seconds];
+      entry.time = `${time[0]}:${time[1]}`;
+    }
 
     const winLost = resp.win_lose === 1 ? 'Win' : 'Lost';
     if (winLost === 'Lost' && !config.Config.Plugins[this.pluginName].logWipes) {
@@ -177,7 +180,7 @@ module.exports = {
       'team2',
       'team3',
       'team4',
-      'team5'
+      'team5',
     ];
 
     const filename = sanitize(`${wizardName}-${wizardID}-toa-runs.csv`);
@@ -196,7 +199,6 @@ module.exports = {
 
     let toa = {};
     toa.boss = boss;
-    toa.trialStart = resp.tvalue;
     this.temp[wizardID].toa = toa;
-  }
+  },
 };

@@ -5,7 +5,7 @@ module.exports = {
       2: 'Fire',
       3: 'Wind',
       4: 'Light',
-      5: 'Dark'
+      5: 'Dark',
     },
     archetypes: {
       0: 'None',
@@ -13,7 +13,7 @@ module.exports = {
       2: 'Defense',
       3: 'HP',
       4: 'Support',
-      5: 'Material'
+      5: 'Material',
     },
     names: {
       101: 'Fairy',
@@ -264,6 +264,11 @@ module.exports = {
       13213: 'Chichi',
       13214: 'Shushu',
       13215: 'Chacha',
+      13231: 'Lulu and Friends',
+      13232: 'Lala and Friends',
+      13233: 'Chichi and Friends',
+      13234: 'Shushu and Friends',
+      13235: 'Chacha and Friends',
 
       133: 'Succubus',
       13311: 'Izaria',
@@ -456,6 +461,11 @@ module.exports = {
       16013: 'Hiva',
       16014: 'Prom',
       16015: 'Thrain',
+      16031: 'Hemos',
+      16032: 'Sath',
+      16033: 'Hiva',
+      16034: 'Prom',
+      16035: 'Thrain',
 
       161: 'Occult Girl',
       16111: 'Anavel',
@@ -1036,8 +1046,8 @@ module.exports = {
       1000113: 'Homunculus - Attack (Wind)',
 
       1000214: 'Homunculus - Support (Light)',
-      1000215: 'Homunculus - Support (Dark)'
-    }
+      1000215: 'Homunculus - Support (Dark)',
+    },
   },
   rune: {
     effectTypes: {
@@ -1052,7 +1062,7 @@ module.exports = {
       9: 'CRate',
       10: 'CDmg',
       11: 'RES',
-      12: 'ACC'
+      12: 'ACC',
     },
     sets: {
       1: 'Energy',
@@ -1076,14 +1086,14 @@ module.exports = {
       21: 'Enhance',
       22: 'Accuracy',
       23: 'Tolerance',
-      99: 'Immemorial'
+      99: 'Immemorial',
     },
     class: {
       0: 'Common',
       1: 'Magic',
       2: 'Rare',
       3: 'Hero',
-      4: 'Legendary'
+      4: 'Legendary',
     },
     quality: {
       1: 'Common',
@@ -1096,7 +1106,7 @@ module.exports = {
       12: 'Magic',
       13: 'Rare',
       14: 'Hero',
-      15: 'Legend'
+      15: 'Legend',
     },
     mainstat: {
       1: {
@@ -1106,8 +1116,8 @@ module.exports = {
           3: 1380,
           4: 1704,
           5: 2088,
-          6: 2448
-        }
+          6: 2448,
+        },
       },
       2: {
         max: {
@@ -1116,8 +1126,8 @@ module.exports = {
           3: 38,
           4: 43,
           5: 51,
-          6: 63
-        }
+          6: 63,
+        },
       },
       3: {
         max: {
@@ -1126,8 +1136,8 @@ module.exports = {
           3: 93,
           4: 113,
           5: 135,
-          6: 160
-        }
+          6: 160,
+        },
       },
       4: {
         max: {
@@ -1136,8 +1146,8 @@ module.exports = {
           3: 38,
           4: 43,
           5: 51,
-          6: 63
-        }
+          6: 63,
+        },
       },
       5: {
         max: {
@@ -1146,8 +1156,8 @@ module.exports = {
           3: 93,
           4: 113,
           5: 135,
-          6: 160
-        }
+          6: 160,
+        },
       },
       6: {
         // Defense
@@ -1157,8 +1167,8 @@ module.exports = {
           3: 38,
           4: 43,
           5: 51,
-          6: 63
-        }
+          6: 63,
+        },
       },
       8: {
         max: {
@@ -1167,8 +1177,8 @@ module.exports = {
           3: 25,
           4: 30,
           5: 39,
-          6: 42
-        }
+          6: 42,
+        },
       },
       9: {
         max: {
@@ -1177,8 +1187,8 @@ module.exports = {
           3: 37,
           4: 41,
           5: 47,
-          6: 58
-        }
+          6: 58,
+        },
       },
       10: {
         max: {
@@ -1187,8 +1197,8 @@ module.exports = {
           3: 43,
           4: 58,
           5: 65,
-          6: 80
-        }
+          6: 80,
+        },
       },
       11: {
         max: {
@@ -1197,8 +1207,8 @@ module.exports = {
           3: 38,
           4: 44,
           5: 51,
-          6: 64
-        }
+          6: 64,
+        },
       },
       12: {
         max: {
@@ -1207,9 +1217,9 @@ module.exports = {
           3: 38,
           4: 44,
           5: 51,
-          6: 64
-        }
-      }
+          6: 64,
+        },
+      },
     },
     substat: {
       1: {
@@ -1219,8 +1229,8 @@ module.exports = {
           3: 825,
           4: 1125,
           5: 1500,
-          6: 1875
-        }
+          6: 1875,
+        },
       },
       2: {
         max: {
@@ -1229,8 +1239,8 @@ module.exports = {
           3: 25,
           4: 30,
           5: 35,
-          6: 40
-        }
+          6: 40,
+        },
       },
       3: {
         max: {
@@ -1239,8 +1249,8 @@ module.exports = {
           3: 40,
           4: 50,
           5: 75,
-          6: 100
-        }
+          6: 100,
+        },
       },
       4: {
         max: {
@@ -1249,8 +1259,8 @@ module.exports = {
           3: 25,
           4: 30,
           5: 35,
-          6: 40
-        }
+          6: 40,
+        },
       },
       5: {
         max: {
@@ -1259,8 +1269,8 @@ module.exports = {
           3: 40,
           4: 50,
           5: 75,
-          6: 100
-        }
+          6: 100,
+        },
       },
       6: {
         max: {
@@ -1269,8 +1279,8 @@ module.exports = {
           3: 25,
           4: 30,
           5: 35,
-          6: 40
-        }
+          6: 40,
+        },
       },
       8: {
         max: {
@@ -1279,8 +1289,8 @@ module.exports = {
           3: 15,
           4: 20,
           5: 25,
-          6: 30
-        }
+          6: 30,
+        },
       },
       9: {
         max: {
@@ -1289,8 +1299,8 @@ module.exports = {
           3: 15,
           4: 20,
           5: 25,
-          6: 30
-        }
+          6: 30,
+        },
       },
       10: {
         max: {
@@ -1299,8 +1309,8 @@ module.exports = {
           3: 20,
           4: 25,
           5: 25,
-          6: 35
-        }
+          6: 35,
+        },
       },
       11: {
         max: {
@@ -1309,8 +1319,8 @@ module.exports = {
           3: 20,
           4: 25,
           5: 35,
-          6: 40
-        }
+          6: 40,
+        },
       },
       12: {
         max: {
@@ -1319,10 +1329,10 @@ module.exports = {
           3: 20,
           4: 25,
           5: 35,
-          6: 40
-        }
-      }
-    }
+          6: 40,
+        },
+      },
+    },
   },
 
   grindstone: {
@@ -1332,8 +1342,8 @@ module.exports = {
         2: { min: 100, max: 200 },
         3: { min: 180, max: 250 },
         4: { min: 230, max: 450 },
-        5: { min: 430, max: 550 }
-      }
+        5: { min: 430, max: 550 },
+      },
     },
     2: {
       range: {
@@ -1341,8 +1351,8 @@ module.exports = {
         2: { min: 2, max: 5 },
         3: { min: 3, max: 6 },
         4: { min: 4, max: 7 },
-        5: { min: 5, max: 10 }
-      }
+        5: { min: 5, max: 10 },
+      },
     },
     3: {
       range: {
@@ -1350,8 +1360,8 @@ module.exports = {
         2: { min: 6, max: 12 },
         3: { min: 10, max: 18 },
         4: { min: 12, max: 22 },
-        5: { min: 18, max: 30 }
-      }
+        5: { min: 18, max: 30 },
+      },
     },
     4: {
       range: {
@@ -1359,8 +1369,8 @@ module.exports = {
         2: { min: 2, max: 5 },
         3: { min: 3, max: 6 },
         4: { min: 4, max: 7 },
-        5: { min: 5, max: 10 }
-      }
+        5: { min: 5, max: 10 },
+      },
     },
     5: {
       range: {
@@ -1368,8 +1378,8 @@ module.exports = {
         2: { min: 6, max: 12 },
         3: { min: 10, max: 18 },
         4: { min: 12, max: 22 },
-        5: { min: 18, max: 30 }
-      }
+        5: { min: 18, max: 30 },
+      },
     },
     6: {
       range: {
@@ -1377,8 +1387,8 @@ module.exports = {
         2: { min: 2, max: 5 },
         3: { min: 3, max: 6 },
         4: { min: 4, max: 7 },
-        5: { min: 5, max: 10 }
-      }
+        5: { min: 5, max: 10 },
+      },
     },
     8: {
       range: {
@@ -1386,8 +1396,8 @@ module.exports = {
         2: { min: 1, max: 2 },
         3: { min: 2, max: 3 },
         4: { min: 3, max: 4 },
-        5: { min: 4, max: 5 }
-      }
+        5: { min: 4, max: 5 },
+      },
     },
     9: {
       range: {
@@ -1395,8 +1405,8 @@ module.exports = {
         2: { min: 1, max: 3 },
         3: { min: 2, max: 4 },
         4: { min: 3, max: 5 },
-        5: { min: 4, max: 6 }
-      }
+        5: { min: 4, max: 6 },
+      },
     },
     10: {
       range: {
@@ -1404,8 +1414,8 @@ module.exports = {
         2: { min: 2, max: 4 },
         3: { min: 2, max: 5 },
         4: { min: 4, max: 7 },
-        5: { min: 5, max: 10 }
-      }
+        5: { min: 5, max: 10 },
+      },
     },
     11: {
       range: {
@@ -1413,8 +1423,8 @@ module.exports = {
         2: { min: 2, max: 4 },
         3: { min: 2, max: 5 },
         4: { min: 4, max: 7 },
-        5: { min: 5, max: 10 }
-      }
+        5: { min: 5, max: 10 },
+      },
     },
     12: {
       range: {
@@ -1422,9 +1432,9 @@ module.exports = {
         2: { min: 2, max: 4 },
         3: { min: 2, max: 5 },
         4: { min: 4, max: 7 },
-        5: { min: 5, max: 10 }
-      }
-    }
+        5: { min: 5, max: 10 },
+      },
+    },
   },
 
   enchanted_gem: {
@@ -1434,8 +1444,8 @@ module.exports = {
         2: { min: 130, max: 220 },
         3: { min: 200, max: 310 },
         4: { min: 290, max: 420 },
-        5: { min: 400, max: 580 }
-      }
+        5: { min: 400, max: 580 },
+      },
     },
     2: {
       range: {
@@ -1443,8 +1453,8 @@ module.exports = {
         2: { min: 3, max: 7 },
         3: { min: 5, max: 9 },
         4: { min: 7, max: 11 },
-        5: { min: 9, max: 13 }
-      }
+        5: { min: 9, max: 13 },
+      },
     },
     3: {
       range: {
@@ -1452,8 +1462,8 @@ module.exports = {
         2: { min: 10, max: 16 },
         3: { min: 15, max: 23 },
         4: { min: 20, max: 30 },
-        5: { min: 28, max: 40 }
-      }
+        5: { min: 28, max: 40 },
+      },
     },
     4: {
       range: {
@@ -1461,8 +1471,8 @@ module.exports = {
         2: { min: 3, max: 7 },
         3: { min: 5, max: 9 },
         4: { min: 7, max: 11 },
-        5: { min: 9, max: 13 }
-      }
+        5: { min: 9, max: 13 },
+      },
     },
     5: {
       range: {
@@ -1470,8 +1480,8 @@ module.exports = {
         2: { min: 10, max: 16 },
         3: { min: 15, max: 23 },
         4: { min: 20, max: 30 },
-        5: { min: 28, max: 40 }
-      }
+        5: { min: 28, max: 40 },
+      },
     },
     6: {
       range: {
@@ -1479,8 +1489,8 @@ module.exports = {
         2: { min: 3, max: 7 },
         3: { min: 5, max: 9 },
         4: { min: 7, max: 11 },
-        5: { min: 9, max: 13 }
-      }
+        5: { min: 9, max: 13 },
+      },
     },
     8: {
       range: {
@@ -1488,8 +1498,8 @@ module.exports = {
         2: { min: 2, max: 4 },
         3: { min: 3, max: 6 },
         4: { min: 5, max: 8 },
-        5: { min: 7, max: 10 }
-      }
+        5: { min: 7, max: 10 },
+      },
     },
     9: {
       range: {
@@ -1497,8 +1507,8 @@ module.exports = {
         2: { min: 2, max: 4 },
         3: { min: 3, max: 5 },
         4: { min: 4, max: 7 },
-        5: { min: 6, max: 9 }
-      }
+        5: { min: 6, max: 9 },
+      },
     },
     10: {
       range: {
@@ -1506,8 +1516,8 @@ module.exports = {
         2: { min: 3, max: 5 },
         3: { min: 4, max: 6 },
         4: { min: 5, max: 8 },
-        5: { min: 7, max: 10 }
-      }
+        5: { min: 7, max: 10 },
+      },
     },
     11: {
       range: {
@@ -1515,8 +1525,8 @@ module.exports = {
         2: { min: 3, max: 6 },
         3: { min: 5, max: 8 },
         4: { min: 6, max: 9 },
-        5: { min: 8, max: 11 }
-      }
+        5: { min: 8, max: 11 },
+      },
     },
     12: {
       range: {
@@ -1524,9 +1534,9 @@ module.exports = {
         2: { min: 3, max: 6 },
         3: { min: 5, max: 8 },
         4: { min: 6, max: 9 },
-        5: { min: 8, max: 11 }
-      }
-    }
+        5: { min: 8, max: 11 },
+      },
+    },
   },
 
   artifact: {
@@ -1534,64 +1544,64 @@ module.exports = {
       main: {
         100: 'HP flat',
         101: 'ATK flat',
-        102: 'DEF flat'
+        102: 'DEF flat',
       },
       sub: {
-        200: value => `ATK Increased Proportional to Lost HP up to ${value}%`,
-        201: value => `DEF Increased Proportional to Lost HP up to ${value}%`,
-        202: value => `SPD Increased Proportional to Lost HP up to ${value}%`,
-        203: value => `SPD Under Inability Effects +${value}%`,
-        204: value => `ATK Increasing Effect +${value}%`,
-        205: value => `DEF Increasing Effect +${value}%`,
-        206: value => `SPD Increasing Effect +${value}%`,
-        207: value => `Crit Rate Increasing Effect +${value}%`,
-        208: value => `Damage Dealt by Counterattack +${value}%`,
-        209: value => `Damage Dealt by Attacking Together +${value}%`,
-        210: value => `Bomb Damage +${value}%`,
-        211: value => `Damage Dealt by Reflected DMG +${value}%`,
-        212: value => `Crushing Hit DMG +${value}%`,
-        213: value => `Damage Received Under Inability Effect -${value}%`,
-        214: value => `Received Crit DMG -${value}%`,
-        215: value => `Life Drain +${value}%`,
-        216: value => `HP when Revived +${value}%`,
-        217: value => `Attack Bar when Revived +${value}%`,
-        218: value => `Additional Damage by ${value}% of HP`,
-        219: value => `Additional Damage by ${value}% of ATK`,
-        220: value => `Additional Damage by ${value}% of DEF`,
-        221: value => `Additional Damage by ${value}% of SPD`,
-        300: value => `Damage Dealt on Fire +${value}%`,
-        301: value => `Damage Dealt on Water +${value}%`,
-        302: value => `Damage Dealt on Wind +${value}%`,
-        303: value => `Damage Dealt on Light +${value}%`,
-        304: value => `Damage Dealt on Dark +${value}%`,
-        305: value => `Damage Received from Fire -${value}%`,
-        306: value => `Damage Received from Water -${value}%`,
-        307: value => `Damage Received from Wind -${value}%`,
-        308: value => `Damage Received from Light -${value}%`,
-        309: value => `Damage Received from Dark -${value}%`,
-        400: value => `Skill 1 CRIT DMG +${value}%`,
-        401: value => `Skill 2 CRIT DMG +${value}%`,
-        402: value => `Skill 3 CRIT DMG +${value}%`,
-        403: value => `Skill 4 CRIT DMG +${value}%`,
-        404: value => `Skill 1 Recovery +${value}%`,
-        405: value => `Skill 2 Recovery +${value}%`,
-        406: value => `Skill 3 Recovery +${value}%`,
-        407: value => `Skill 1 Accuracy +${value}%`,
-        408: value => `Skill 2 Accuracy +${value}%`,
-        409: value => `Skill 3 Accuracy +${value}%`
-      }
+        200: (value) => `ATK Increased Proportional to Lost HP up to ${value}%`,
+        201: (value) => `DEF Increased Proportional to Lost HP up to ${value}%`,
+        202: (value) => `SPD Increased Proportional to Lost HP up to ${value}%`,
+        203: (value) => `SPD Under Inability Effects +${value}%`,
+        204: (value) => `ATK Increasing Effect +${value}%`,
+        205: (value) => `DEF Increasing Effect +${value}%`,
+        206: (value) => `SPD Increasing Effect +${value}%`,
+        207: (value) => `Crit Rate Increasing Effect +${value}%`,
+        208: (value) => `Damage Dealt by Counterattack +${value}%`,
+        209: (value) => `Damage Dealt by Attacking Together +${value}%`,
+        210: (value) => `Bomb Damage +${value}%`,
+        211: (value) => `Damage Dealt by Reflected DMG +${value}%`,
+        212: (value) => `Crushing Hit DMG +${value}%`,
+        213: (value) => `Damage Received Under Inability Effect -${value}%`,
+        214: (value) => `Received Crit DMG -${value}%`,
+        215: (value) => `Life Drain +${value}%`,
+        216: (value) => `HP when Revived +${value}%`,
+        217: (value) => `Attack Bar when Revived +${value}%`,
+        218: (value) => `Additional Damage by ${value}% of HP`,
+        219: (value) => `Additional Damage by ${value}% of ATK`,
+        220: (value) => `Additional Damage by ${value}% of DEF`,
+        221: (value) => `Additional Damage by ${value}% of SPD`,
+        300: (value) => `Damage Dealt on Fire +${value}%`,
+        301: (value) => `Damage Dealt on Water +${value}%`,
+        302: (value) => `Damage Dealt on Wind +${value}%`,
+        303: (value) => `Damage Dealt on Light +${value}%`,
+        304: (value) => `Damage Dealt on Dark +${value}%`,
+        305: (value) => `Damage Received from Fire -${value}%`,
+        306: (value) => `Damage Received from Water -${value}%`,
+        307: (value) => `Damage Received from Wind -${value}%`,
+        308: (value) => `Damage Received from Light -${value}%`,
+        309: (value) => `Damage Received from Dark -${value}%`,
+        400: (value) => `Skill 1 CRIT DMG +${value}%`,
+        401: (value) => `Skill 2 CRIT DMG +${value}%`,
+        402: (value) => `Skill 3 CRIT DMG +${value}%`,
+        403: (value) => `Skill 4 CRIT DMG +${value}%`,
+        404: (value) => `Skill 1 Recovery +${value}%`,
+        405: (value) => `Skill 2 Recovery +${value}%`,
+        406: (value) => `Skill 3 Recovery +${value}%`,
+        407: (value) => `Skill 1 Accuracy +${value}%`,
+        408: (value) => `Skill 2 Accuracy +${value}%`,
+        409: (value) => `Skill 3 Accuracy +${value}%`,
+      },
     },
     types: {
       1: 'Attribute',
-      2: 'Archetype'
+      2: 'Archetype',
     },
     rank: {
       1: 'Common',
       2: 'Magic',
       3: 'Rare',
       4: 'Hero',
-      5: 'Legendary'
-    }
+      5: 'Legendary',
+    },
   },
 
   scenario: {
@@ -1607,7 +1617,7 @@ module.exports = {
     10: 'Aiden Forest',
     11: 'Ferun Castle',
     12: 'Mt Runar',
-    13: 'Chiruka Remains'
+    13: 'Chiruka Remains',
   },
   dungeon: {
     1001: 'Hall of Dark',
@@ -1626,26 +1636,26 @@ module.exports = {
     8001: `Giant's Keep`,
     9001: `Dragon's Lair`,
     9501: 'Steel Fortress',
-    9502: `Punisher's Crypt`
+    9502: `Punisher's Crypt`,
   },
   elemental_rift_dungeon: {
     1001: 'Rift Dungeon - Ice Beast',
     2001: 'Rift Dungeon - Fire Beast',
     3001: 'Rift Dungeon - Wind Beast',
     4001: 'Rift Dungeon - Light Beast',
-    5001: 'Rift Dungeon - Dark Beast'
+    5001: 'Rift Dungeon - Dark Beast',
   },
   raid_rift_dungeon: {
     1: 'Rift of Worlds- level 1',
     2: 'Rift of Worlds- level 2',
     3: 'Rift of Worlds- level 3',
     4: 'Rift of Worlds- level 4',
-    5: 'Rift of Worlds- level 5'
+    5: 'Rift of Worlds- level 5',
   },
   difficulty: {
     1: 'Normal',
     2: 'Hard',
-    3: 'Hell'
+    3: 'Hell',
   },
   essence: {
     attribute: {
@@ -1654,13 +1664,13 @@ module.exports = {
       3: 'Wind',
       4: 'Light',
       5: 'Dark',
-      6: 'Magic'
+      6: 'Magic',
     },
     grade: {
       1: 'Low',
       2: 'Mid',
-      3: 'High'
-    }
+      3: 'High',
+    },
   },
   craftMaterial: {
     1001: 'Hard Wood',
@@ -1680,7 +1690,7 @@ module.exports = {
     5004: 'Shiny Light Crystal',
     5005: 'Pitch-black Dark Crystal',
     6001: 'Condensed Magic Crystal',
-    7001: 'Pure Magic Crystal'
+    7001: 'Pure Magic Crystal',
   },
 
   getMonsterName(id) {
@@ -1706,7 +1716,7 @@ module.exports = {
       this.rune.mainstat[rune.pri_eff[0]].max[this.isAncient(rune) ? rune.class - 10 : rune.class] / this.rune.mainstat[rune.pri_eff[0]].max[6];
 
     // sub stats
-    rune.sec_eff.forEach(stat => {
+    rune.sec_eff.forEach((stat) => {
       let value = stat[3] && stat[3] > 0 ? stat[1] + stat[3] : stat[1];
       ratio += value / this.rune.substat[stat[0]].max[6];
     });
@@ -1720,7 +1730,7 @@ module.exports = {
 
     return {
       current: ((ratio / 2.8) * 100).toFixed(toFixed),
-      max: (efficiency + ((Math.max(Math.ceil((12 - rune.upgrade_curr) / 3.0), 0) * 0.2) / 2.8) * 100).toFixed(toFixed)
+      max: (efficiency + ((Math.max(Math.ceil((12 - rune.upgrade_curr) / 3.0), 0) * 0.2) / 2.8) * 100).toFixed(toFixed),
     };
   },
   getRuneEffect(eff) {
@@ -1739,7 +1749,7 @@ module.exports = {
       9: `CRI Rate ${value}%`,
       10: `CRI Dmg ${value}%`,
       11: `Resistance ${value}%`,
-      12: `Accuracy ${value}%`
+      12: `Accuracy ${value}%`,
     };
 
     return effectTypeStrings[type];
@@ -1752,7 +1762,7 @@ module.exports = {
       const mainStatEffectTypeStrings = {
         100: `HP +${value}`,
         101: `ATK +${value}`,
-        102: `DEF +${value}`
+        102: `DEF +${value}`,
       };
 
       return mainStatEffectTypeStrings[type];
@@ -1768,5 +1778,5 @@ module.exports = {
       // rune
       return item.class > 10;
     }
-  }
+  },
 };

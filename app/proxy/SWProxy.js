@@ -22,26 +22,27 @@ class SWProxy extends EventEmitter {
     const self = this;
     this.proxy = Proxy();
 
-    this.proxy.onError(function(ctx, e, errorKind) {
+    this.proxy.onError(function (ctx, e, errorKind) {
       if (e.code === 'EADDRINUSE') {
         self.log({ type: 'warning', source: 'proxy', message: 'Port is in use from another process. Try another port.' });
       }
     });
 
-    this.proxy.onRequest(function(ctx, callback) {
+    this.proxy.onRequest(function (ctx, callback) {
       if (ctx.clientToProxyRequest.url.includes('/api/gateway_c2.php')) {
+        ctx.use(Proxy.gunzip);
         ctx.SWRequestChunks = [];
         ctx.SWResponseChunks = [];
-        ctx.onRequestData(function(ctx, chunk, callback) {
+        ctx.onRequestData(function (ctx, chunk, callback) {
           ctx.SWRequestChunks.push(chunk);
           return callback(null, chunk);
         });
 
-        ctx.onResponseData(function(ctx, chunk, callback) {
+        ctx.onResponseData(function (ctx, chunk, callback) {
           ctx.SWResponseChunks.push(chunk);
           return callback(null, chunk);
         });
-        ctx.onResponseEnd(function(ctx, callback) {
+        ctx.onResponseEnd(function (ctx, callback) {
           let reqData;
           let respData;
 
@@ -67,7 +68,7 @@ class SWProxy extends EventEmitter {
       }
       return callback();
     });
-    this.proxy.onConnect(function(req, socket, head, callback) {
+    this.proxy.onConnect(function (req, socket, head, callback) {
       const serverUrl = url.parse(`https://${req.url}`);
       if (req.url.includes('qpyou.cn') && config.Config.App.httpsMode) {
         return callback();
@@ -82,7 +83,7 @@ class SWProxy extends EventEmitter {
         socket.on('error', () => {});
       }
     });
-    this.proxy.listen({ port, sslCaDir: path.join(app.getPath('userData'), 'swcerts') }, e => {
+    this.proxy.listen({ port, sslCaDir: path.join(app.getPath('userData'), 'swcerts') }, (e) => {
       this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
     });
 

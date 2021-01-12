@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, Form, Input, TextArea } from 'semantic-ui-react';
+import { Form } from 'semantic-ui-react';
 import SettingsItem from './SettingsItem';
 
 const { remote } = require('electron');
@@ -9,11 +9,6 @@ let config = remote.getGlobal('config');
 class SettingsPlugin extends React.Component {
   constructor() {
     super();
-    this.components = {
-      checkbox: Checkbox,
-      input: Input,
-      textarea: TextArea
-    };
   }
 
   render() {
@@ -23,10 +18,10 @@ class SettingsPlugin extends React.Component {
       if (configDetails && configDetails[key] && configDetails[key].type) {
         inputType = configDetails[key].type;
       }
-      const InputComponent = this.components[inputType];
+
       return (
         <Form.Field key={i}>
-          <SettingsItem section="Plugins" pluginName={this.props.pluginName} setting={key} Input={<InputComponent />} />
+          <SettingsItem section="Plugins" pluginName={this.props.pluginName} setting={key} type={inputType} />
         </Form.Field>
       );
     });

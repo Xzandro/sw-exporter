@@ -1,25 +1,22 @@
+const path = require('path');
+const ESLintPlugin = require('eslint-webpack-plugin');
+
 module.exports = {
   entry: './app/View.js',
   output: {
-    filename: './app/bundle.js',
+    filename: './bundle.js',
+    path: path.join(process.cwd(), 'app'),
   },
-  target: 'electron',
+  mode: 'development',
+  target: 'electron-renderer',
   module: {
     rules: [
-      {
-        enforce: 'pre',
-        test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'eslint-loader',
-      },
       {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
-        options: {
-          presets: ['env', 'react'],
-        },
       },
     ],
   },
+  plugins: [new ESLintPlugin()],
 };

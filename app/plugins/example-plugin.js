@@ -1,6 +1,6 @@
 module.exports = {
   defaultConfig: {
-    enabled: false
+    enabled: false,
   },
   // plugin meta data to better describe your plugin
   pluginName: 'ExamplePlugin',
@@ -23,5 +23,5 @@ module.exports = {
   },
   processEveryCommand(proxy, req) {
     proxy.log({ type: 'info', source: 'plugin', name: this.pluginName, message: `Found API Command ${req.command}` });
-  }
+  },
 };

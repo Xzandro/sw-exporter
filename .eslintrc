@@ -6,14 +6,5 @@
       "jsx": true
     }
   },
-  "extends": ["plugin:prettier/recommended"],
-  "rules": {
-    "prettier/prettier": [
-      "error",
-      {
-        "singleQuote": true,
-        "printWidth": 150
-      }
-    ]
-  }
+  "extends": ["plugin:prettier/recommended"]
 }
