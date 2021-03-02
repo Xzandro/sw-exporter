@@ -1038,6 +1038,20 @@ module.exports = {
       24914: 'Leah',
       24915: 'Vereesa',
 
+      250: 'Onmyouji',
+      25011: 'Shizuka',
+      25012: 'Tomoe',
+      25013: 'Giou',
+      25014: 'Seimei',
+      25015: 'Douman',
+
+      251: 'Onimusha',
+      25111: 'Suiki',
+      25112: 'Kaki',
+      25113: 'Fuuki',
+      25114: 'Kinki',
+      25115: 'Ongyouki',
+
       15105: 'Devilmon',
       14314: 'Rainbowmon',
 
