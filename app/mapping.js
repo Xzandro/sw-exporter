@@ -1052,6 +1052,13 @@ module.exports = {
       25114: 'Kinki',
       25115: 'Ongyouki',
 
+      252: 'Mage',
+      25211: 'Nana',
+      25212: 'Coco',
+      25213: 'Momo',
+      25214: 'Dorothy',
+      25215: 'Kiki',
+
       15105: 'Devilmon',
       14314: 'Rainbowmon',
 
