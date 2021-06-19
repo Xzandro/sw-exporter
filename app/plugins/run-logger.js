@@ -445,8 +445,8 @@ module.exports = {
       });
     }
 
-    if (resp.unit_list && resp.unit_list.length > 0) {
-      resp.unit_list.forEach((unit, i) => {
+    if (resp.my_unit_deck_list && resp.my_unit_deck_list.length > 0) {
+      resp.my_unit_deck_list.forEach((unit, i) => {
         entry[`team${i + 1}`] = gMapping.getMonsterName(unit.unit_master_id);
       });
     }
