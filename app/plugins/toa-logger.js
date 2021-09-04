@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const csv = require('fast-csv');
-const dateFormat = require('dateformat');
+const { format } = require('date-fns');
 const path = require('path');
 const sanitize = require('sanitize-filename');
 
@@ -133,7 +133,7 @@ module.exports = {
       return;
     }
 
-    entry.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM');
+    entry.date = format(new Date(), 'yyyy-MM-dd HH:mm');
     entry.result = winLost;
 
     const reward = resp.reward ? resp.reward : {};
