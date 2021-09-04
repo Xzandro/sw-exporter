@@ -1059,6 +1059,20 @@ module.exports = {
       25214: 'Dorothy',
       25215: 'Kiki',
 
+      253: 'Sky Surfer',
+      25311: 'Miles',
+      25312: 'John',
+      25313: 'Oliver',
+      25314: 'Daniel',
+      25315: 'Jackson',
+
+      254: 'ROBO',
+      25411: 'ROBO-R40',
+      25412: 'ROBO-P27',
+      25413: 'ROBO-G92',
+      25414: 'ROBO-E65',
+      25415: 'ROBO-F29',
+
       15105: 'Devilmon',
       14314: 'Rainbowmon',
 
