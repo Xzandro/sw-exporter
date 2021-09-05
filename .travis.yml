@@ -6,11 +6,10 @@ env:
 matrix:
   include:
     - os: osx
-      osx_image: xcode9.4
     - os: linux
 
 language: node_js
-node_js: '10'
+node_js: '14'
 
 cache:
   directories:
