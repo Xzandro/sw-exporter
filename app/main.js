@@ -16,7 +16,7 @@ global.appVersion = app.getVersion();
 let defaultFilePath = path.join(app.getPath('desktop'), `${app.name} Files`);
 let defaultConfig = {
   Config: {
-    App: { filesPath: defaultFilePath, debug: false, clearLogOnLogin: false, maxLogEntries: 100, httpsMode: false, minimizeToTray: false },
+    App: { filesPath: defaultFilePath, debug: false, clearLogOnLogin: false, maxLogEntries: 100, httpsMode: true, minimizeToTray: false },
     Proxy: { port: 8080, autoStart: false },
     Plugins: {},
   },
@@ -134,22 +134,11 @@ ipcMain.on('proxyStop', () => {
 });
 
 ipcMain.on('getCert', async () => {
-  const fileExists = await fs.pathExists(path.join(app.getPath('userData'), 'swcerts', 'certs', 'ca.pem'));
-  if (fileExists) {
-    const copyPath = path.join(global.config.Config.App.filesPath, 'cert', 'ca.pem');
-    await fs.copy(path.join(app.getPath('userData'), 'swcerts', 'certs', 'ca.pem'), copyPath);
-    proxy.log({
-      type: 'success',
-      source: 'proxy',
-      message: `Certificate copied to ${copyPath}.`,
-    });
-  } else {
-    proxy.log({
-      type: 'info',
-      source: 'proxy',
-      message: 'No certificate available yet. You might have to start the proxy once and then try again.',
-    });
-  }
+  await proxy.copyCertToPublic();
+});
+
+ipcMain.on('reGenCert', async () => {
+  await proxy.reGenCert();
 });
 
 ipcMain.on('logGetEntries', (event) => {

@@ -7,8 +7,14 @@ const net = require('net');
 const url = require('url');
 const uuidv4 = require('uuid/v4');
 const Proxy = require('http-mitm-proxy');
+const { differenceInMonths } = require('date-fns');
 
 const { decrypt_request, decrypt_response } = require('./smon_decryptor');
+
+const { promisify } = require('util');
+const sleep = promisify(setTimeout);
+
+const CERT_MAX_LIFETIME_IN_MONTHS = 12;
 
 class SWProxy extends EventEmitter {
   constructor() {
@@ -18,7 +24,7 @@ class SWProxy extends EventEmitter {
     this.logEntries = [];
     this.addresses = [];
   }
-  start(port) {
+  async start(port) {
     const self = this;
     this.proxy = Proxy();
 
@@ -83,8 +89,17 @@ class SWProxy extends EventEmitter {
         socket.on('error', () => {});
       }
     });
-    this.proxy.listen({ port, sslCaDir: path.join(app.getPath('userData'), 'swcerts') }, (e) => {
+    this.proxy.listen({ port, sslCaDir: path.join(app.getPath('userData'), 'swcerts') }, async (e) => {
       this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
+      const expired = await this.checkCertExpiration();
+
+      if (expired) {
+        this.log({
+          type: 'warning',
+          source: 'proxy',
+          message: `Your certificate is older than ${CERT_MAX_LIFETIME_IN_MONTHS} motnhs. If you experience connection issues, please regenerate a new one via the Settings.`,
+        });
+      }
     });
 
     if (process.env.autostart) {
@@ -93,7 +108,7 @@ class SWProxy extends EventEmitter {
     win.webContents.send('proxyStarted');
   }
 
-  stop() {
+  async stop() {
     this.proxy.close();
     this.proxy = null;
     win.webContents.send('proxyStopped');
@@ -112,6 +127,50 @@ class SWProxy extends EventEmitter {
       }
     }
     return this.addresses;
+  }
+
+  async checkCertExpiration() {
+    const certPath = path.join(app.getPath('userData'), 'swcerts', 'certs', 'ca.pem');
+    const certExists = await fs.pathExists(certPath);
+    if (certExists) {
+      const certInfo = await fs.stat(certPath);
+
+      return differenceInMonths(new Date(), certInfo.ctime) >= CERT_MAX_LIFETIME_IN_MONTHS;
+    } else {
+      return false;
+    }
+  }
+
+  async copyCertToPublic() {
+    const fileExists = await fs.pathExists(path.join(app.getPath('userData'), 'swcerts', 'certs', 'ca.pem'));
+
+    if (fileExists) {
+      const copyPath = path.join(global.config.Config.App.filesPath, 'cert', 'ca.pem');
+      await fs.copy(path.join(app.getPath('userData'), 'swcerts', 'certs', 'ca.pem'), copyPath);
+      this.log({
+        type: 'success',
+        source: 'proxy',
+        message: `Certificate copied to ${copyPath}.`,
+      });
+    } else {
+      this.log({
+        type: 'info',
+        source: 'proxy',
+        message: 'No certificate available yet. You might have to start the proxy once and then try again.',
+      });
+    }
+  }
+
+  async reGenCert() {
+    await fs.emptyDir(path.join(app.getPath('userData'), 'swcerts'));
+    if (this.isRunning()) {
+      await this.stop();
+    }
+
+    await this.start(process.env.port || config.Config.Proxy.port);
+    // make sure the root cert was generated
+    await sleep(1000);
+    await this.copyCertToPublic();
   }
 
   isRunning() {
