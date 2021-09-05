@@ -9,7 +9,7 @@ cache:
   - '%USERPROFILE%\.electron'
 
 install:
-  - ps: Install-Product node 10 x64
+  - ps: Install-Product node 14 x64
   - npm install
 
 build_script:
