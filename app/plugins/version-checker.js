@@ -30,7 +30,7 @@ module.exports = {
           if (!error && response.statusCode === 200) {
             let json_body = JSON.parse(body);
             let message;
-            if (json_body.tag_name === global.appVersion) {
+            if (json_body.tag_name.substring(1) === global.appVersion) {
               message = 'You have the latest version!';
             } else {
               message = `You have ${global.appVersion} and ${json_body.tag_name} is the latest version.  Go to ${LATEST_DOWNLOAD_URL} to download the latest version of the app.`;
