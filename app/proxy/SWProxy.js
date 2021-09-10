@@ -89,7 +89,7 @@ class SWProxy extends EventEmitter {
         socket.on('error', () => {});
       }
     });
-    this.proxy.listen({ port, sslCaDir: path.join(app.getPath('userData'), 'swcerts') }, async (e) => {
+    this.proxy.listen({ host: '::', port, sslCaDir: path.join(app.getPath('userData'), 'swcerts') }, async (e) => {
       this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
       const expired = await this.checkCertExpiration();
 
