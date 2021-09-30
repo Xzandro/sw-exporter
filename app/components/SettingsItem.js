@@ -2,7 +2,8 @@ import React from 'react';
 import { Form } from 'semantic-ui-react';
 import { capitalize } from 'lodash/string';
 
-const { ipcRenderer, remote } = require('electron');
+const { ipcRenderer } = require('electron');
+const remote = require('@electron/remote');
 
 let config = remote.getGlobal('config');
 

@@ -2,7 +2,8 @@ import React from 'react';
 import { Header, Feed, Divider, Label } from 'semantic-ui-react';
 import { capitalize, toLower } from 'lodash/string';
 
-const { ipcRenderer, remote } = require('electron');
+const { ipcRenderer } = require('electron');
+const remote = require('@electron/remote');
 
 const config = remote.getGlobal('config');
 

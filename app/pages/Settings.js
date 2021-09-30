@@ -4,7 +4,8 @@ import { Button, Confirm, Grid, Header, Form, Icon, Popup, Segment } from 'seman
 import SettingsPlugin from '../components/SettingsPlugin';
 import SettingsItem from '../components/SettingsItem';
 
-const { ipcRenderer, remote } = require('electron');
+const { ipcRenderer } = require('electron');
+const remote = require('@electron/remote');
 
 const { dialog } = remote;
 const plugins = remote.getGlobal('plugins');
