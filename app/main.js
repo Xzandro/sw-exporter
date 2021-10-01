@@ -1,4 +1,5 @@
 const { app, BrowserWindow, ipcMain, Menu, shell, Tray } = require('electron');
+require('@electron/remote/main').initialize();
 const fs = require('fs-extra');
 const storage = require('electron-json-storage');
 const windowStateKeeper = require('electron-window-state');
@@ -54,6 +55,7 @@ function createWindow() {
       nodeIntegration: true,
       // TODO: remote will be removed with electron 13, so this should be migrated to ipcRenderer.invoke at some point
       enableRemoteModule: true,
+      contextIsolation: false,
     },
   });
 
@@ -106,6 +108,8 @@ function createWindow() {
   );
 
   mainWindowState.manage(win);
+
+  require('@electron/remote/main').enable(win.webContents);
 
   win.webContents.on('new-window', (e, link) => {
     e.preventDefault();

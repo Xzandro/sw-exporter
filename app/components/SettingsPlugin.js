@@ -2,7 +2,7 @@ import React from 'react';
 import { Form } from 'semantic-ui-react';
 import SettingsItem from './SettingsItem';
 
-const { remote } = require('electron');
+const remote = require('@electron/remote');
 
 let config = remote.getGlobal('config');
 

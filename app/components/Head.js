@@ -2,7 +2,8 @@ import React from 'react';
 
 import { Menu, Button, Input, Select } from 'semantic-ui-react';
 
-const { ipcRenderer, remote } = require('electron');
+const { ipcRenderer } = require('electron');
+const remote = require('@electron/remote');
 
 let config = remote.getGlobal('config');
 

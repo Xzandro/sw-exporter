@@ -97,7 +97,7 @@ class SWProxy extends EventEmitter {
         this.log({
           type: 'warning',
           source: 'proxy',
-          message: `Your certificate is older than ${CERT_MAX_LIFETIME_IN_MONTHS} motnhs. If you experience connection issues, please regenerate a new one via the Settings.`,
+          message: `Your certificate is older than ${CERT_MAX_LIFETIME_IN_MONTHS} months. If you experience connection issues, please regenerate a new one via the Settings.`,
         });
       }
     });

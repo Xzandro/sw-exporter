@@ -6,7 +6,7 @@ import Mousetrap from 'mousetrap';
 
 import Head from '../components/Head';
 
-const appVersion = require('electron').remote.app.getVersion();
+const appVersion = require('@electron/remote').app.getVersion();
 
 class Layout extends React.Component {
   constructor() {
