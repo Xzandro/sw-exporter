@@ -18,7 +18,7 @@ const STATUS_ICON_MAP = {
   success: 'check',
   info: 'info circle',
   warning: 'warning sign',
-  error: 'window close',
+  error: 'x',
   debug: 'code',
 };
 const determineLabelColor = (status) => STATUS_COLOR_MAP[status] || 'grey';
