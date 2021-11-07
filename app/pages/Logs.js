@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Feed, Divider, Label } from 'semantic-ui-react';
+import { Header, Feed, Divider, Label, Icon } from 'semantic-ui-react';
 import { capitalize, toLower } from 'lodash/string';
 
 const { ipcRenderer } = require('electron');
