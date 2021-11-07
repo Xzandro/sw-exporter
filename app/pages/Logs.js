@@ -44,7 +44,6 @@ class Logs extends React.Component {
   update(entries) {
     this.setState({ entries });
   }
-  
   render() {
     const LogEntries = this.state.entries.map((entry) => {
       if (entry.type !== 'debug' || config.Config.App.debug) {
