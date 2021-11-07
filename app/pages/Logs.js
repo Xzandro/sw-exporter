@@ -64,6 +64,7 @@ class Logs extends React.Component {
                 </Feed.Extra>
               </Feed.Content>
             </Feed.Event>
+          <Divider />
           </Feed>
         );
       }
