@@ -62,3 +62,9 @@ body {
   left: 5px;
   color: #ffffff;
 }
+
+.ui.label.image.horizontal > .detail {
+  padding-top: .4em;
+  padding-bottom: .4em;
+  margin-top: -.4em;
+}
