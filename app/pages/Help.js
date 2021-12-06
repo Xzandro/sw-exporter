@@ -38,36 +38,60 @@ class Help extends React.Component {
         </p>
         <Image src="../assets/help_network_settings.png" bordered />
         <h3>Android</h3>
+        <p>
+          <ul>
+            <li>
+              <a href="https://www.reddit.com/r/summonerswar/comments/cxwkav/summoners_war_exporter_swex_everything_you_need/" target="_blank">
+                SWEX on Android - Everything you need to know.
+              </a>
+            </li>
+            <li>TL;DR: SWEX only works with Android versions lower than 7</li>
+            <li>
+              <a href="https://a11.gdl.netease.com/MuMuInstaller_1.3.0.3_overseas-v2.5.25.0x64_all_1637585687.exe">Mumu for Windows</a> is a stable
+              alternative for this.
+            </li>
+            <li>
+              <a href="https://adl.netease.com/d/g/a11/c/mac">Mumu for Mac OS </a>(Not yet compatible with M1).
+            </li>
+            <li>
+              <a href="https://drive.google.com/file/d/1mQuivBo2lpRvPI4Obapvcb9NYDcaSUoh/view" target="_blank">
+                Mumu setup guide
+              </a>
+            </li>
+          </ul>
+        </p>
         <ol>
-          <li>Open Settings and select Wi-Fi</li>
-          <li>Long press on your connected Wi-Fi network and select Modify Network</li>
-          <li>Expand Advanced Options</li>
-          <li>Set Proxy to Manual</li>
-          <li>
-            Enter your computer's IP address in the <kbd>Proxy hostname</kbd> field
-          </li>
-          <li>
-            Enter the port number in the <kbd>Proxy port</kbd> field
-          </li>
-          <li>Save changes and exit settings</li>
+          <li>Transfer the cert file to your device.</li>
+          <li>Follow the Mumu setup guide from page 6</li>
         </ol>
         <h3>iOS</h3>
         <ol>
+          <li>Send cert to yourself in a way where you can open it on your device. (Mail, drive, Discord).</li>
+          <li>Open/download the certificate in Safari, Allow it.</li>
+          <li>
+            Open <kbd>settings</kbd> → <kbd>General</kbd> → <kbd>profile</kbd> → <kbd>Certname</kbd> → <kbd>install.</kbd>
+          </li>
+          <li>
+            Open <kbd>settings</kbd> → <kbd>General</kbd> → <kbd>About</kbd> → <kbd>Certificate Trust Settings</kbd> → Toggle on.
+          </li>
           <li>Open Settings and select Wi-Fi</li>
-          <li>Tap the Wi-Fi network you are currently connected to</li>
+          <li>Tap the Wi-Fi network you are currently connected to.</li>
           <li>
-            Scroll down to <kbd>HTTP Proxy</kbd> and click Manual
+            Scroll down to <kbd>HTTP Proxy</kbd> and click Manual.
           </li>
           <li>
-            Enter your computer's IP address in the <kbd>Server</kbd> field
+            Enter your computer's IP address in the <kbd>Server</kbd> field.
           </li>
           <li>
-            Enter the port number in the <kbd>Port</kbd> field
+            Enter the port number in the <kbd>Port</kbd> field.
           </li>
           <li>
             Leave Authentication <kbd>OFF</kbd>
           </li>
           <li>Save changes and exit settings</li>
+          <li>If you have Antivirus or a Firewall on your iOS, disable it</li>
+          <li>If you have a Firewall on your PC, disable it. Or allow SWEX trough by port.</li>
+          <li>Only if you use a VPN on your PC: Disable it. </li>
         </ol>
         <p>Start the game! You should see messages start to appear as the game loads.</p>
         <Image src="../assets/help_success.png" bordered />
