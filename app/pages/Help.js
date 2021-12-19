@@ -20,25 +20,17 @@ class Help extends React.Component {
     return (
       <div>
         <h1>Setup Instructions</h1>
-        <p>You've gotten this far - that means you have successfully downloaded and started the program. The remaining steps are:</p>
-        <ol>
-          <li>Start the proxy running</li>
-          <li>Set up your mobile device to connect to the proxy server</li>
-          <li>Start up Summoner's War</li>
-        </ol>
-        <p>Click Start Proxy now.</p>
-        <h2>Configuring your mobile device</h2>
         <p>
           Your computer and mobile device must be connected to the same network and be able to communicate. This is normally as simple as connecting
           to the same Wi-Fi network or router. Some situations, like a college campus Wi-Fi connection, might not work.
         </p>
         <p>
-          In the top bar of this program, there is a list of IP addresses and a port number. If there is more than IP address, you must determine
-          which one is the IP address that talks on the same network as your phone. These numbers are what you will be entering into your phone (these
-          numbers are only an example, yours may be different).
+          In the dropdown menu in the top left of this program, there is a list of IP addresses and a port number. If there is more than 1 IP address,
+          you must determine which one is the IP address that talks on the same network as your phone. These numbers are what you will be entering
+          into your phone (these numbers are only an example, yours may be different).
         </p>
         <Image src="../assets/help_network_settings.png" bordered />
-        <h3>Setup Instructions</h3>
+        <h3>Setup Instructions step by step</h3>
         <Accordion>
           <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
@@ -49,11 +41,8 @@ class Help extends React.Component {
             need to allow them specifically. For people that use Android 7+, you need to use Emulators like Mumu or Nox which usually run older
             Android versions. Device with Android 6 or lower also work. iOS does not have this limitation and works fine in all versions if you do the
             additional steps. Using BlueStacks is not reconmended but may be possible, although the last confirmed working verions for this is 0.0.29
-            which doesn't support the needed HTTPS functionality{' '}
-            <a href="https://www.reddit.com/r/summonerswar/comments/cwzrk0/using_swex_v0029_with_bluestacks_to_get_json_file/" target="_blank">
-              [Reddit guide]
-            </a>
-            . This also requires root access.
+            which doesn't support the needed HTTPS functionality. This also requires root access. We are not liable for any form of damage caused by
+            using any BlueStacks setup guide.
           </Accordion.Content>
 
           {/* Documents & programs */}
@@ -64,27 +53,36 @@ class Help extends React.Component {
           <Accordion.Content active={activeIndex === 1}>
             <p>
               <ul>
-                <li>
+                {/* <li>
                   <a href="https://www.reddit.com/r/summonerswar/comments/l43ueg/making_swex_work_in_2021/" target="_blank">
                     Making Swex work in 2021
                   </a>
-                </li>
-                <li>TL;DR: SWEX only works with Android versions lower than 7.</li>
+                </li> */}
                 <li>
-                  <a href="https://www.mumuglobal.com/">Mumu for Windows</a>, make sure to download the 64 bit verision under the colored button.
-                </li>
-                <li>
-                  <a href="https://adl.netease.com/d/g/a11/c/mac">Mumu for Mac OS </a>(Not yet compatible with M1).
-                </li>
-                <li>
-                  <a href="https://www.bignox.com/en/download/fullPackage/win_64?beta">Nox app player (64-bit) Windows.</a>
+                  <a href="https://www.mumuglobal.com/" target="_blank">
+                    Mumu for Windows{' '}
+                  </a>
+                  , make sure to download the 64 bit verision under the colored button.
                 </li>
                 <li>
-                  <a href="https://www.bignox.com/en/download/fullPackage/mac_fullzip?beta">Nox app player (64-bit) MacOS.</a>
+                  <a href="https://adl.netease.com/d/g/a11/c/mac" target="_blank">
+                    Mumu for Mac OS{' '}
+                  </a>
+                  (Not yet compatible with M1).
+                </li>
+                <li>
+                  <a href="https://www.bignox.com/en/download/fullPackage/win_64?beta" target="_blank">
+                    Nox app player (64-bit) Windows.{' '}
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.bignox.com/en/download/fullPackage/mac_fullzip?beta" target="_blank">
+                    Nox app player (64-bit) MacOS.{' '}
+                  </a>
                 </li>
                 <li>
                   <a href="https://drive.google.com/file/d/1mQuivBo2lpRvPI4Obapvcb9NYDcaSUoh/view" target="_blank">
-                    Mumu setup guide
+                    Mumu setup guide{' '}
                   </a>
                 </li>
               </ul>
@@ -133,6 +131,10 @@ class Help extends React.Component {
           <Accordion.Content active={activeIndex === 3}>
             <p>
               <ol>
+                <a href="https://youtu.be/ZLXJgx-cLNg?t=222" target="_blank">
+                  {' '}
+                  Nox setup video from XennialGaming
+                </a>
                 <li>
                   Open Nox
                   <ul>
@@ -223,6 +225,8 @@ class Help extends React.Component {
               <li>Only if you use a VPN on your PC: Disable it. </li>
             </ol>
           </Accordion.Content>
+
+          {/* Troubleshooting */}
           <Accordion.Title active={activeIndex === 6} index={6} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
             Troubleshooting
@@ -239,7 +243,7 @@ class Help extends React.Component {
               <li>Start proxy</li>
               <li>Set proxy in phone / emulator</li>
               <li>
-                Start the game?
+                Start the game:
                 <ul>
                   <li>
                     I can play the game with https mode disabled:
@@ -247,9 +251,7 @@ class Help extends React.Component {
                       <li>
                         I've got an error with https mode enabled:
                         <ul>
-                          <li>
-                            Something is wrong with the certificate, regenerate a new one in settings → regenerate cert → redo cert installation
-                          </li>
+                          <li>Something is wrong with the certificate, open SWEX settings → regenerate cert → redo cert installation</li>
                         </ul>
                       </li>
                     </ul>
@@ -258,13 +260,118 @@ class Help extends React.Component {
                     I can play the game with https enabled but i don't get any json:
                     <ul>
                       <li>Start SWEX as administrator</li>
-                      <li>Make sure profil exporter is enabled in swex settings</li>
+                      <li>Make sure the profile exporter is enabled in swex settings</li>
+                    </ul>
+                  </li>
+                  <li>
+                    I can't play the game with HTTPS mode disabled:
+                    <ul>
+                      <li>Are you connected to a network? → Does that network have access to the internet?</li>
                     </ul>
                   </li>
                 </ul>
               </li>
             </ol>
           </AccordionContent>
+
+          {/* Common issues in setting up SWEX */}
+          <Accordion.Title active={activeIndex === 7} index={7} onClick={this.handleAccordionClick.bind(this)}>
+            <Icon name="dropdown" />
+            Common issues in setting up SWEX
+          </Accordion.Title>
+          <Accordion.Content active={activeIndex === 7}>
+            <p>
+              <ol>
+                <li>
+                  Firewall & VPN
+                  <ul>
+                    <li>
+                      Check if SWEX is allow by your default firewall{' '}
+                      <a href="https://drive.google.com/file/d/1o3ar804O27j3E_VyDpn4MtAl6R_JjeY-/view?usp=sharing" target="_blank">
+                        [Link to PDF Guide (windows 10)]{' '}
+                      </a>
+                      . If you can't find SWEX in the firewall, Add another app → add SWEX.
+                    </li>
+                    <li>If you use extra firewall (like McAfee) disable it</li>
+                    <li>If you have extra firewall on your phone disable it</li>
+                  </ul>
+                </li>
+                <li>
+                  WiFi
+                  <ul>
+                    <li>If you use any VPN disable it</li>
+                    <li>Check if you are on same wi-fi (not public)</li>
+                    <li>Check your phone / emulator wifi Settings, if you saved proxy settings</li>
+                  </ul>
+                </li>
+                <li>
+                  Other
+                  <ul>
+                    <li>Try to run SWEX as administrator</li>
+                    <li>
+                      Clear cert folder (you need to clear 2 folder, both file path and setting path){' '}
+                      <a href="https://drive.google.com/file/d/1B5mA-wbDWhyCjJvWOh4fTzEAcC9CKa96/view" target="_blank">
+                        {' '}
+                        [Windows Manual]
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ol>
+            </p>
+          </Accordion.Content>
+
+          {/* Errors by OS */}
+          <Accordion.Title active={activeIndex === 8} index={8} onClick={this.handleAccordionClick.bind(this)}>
+            <Icon name="dropdown" />
+            Errors by OS
+          </Accordion.Title>
+          <Accordion.Content active={activeIndex === 8}>
+            <p>
+              <ol>
+                <li>
+                  All
+                  <ul>
+                    <li>(S:9) Error → this mean that you've messed up cert install, try to clear cert and install it again</li>
+                    <li>
+                      Blank hive screen, with only back to game option → this means that you didn't start the proxy, or didn't enable https, or you
+                      are not on the same Wi-fi.
+                    </li>
+                    <li>I can log-in to the game but i don't get my JSON → this mean that you didn't enable HTTPS (or didn't setup proxy)</li>
+                  </ul>
+                </li>
+                <li>
+                  Mumu (multi instance only)
+                  <ul>
+                    Sometimes Mumu forgets the proxy settings you've set in the WiFi menu when starting multiple instance simultaneously. When that
+                    happens re-enter the proxy settings in this order: start proxy → set proxy settings in mumu → start game
+                  </ul>
+                </li>
+                <li>
+                  iOS
+                  <ul>
+                    <li>There are multiple steps to install and trust cert, make sure to do them all</li>
+                    <li>Error Code "H:2000" → it seem that you need to clear all cert on PC and all Cert on your IOS, and get a new one.</li>
+                  </ul>
+                </li>
+                <li>Android</li>
+                <ul>
+                  <li>If you use android 7+ phone youwon't be able to use swex unless you root your phone.</li>
+                  <li>
+                    Error Code "H:2000" → This happen if you use Android 7+ and try to make SWEX work, you might want to install an emulator to export
+                    your JSON, so you don't root your main phone.
+                  </li>
+                </ul>
+
+                <li>
+                  Nox
+                  <ul>
+                    <li>If you didn't follow the video from XennialGaming, make sure you are on android 5.</li>
+                  </ul>
+                </li>
+              </ol>
+            </p>
+          </Accordion.Content>
         </Accordion>
 
         <p></p>
@@ -302,6 +409,7 @@ class Help extends React.Component {
           </li>
         </ul>
 
+        {/* Keyboard Shortcuts */}
         <h1>Keyboard Shortcuts</h1>
         <Table celled inverted selectable>
           <Table.Header>
@@ -370,8 +478,7 @@ class Help extends React.Component {
           <Accordion.Content active={activeIndex === 98}>
             Please{' '}
             <a href="https://github.com/Xzandro/sw-exporter" target="_blank">
-              report it on <Icon name="github square" />
-              Github
+              report it on Github <Icon name="github square" />
             </a>
             .
           </Accordion.Content>
