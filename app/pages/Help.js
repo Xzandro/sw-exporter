@@ -37,62 +37,182 @@ class Help extends React.Component {
           numbers are only an example, yours may be different).
         </p>
         <Image src="../assets/help_network_settings.png" bordered />
-        <h3>Android</h3>
-        <p>
-          <ul>
-            <li>
-              <a href="https://www.reddit.com/r/summonerswar/comments/cxwkav/summoners_war_exporter_swex_everything_you_need/" target="_blank">
-                SWEX on Android - Everything you need to know.
-              </a>
-            </li>
-            <li>TL;DR: SWEX only works with Android versions lower than 7</li>
-            <li>
-              <a href="https://a11.gdl.netease.com/MuMuInstaller_1.3.0.3_overseas-v2.5.25.0x64_all_1637585687.exe">Mumu for Windows</a> is a stable
-              alternative for this.
-            </li>
-            <li>
-              <a href="https://adl.netease.com/d/g/a11/c/mac">Mumu for Mac OS </a>(Not yet compatible with M1).
-            </li>
-            <li>
+        <h3>Setup Instructions</h3>
+        <Accordion>
+          <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleAccordionClick.bind(this)}>
+            <Icon name="dropdown" />
+            Limitations
+          </Accordion.Title>
+          <Accordion.Content active={activeIndex === 0}>
+            SWEX won't work for unrooted Android 7+. The reason is that in Android 7+, apps don't accept user signed certs by default. App devs would
+            need to allow them specifically. For people that use Android 7+, you would need to use Emulators like Mumu, Nox or Bluestacks, which
+            usually run older Android versions. If you have a device with Android 6 or lower, you can also use this. iOS does not have this limitation
+            and works fine in all versions if you do the additional steps.
+          </Accordion.Content>
+
+          {/* Documents & programs */}
+          <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleAccordionClick.bind(this)}>
+            <Icon name="dropdown" />
+            Documents & programs
+          </Accordion.Title>
+          <Accordion.Content active={activeIndex === 1}>
+            <p>
+              <ul>
+                <li>
+                  <a href="https://www.reddit.com/r/summonerswar/comments/l43ueg/making_swex_work_in_2021/" target="_blank">
+                    Making Swex work in 2021
+                  </a>
+                </li>
+                <li>TL;DR: SWEX only works with Android versions lower than 7.</li>
+                <li>
+                  <a href="https://www.mumuglobal.com/">Mumu for Windows</a>, make sure to download the 64 bit verision under the colored button.
+                </li>
+                <li>
+                  <a href="https://adl.netease.com/d/g/a11/c/mac">Mumu for Mac OS </a>(Not yet compatible with M1).
+                </li>
+                <li>
+                  <a href="https://www.bignox.com/en/download/fullPackage/win_64?beta">Nox app player (64-bit) Windows.</a>
+                </li>
+                <li>
+                  <a href="https://www.bignox.com/en/download/fullPackage/mac_fullzip?beta">Nox app player (64-bit) MacOS.</a>
+                </li>
+                <li>
+                  <a href="https://www.bluestacks.com/download.html">Bluestacks 5 for Windows.</a>
+                </li>
+                <li>
+                  <a href="https://drive.google.com/file/d/1mQuivBo2lpRvPI4Obapvcb9NYDcaSUoh/view" target="_blank">
+                    Mumu setup guide
+                  </a>
+                </li>
+              </ul>
+            </p>
+          </Accordion.Content>
+
+          {/* mumu setup */}
+          <Accordion.Title active={activeIndex === 2} index={2} onClick={this.handleAccordionClick.bind(this)}>
+            <Icon name="dropdown" />
+            Mumu Setup
+          </Accordion.Title>
+          <Accordion.Content active={activeIndex === 2}>
+            <p>
               <a href="https://drive.google.com/file/d/1mQuivBo2lpRvPI4Obapvcb9NYDcaSUoh/view" target="_blank">
                 Mumu setup guide
               </a>
-            </li>
-          </ul>
-        </p>
-        <ol>
-          <li>Transfer the cert file to your device.</li>
-          <li>Follow the Mumu setup guide from page 6</li>
-        </ol>
-        <h3>iOS</h3>
-        <ol>
-          <li>Send cert to yourself in a way where you can open it on your device. (Mail, drive, Discord).</li>
-          <li>Open/download the certificate in Safari, Allow it.</li>
-          <li>
-            Open <kbd>settings</kbd> → <kbd>General</kbd> → <kbd>profile</kbd> → <kbd>Certname</kbd> → <kbd>install.</kbd>
-          </li>
-          <li>
-            Open <kbd>settings</kbd> → <kbd>General</kbd> → <kbd>About</kbd> → <kbd>Certificate Trust Settings</kbd> → Toggle on.
-          </li>
-          <li>Open Settings and select Wi-Fi</li>
-          <li>Tap the Wi-Fi network you are currently connected to.</li>
-          <li>
-            Scroll down to <kbd>HTTP Proxy</kbd> and click Manual.
-          </li>
-          <li>
-            Enter your computer's IP address in the <kbd>Server</kbd> field.
-          </li>
-          <li>
-            Enter the port number in the <kbd>Port</kbd> field.
-          </li>
-          <li>
-            Leave Authentication <kbd>OFF</kbd>
-          </li>
-          <li>Save changes and exit settings</li>
-          <li>If you have Antivirus or a Firewall on your iOS, disable it</li>
-          <li>If you have a Firewall on your PC, disable it. Or allow SWEX trough by port.</li>
-          <li>Only if you use a VPN on your PC: Disable it. </li>
-        </ol>
+              <ol>
+                <li> SWEX → get cert </li>
+                <li> Open mumu shared folder</li>
+                <li> Copy cert from swex in shared folder.</li>
+                <li>
+                  Select the generated cert (ca.pem), give it a whatever name and set Credential use to VPN & apps. Tap okay.
+                  <ul>
+                    <li>If the cert file is greyed out for some reason try to rename the extension from .pem to .cer</li>
+                  </ul>
+                </li>
+              </ol>
+            </p>
+          </Accordion.Content>
+
+          {/* Nox setup */}
+          <Accordion.Title active={activeIndex === 3} index={3} onClick={this.handleAccordionClick.bind(this)}>
+            <Icon name="dropdown" />
+            Nox Setup
+          </Accordion.Title>
+          <Accordion.Content active={activeIndex === 3}>
+            <p>
+              <ol>
+                <li>
+                  Open Nox
+                  <ul>
+                    <li>Open Multi-Instance Manager (icon on the right toolbar of nox)</li>
+                    <li>Create new Android 5 Instance (Name this so you remember)</li>
+                    <li>Close existing instance and open Android 5 Instance</li>
+                    <li>Install Summoners War: Open once for downloading and to sign, in then close Summoners War</li>
+                    <li>Open Settings (top right) and enable root (restart nox)</li>
+                  </ul>
+                </li>
+                <li>
+                  Open SWEX
+                  <ul>
+                    <li>Press "Get Cert" (top right)</li>
+                    <li>Copy file path for certificate (don't include filename)</li>
+                    <li>Navigate to folder with certificate</li>
+                    <li>Drag certificate to Nox homescreen</li>
+                  </ul>
+                </li>
+                <li>
+                  In Nox
+                  <ul>
+                    <li>Tools → Settings → Security → Screen lock: Create a pin</li>
+
+                    <li>Tools → Settings → Security → Insall from SD Card</li>
+
+                    <li>Navigate to: Internal storage → Pictures</li>
+
+                    <li>Click on ca.pem and name it ca.pem</li>
+
+                    <li>Return to home screen</li>
+
+                    <li>Tools → Open file manager and navigate to: /data/misc/keystore/user0 and select certificate (checkbox to the left)</li>
+
+                    <li>With file selected navigate to: /system/etc/security/cacerts</li>
+
+                    <li>Press triple dots in top right (sometimes its bottom left) and select "move selection here"</li>
+
+                    <li>Remove pin (Tools - Tools → Settings → Security → Screen lock)</li>
+
+                    <li>Disable Root (restart Nox)</li>
+                  </ul>
+                </li>
+                <li>
+                  In Nox
+                  <ul>
+                    <li>Tools → Settings → Wi-Fi then long press on network, select "modify network" and then open Advanced options.</li>
+                    <li>Change Proxy to Manual and enter proxy hostname (ip address) and proxy port from SWEX.</li>
+                    <li>Open Summoners War and pray you didn't fuck anything up!</li>
+                  </ul>
+                </li>
+              </ol>
+            </p>
+          </Accordion.Content>
+
+          {/* iOS setup */}
+          <Accordion.Title active={activeIndex === 5} index={5} onClick={this.handleAccordionClick.bind(this)}>
+            <Icon name="dropdown" />
+            iOS
+          </Accordion.Title>
+          <Accordion.Content active={activeIndex === 5}>
+            <ol>
+              <li>Send cert to yourself in a way where you can open it on your device. (Mail, drive, Discord).</li>
+              <li>Open/download the certificate in Safari, Allow it.</li>
+              <li>
+                Open <kbd>settings</kbd> → <kbd>General</kbd> → <kbd>profile</kbd> → <kbd>Certname</kbd> → <kbd>install.</kbd>
+              </li>
+              <li>
+                Open <kbd>settings</kbd> → <kbd>General</kbd> → <kbd>About</kbd> → <kbd>Certificate Trust Settings</kbd> → Toggle on.
+              </li>
+              <li>Open Settings and select Wi-Fi</li>
+              <li>Tap the Wi-Fi network you are currently connected to.</li>
+              <li>
+                Scroll down to <kbd>HTTP Proxy</kbd> and click Manual.
+              </li>
+              <li>
+                Enter your computer's IP address in the <kbd>Server</kbd> field.
+              </li>
+              <li>
+                Enter the port number in the <kbd>Port</kbd> field.
+              </li>
+              <li>
+                Leave Authentication <kbd>OFF</kbd>
+              </li>
+              <li>Save changes and exit settings</li>
+              <li>If you have Antivirus or a Firewall on your iOS, disable it</li>
+              <li>If you have a Firewall on your PC, disable it. Or allow SWEX trough by port.</li>
+              <li>Only if you use a VPN on your PC: Disable it. </li>
+            </ol>
+          </Accordion.Content>
+        </Accordion>
+
+        <p></p>
         <p>Start the game! You should see messages start to appear as the game loads.</p>
         <Image src="../assets/help_success.png" bordered />
         <p>Success!</p>
@@ -170,29 +290,29 @@ class Help extends React.Component {
 
         <h1>FAQ</h1>
         <Accordion>
-          <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleAccordionClick.bind(this)}>
+          <Accordion.Title active={activeIndex === 96} index={96} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
             Can I get banned for using this?
           </Accordion.Title>
-          <Accordion.Content active={activeIndex === 0}>
+          <Accordion.Content active={activeIndex === 96}>
             The proxy method of intercepting communication between your device and Com2US is largely undetectable. No reports of bans due to using a
             proxy have been reported.
           </Accordion.Content>
 
-          <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleAccordionClick.bind(this)}>
+          <Accordion.Title active={activeIndex === 97} index={97} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
             What about SWProxy?
           </Accordion.Title>
-          <Accordion.Content active={activeIndex === 1}>
+          <Accordion.Content active={activeIndex === 97}>
             SWProxy suffered from a few issues - difficulty releasing on mac and linux, proxy causing broken event pages, etc. SW Exporter was
             developed on a new code platform trying to address these issues from the start.
           </Accordion.Content>
 
-          <Accordion.Title active={activeIndex === 2} index={2} onClick={this.handleAccordionClick.bind(this)}>
+          <Accordion.Title active={activeIndex === 98} index={98} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
             What if I find an issue?
           </Accordion.Title>
-          <Accordion.Content active={activeIndex === 2}>
+          <Accordion.Content active={activeIndex === 98}>
             Please{' '}
             <a href="https://github.com/Xzandro/sw-exporter" target="_blank">
               report it on <Icon name="github square" />
@@ -201,11 +321,11 @@ class Help extends React.Component {
             .
           </Accordion.Content>
 
-          <Accordion.Title active={activeIndex === 3} index={3} onClick={this.handleAccordionClick.bind(this)}>
+          <Accordion.Title active={activeIndex === 99} index={99} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
             How can I contribute?
           </Accordion.Title>
-          <Accordion.Content active={activeIndex === 3}>
+          <Accordion.Content active={activeIndex === 99}>
             <p>
               If you can code, check out the repository on{' '}
               <a href="https://github.com/Xzandro/sw-exporter" target="_blank">
