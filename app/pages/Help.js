@@ -53,7 +53,7 @@ class Help extends React.Component {
             <a href="https://www.reddit.com/r/summonerswar/comments/cwzrk0/using_swex_v0029_with_bluestacks_to_get_json_file/" target="_blank">
               [Reddit guide]
             </a>
-            . This also required root access.
+            . This also requires root access.
           </Accordion.Content>
 
           {/* Documents & programs */}
