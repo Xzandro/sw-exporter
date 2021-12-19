@@ -1,5 +1,6 @@
+import { th } from 'date-fns/locale';
 import React from 'react';
-import { Image, Accordion, Icon, Table } from 'semantic-ui-react';
+import { Image, Accordion, Icon, Table, AccordionTitle, AccordionContent } from 'semantic-ui-react';
 
 class Help extends React.Component {
   constructor() {
@@ -41,13 +42,18 @@ class Help extends React.Component {
         <Accordion>
           <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
-            Limitations
+            Limitations [READ THIS FIRST]
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 0}>
             SWEX won't work for unrooted Android 7+. The reason is that in Android 7+, apps don't accept user signed certs by default. App devs would
-            need to allow them specifically. For people that use Android 7+, you would need to use Emulators like Mumu, Nox or Bluestacks, which
-            usually run older Android versions. If you have a device with Android 6 or lower, you can also use this. iOS does not have this limitation
-            and works fine in all versions if you do the additional steps.
+            need to allow them specifically. For people that use Android 7+, you need to use Emulators like Mumu or Nox which usually run older
+            Android versions. Device with Android 6 or lower also work. iOS does not have this limitation and works fine in all versions if you do the
+            additional steps. Using BlueStacks is not reconmended but may be possible, although the last confirmed working verions for this is 0.0.29
+            which doesn't support the needed HTTPS functionality{' '}
+            <a href="https://www.reddit.com/r/summonerswar/comments/cwzrk0/using_swex_v0029_with_bluestacks_to_get_json_file/" target="_blank">
+              [Reddit guide]
+            </a>
+            . This also required root access.
           </Accordion.Content>
 
           {/* Documents & programs */}
@@ -77,9 +83,6 @@ class Help extends React.Component {
                   <a href="https://www.bignox.com/en/download/fullPackage/mac_fullzip?beta">Nox app player (64-bit) MacOS.</a>
                 </li>
                 <li>
-                  <a href="https://www.bluestacks.com/download.html">Bluestacks 5 for Windows.</a>
-                </li>
-                <li>
                   <a href="https://drive.google.com/file/d/1mQuivBo2lpRvPI4Obapvcb9NYDcaSUoh/view" target="_blank">
                     Mumu setup guide
                   </a>
@@ -97,17 +100,27 @@ class Help extends React.Component {
             <p>
               <a href="https://drive.google.com/file/d/1mQuivBo2lpRvPI4Obapvcb9NYDcaSUoh/view" target="_blank">
                 Mumu setup guide
+                {/* install  cert > start proxy > set proxy settings in mumu > start game */}
               </a>
               <ol>
-                <li> SWEX → get cert </li>
+                <li> SWEX get cert </li>
                 <li> Open mumu shared folder</li>
                 <li> Copy cert from swex in shared folder.</li>
+                <li> Navigate to: Settings → Security → Install from SD card → $MuMuSharedFolder</li>
                 <li>
-                  Select the generated cert (ca.pem), give it a whatever name and set Credential use to VPN & apps. Tap okay.
+                  Select the generated cert (ca.pem), name it whatever you like and set Credential use to VPN & apps. Tap okay.
                   <ul>
                     <li>If the cert file is greyed out for some reason try to rename the extension from .pem to .cer</li>
                   </ul>
                 </li>
+                <li> Start the proxy in SWEX</li>
+                <li> Navigate to: Settings → WiFi</li>
+                <li> Long press listed network → modify network</li>
+                <li> Change "Proxy" to "Manual"</li>
+                <li> server: ip listed in SWEX, usually 192.168.x.x; Port: Port listed in SWEX, default = 8080</li>
+                <li> Press Save</li>
+                <li> In SWEX: confirm HTTPS is turned on</li>
+                <li> In SWEX: Start proxy</li>
               </ol>
             </p>
           </Accordion.Content>
@@ -210,6 +223,48 @@ class Help extends React.Component {
               <li>Only if you use a VPN on your PC: Disable it. </li>
             </ol>
           </Accordion.Content>
+          <Accordion.Title active={activeIndex === 6} index={6} onClick={this.handleAccordionClick.bind(this)}>
+            <Icon name="dropdown" />
+            Troubleshooting
+          </Accordion.Title>
+          <AccordionContent active={activeIndex === 6}>
+            Try those steps if you have issues with swex. Finding the issue :
+            <ol>
+              <li>Disable https mode in swex settings</li>
+              <li>Start proxy</li>
+              <li>Set proxy in phone / emulator</li>
+              <li>Start the game</li>
+              <li>Can you play it ?</li>
+              <li>Enable https mode</li>
+              <li>Start proxy</li>
+              <li>Set proxy in phone / emulator</li>
+              <li>
+                Start the game?
+                <ul>
+                  <li>
+                    I can play the game with https mode disabled:
+                    <ul>
+                      <li>
+                        I've got an error with https mode enabled:
+                        <ul>
+                          <li>
+                            Something is wrong with the certificate, regenerate a new one in settings → regenerate cert → redo cert installation
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    I can play the game with https enabled but i don't get any json:
+                    <ul>
+                      <li>Start SWEX as administrator</li>
+                      <li>Make sure profil exporter is enabled in swex settings</li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ol>
+          </AccordionContent>
         </Accordion>
 
         <p></p>
