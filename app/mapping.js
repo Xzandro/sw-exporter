@@ -1073,6 +1073,27 @@ module.exports = {
       25414: 'ROBO-E65',
       25415: 'ROBO-F29',
 
+      256: 'Totemist',
+      25611: 'Aaaliyah',
+      25612: 'Nora',
+      25613: 'Riley',
+      25614: 'Ella',
+      25615: 'Maya',
+
+      257: 'Weapon Master',
+      25711: 'Liam',
+      25712: 'Carlos',
+      25713: 'Dominic',
+      25714: 'Benedict',
+      25715: 'Maximilian',
+
+      258: 'Rune Hammer Blacksmith',
+      25811: 'Susan',
+      25812: 'Miriam',
+      25813: 'Celine',
+      25814: 'Madeleine',
+      25815: 'Deborah',
+
       15105: 'Devilmon',
       14314: 'Rainbowmon',
 

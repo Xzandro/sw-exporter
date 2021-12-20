@@ -31,6 +31,8 @@ class SWProxy extends EventEmitter {
     this.proxy.onError(function (ctx, e, errorKind) {
       if (e.code === 'EADDRINUSE') {
         self.log({ type: 'warning', source: 'proxy', message: 'Port is in use from another process. Try another port.' });
+      } else {
+        self.log({ type: 'error', source: 'proxy', message: e.message });
       }
     });
 
