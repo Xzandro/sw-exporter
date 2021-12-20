@@ -1,6 +1,5 @@
-import { th } from 'date-fns/locale';
 import React from 'react';
-import { Image, Accordion, Icon, Table, AccordionTitle, AccordionContent } from 'semantic-ui-react';
+import { Image, Accordion, Icon, Table } from 'semantic-ui-react';
 
 class Help extends React.Component {
   constructor() {
@@ -45,152 +44,137 @@ class Help extends React.Component {
             using any BlueStacks setup guide.
           </Accordion.Content>
 
-          {/* Documents & programs */}
           <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
             Documents & programs
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 1}>
-            <p>
-              <ul>
-                {/* <li>
-                  <a href="https://www.reddit.com/r/summonerswar/comments/l43ueg/making_swex_work_in_2021/" target="_blank">
-                    Making Swex work in 2021
-                  </a>
-                </li> */}
-                <li>
-                  <a href="https://www.mumuglobal.com/" target="_blank">
-                    Mumu for Windows{' '}
-                  </a>
-                  , make sure to download the 64 bit verision under the colored button.
-                </li>
-                <li>
-                  <a href="https://adl.netease.com/d/g/a11/c/mac" target="_blank">
-                    Mumu for Mac OS{' '}
-                  </a>
-                  (Not yet compatible with M1).
-                </li>
-                <li>
-                  <a href="https://www.bignox.com/en/download/fullPackage/win_64?beta" target="_blank">
-                    Nox app player (64-bit) Windows.{' '}
-                  </a>
-                </li>
-                <li>
-                  <a href="https://www.bignox.com/en/download/fullPackage/mac_fullzip?beta" target="_blank">
-                    Nox app player (64-bit) MacOS.{' '}
-                  </a>
-                </li>
-                <li>
-                  <a href="https://drive.google.com/file/d/1mQuivBo2lpRvPI4Obapvcb9NYDcaSUoh/view" target="_blank">
-                    Mumu setup guide{' '}
-                  </a>
-                </li>
-              </ul>
-            </p>
+            <ul>
+              <li>
+                <a href="https://www.mumuglobal.com/" target="_blank">
+                  Mumu for Windows{' '}
+                </a>
+                , make sure to download the 64 bit verision under the colored button.
+              </li>
+              <li>
+                <a href="https://adl.netease.com/d/g/a11/c/mac" target="_blank">
+                  Mumu for Mac OS{' '}
+                </a>
+                (Not yet compatible with M1).
+              </li>
+              <li>
+                <a href="https://www.bignox.com/en/download/fullPackage/win_64?beta" target="_blank">
+                  Nox app player (64-bit) Windows.{' '}
+                </a>
+              </li>
+              <li>
+                <a href="https://www.bignox.com/en/download/fullPackage/mac_fullzip?beta" target="_blank">
+                  Nox app player (64-bit) MacOS.{' '}
+                </a>
+              </li>
+              <li>
+                <a href="https://drive.google.com/file/d/1mQuivBo2lpRvPI4Obapvcb9NYDcaSUoh/view" target="_blank">
+                  Mumu setup guide{' '}
+                </a>
+              </li>
+            </ul>
           </Accordion.Content>
 
-          {/* mumu setup */}
           <Accordion.Title active={activeIndex === 2} index={2} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
             Mumu Setup
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 2}>
-            <p>
-              <a href="https://drive.google.com/file/d/1mQuivBo2lpRvPI4Obapvcb9NYDcaSUoh/view" target="_blank">
-                Mumu setup guide
-                {/* install  cert > start proxy > set proxy settings in mumu > start game */}
-              </a>
-              <ol>
-                <li> SWEX get cert </li>
-                <li> Open mumu shared folder</li>
-                <li> Copy cert from swex in shared folder.</li>
-                <li> Navigate to: Settings → Security → Install from SD card → $MuMuSharedFolder</li>
-                <li>
-                  Select the generated cert (ca.pem), name it whatever you like and set Credential use to VPN & apps. Tap okay.
-                  <ul>
-                    <li>If the cert file is greyed out for some reason try to rename the extension from .pem to .cer</li>
-                  </ul>
-                </li>
-                <li> Start the proxy in SWEX</li>
-                <li> Navigate to: Settings → WiFi</li>
-                <li> Long press listed network → modify network</li>
-                <li> Change "Proxy" to "Manual"</li>
-                <li> server: ip listed in SWEX, usually 192.168.x.x; Port: Port listed in SWEX, default = 8080</li>
-                <li> Press Save</li>
-                <li> In SWEX: confirm HTTPS is turned on</li>
-                <li> In SWEX: Start proxy</li>
-              </ol>
-            </p>
+            <a href="https://drive.google.com/file/d/1mQuivBo2lpRvPI4Obapvcb9NYDcaSUoh/view" target="_blank">
+              Mumu setup guide
+            </a>
+            <ol>
+              <li> SWEX get cert </li>
+              <li> Open mumu shared folder</li>
+              <li> Copy cert from SWEX in shared folder.</li>
+              <li> Navigate to: Settings → Security → Install from SD card → $MuMuSharedFolder</li>
+              <li>
+                Select the generated cert (ca.pem), name it whatever you like and set Credential use to VPN & apps. Tap okay.
+                <ul>
+                  <li>If the cert file is greyed out for some reason try to rename the extension from .pem to .cer</li>
+                </ul>
+              </li>
+              <li> Start the proxy in SWEX</li>
+              <li> Navigate to: Settings → WiFi</li>
+              <li> Long press listed network → modify network</li>
+              <li> Change "Proxy" to "Manual"</li>
+              <li> server: ip listed in SWEX, usually 192.168.x.x; Port: Port listed in SWEX, default = 8080</li>
+              <li> Press Save</li>
+              <li> In SWEX: confirm HTTPS is turned on</li>
+              <li> In SWEX: Start proxy</li>
+            </ol>
           </Accordion.Content>
 
-          {/* Nox setup */}
           <Accordion.Title active={activeIndex === 3} index={3} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
             Nox Setup
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 3}>
-            <p>
-              <ol>
-                <a href="https://youtu.be/ZLXJgx-cLNg?t=222" target="_blank">
-                  {' '}
-                  Nox setup video from XennialGaming
-                </a>
-                <li>
-                  Open Nox
-                  <ul>
-                    <li>Open Multi-Instance Manager (icon on the right toolbar of nox)</li>
-                    <li>Create new Android 5 Instance (Name this so you remember)</li>
-                    <li>Close existing instance and open Android 5 Instance</li>
-                    <li>Install Summoners War: Open once for downloading and to sign, in then close Summoners War</li>
-                    <li>Open Settings (top right) and enable root (restart nox)</li>
-                  </ul>
-                </li>
-                <li>
-                  Open SWEX
-                  <ul>
-                    <li>Press "Get Cert" (top right)</li>
-                    <li>Copy file path for certificate (don't include filename)</li>
-                    <li>Navigate to folder with certificate</li>
-                    <li>Drag certificate to Nox homescreen</li>
-                  </ul>
-                </li>
-                <li>
-                  In Nox
-                  <ul>
-                    <li>Tools → Settings → Security → Screen lock: Create a pin</li>
+            {' '}
+            <a href="https://youtu.be/ZLXJgx-cLNg?t=222" target="_blank">
+              {' '}
+              Nox setup video from XennialGaming
+            </a>
+            <ol>
+              <li>
+                Open Nox
+                <ul>
+                  <li>Open Multi-Instance Manager (icon on the right toolbar of nox)</li>
+                  <li>Create new Android 5 Instance (Name this so you remember)</li>
+                  <li>Close existing instance and open Android 5 Instance</li>
+                  <li>Install Summoners War: Open once for downloading and to sign, in then close Summoners War</li>
+                  <li>Open Settings (top right) and enable root (restart nox)</li>
+                </ul>
+              </li>
+              <li>
+                Open SWEX
+                <ul>
+                  <li>Press "Get Cert" (top right)</li>
+                  <li>Copy file path for certificate (don't include filename)</li>
+                  <li>Navigate to folder with certificate</li>
+                  <li>Drag certificate to Nox homescreen</li>
+                </ul>
+              </li>
+              <li>
+                In Nox
+                <ul>
+                  <li>Tools → Settings → Security → Screen lock: Create a pin</li>
 
-                    <li>Tools → Settings → Security → Insall from SD Card</li>
+                  <li>Tools → Settings → Security → Insall from SD Card</li>
 
-                    <li>Navigate to: Internal storage → Pictures</li>
+                  <li>Navigate to: Internal storage → Pictures</li>
 
-                    <li>Click on ca.pem and name it ca.pem</li>
+                  <li>Click on ca.pem and name it ca.pem</li>
 
-                    <li>Return to home screen</li>
+                  <li>Return to home screen</li>
 
-                    <li>Tools → Open file manager and navigate to: /data/misc/keystore/user0 and select certificate (checkbox to the left)</li>
+                  <li>Tools → Open file manager and navigate to: /data/misc/keystore/user0 and select certificate (checkbox to the left)</li>
 
-                    <li>With file selected navigate to: /system/etc/security/cacerts</li>
+                  <li>With file selected navigate to: /system/etc/security/cacerts</li>
 
-                    <li>Press triple dots in top right (sometimes its bottom left) and select "move selection here"</li>
+                  <li>Press triple dots in top right (sometimes its bottom left) and select "move selection here"</li>
 
-                    <li>Remove pin (Tools - Tools → Settings → Security → Screen lock)</li>
+                  <li>Remove pin (Tools - Tools → Settings → Security → Screen lock)</li>
 
-                    <li>Disable Root (restart Nox)</li>
-                  </ul>
-                </li>
-                <li>
-                  In Nox
-                  <ul>
-                    <li>Tools → Settings → Wi-Fi then long press on network, select "modify network" and then open Advanced options.</li>
-                    <li>Change Proxy to Manual and enter proxy hostname (ip address) and proxy port from SWEX.</li>
-                    <li>Open Summoners War and pray you didn't fuck anything up!</li>
-                  </ul>
-                </li>
-              </ol>
-            </p>
+                  <li>Disable Root (restart Nox)</li>
+                </ul>
+              </li>
+              <li>
+                In Nox
+                <ul>
+                  <li>Tools → Settings → Wi-Fi then long press on network, select "modify network" and then open Advanced options.</li>
+                  <li>Change Proxy to Manual and enter proxy hostname (ip address) and proxy port from SWEX.</li>
+                  <li>Open Summoners War and pray you didn't fuck anything up!</li>
+                </ul>
+              </li>
+            </ol>
           </Accordion.Content>
 
-          {/* iOS setup */}
           <Accordion.Title active={activeIndex === 5} index={5} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
             iOS
@@ -226,15 +210,14 @@ class Help extends React.Component {
             </ol>
           </Accordion.Content>
 
-          {/* Troubleshooting */}
           <Accordion.Title active={activeIndex === 6} index={6} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
             Troubleshooting
           </Accordion.Title>
-          <AccordionContent active={activeIndex === 6}>
-            Try those steps if you have issues with swex. Finding the issue :
+          <Accordion.Content active={activeIndex === 6}>
+            Try those steps if you have issues with SWEX. Finding the issue :
             <ol>
-              <li>Disable https mode in swex settings</li>
+              <li>Disable https mode in SWEX settings</li>
               <li>Start proxy</li>
               <li>Set proxy in phone / emulator</li>
               <li>Start the game</li>
@@ -260,7 +243,7 @@ class Help extends React.Component {
                     I can play the game with https enabled but i don't get any json:
                     <ul>
                       <li>Start SWEX as administrator</li>
-                      <li>Make sure the profile exporter is enabled in swex settings</li>
+                      <li>Make sure the profile exporter is enabled in SWEX settings</li>
                     </ul>
                   </li>
                   <li>
@@ -272,109 +255,101 @@ class Help extends React.Component {
                 </ul>
               </li>
             </ol>
-          </AccordionContent>
+          </Accordion.Content>
 
-          {/* Common issues in setting up SWEX */}
           <Accordion.Title active={activeIndex === 7} index={7} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
             Common issues in setting up SWEX
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 7}>
-            <p>
-              <ol>
-                <li>
-                  Firewall & VPN
-                  <ul>
-                    <li>
-                      Check if SWEX is allow by your default firewall{' '}
-                      <a href="https://drive.google.com/file/d/1o3ar804O27j3E_VyDpn4MtAl6R_JjeY-/view?usp=sharing" target="_blank">
-                        [Link to PDF Guide (windows 10)]{' '}
-                      </a>
-                      . If you can't find SWEX in the firewall, Add another app → add SWEX.
-                    </li>
-                    <li>If you use extra firewall (like McAfee) disable it</li>
-                    <li>If you have extra firewall on your phone disable it</li>
-                  </ul>
-                </li>
-                <li>
-                  WiFi
-                  <ul>
-                    <li>If you use any VPN disable it</li>
-                    <li>Check if you are on same wi-fi (not public)</li>
-                    <li>Check your phone / emulator wifi Settings, if you saved proxy settings</li>
-                  </ul>
-                </li>
-                <li>
-                  Other
-                  <ul>
-                    <li>Try to run SWEX as administrator</li>
-                    <li>
-                      Clear cert folder (you need to clear 2 folder, both file path and setting path){' '}
-                      <a href="https://drive.google.com/file/d/1B5mA-wbDWhyCjJvWOh4fTzEAcC9CKa96/view" target="_blank">
-                        {' '}
-                        [Windows Manual]
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-              </ol>
-            </p>
+            <ol>
+              <li>
+                Firewall & VPN
+                <ul>
+                  <li>
+                    Check if SWEX is allow by your default firewall{' '}
+                    <a href="https://drive.google.com/file/d/1o3ar804O27j3E_VyDpn4MtAl6R_JjeY-/view?usp=sharing" target="_blank">
+                      [Link to PDF Guide (windows 10)]{' '}
+                    </a>
+                    . If you can't find SWEX in the firewall, Add another app → add SWEX.
+                  </li>
+                  <li>If you use extra firewall (like McAfee) disable it</li>
+                  <li>If you have extra firewall on your phone disable it</li>
+                </ul>
+              </li>
+              <li>
+                WiFi
+                <ul>
+                  <li>If you use any VPN disable it</li>
+                  <li>Check if you are on same wi-fi (not public)</li>
+                  <li>Check your phone / emulator wifi Settings, if you saved proxy settings</li>
+                </ul>
+              </li>
+              <li>
+                Other
+                <ul>
+                  <li>Try to run SWEX as administrator</li>
+                  <li>
+                    Clear cert folder (you need to clear 2 folder, both file path and setting path){' '}
+                    <a href="https://drive.google.com/file/d/1B5mA-wbDWhyCjJvWOh4fTzEAcC9CKa96/view" target="_blank">
+                      {' '}
+                      [Windows Manual]
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ol>
           </Accordion.Content>
 
-          {/* Errors by OS */}
           <Accordion.Title active={activeIndex === 8} index={8} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
             Errors by OS
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 8}>
-            <p>
-              <ol>
-                <li>
-                  All
-                  <ul>
-                    <li>(S:9) Error → this mean that you've messed up cert install, try to clear cert and install it again</li>
-                    <li>
-                      Blank hive screen, with only back to game option → this means that you didn't start the proxy, or didn't enable https, or you
-                      are not on the same Wi-fi.
-                    </li>
-                    <li>I can log-in to the game but i don't get my JSON → this mean that you didn't enable HTTPS (or didn't setup proxy)</li>
-                  </ul>
-                </li>
-                <li>
-                  Mumu (multi instance only)
-                  <ul>
-                    Sometimes Mumu forgets the proxy settings you've set in the WiFi menu when starting multiple instance simultaneously. When that
-                    happens re-enter the proxy settings in this order: start proxy → set proxy settings in mumu → start game
-                  </ul>
-                </li>
-                <li>
-                  iOS
-                  <ul>
-                    <li>There are multiple steps to install and trust cert, make sure to do them all</li>
-                    <li>Error Code "H:2000" → it seem that you need to clear all cert on PC and all Cert on your IOS, and get a new one.</li>
-                  </ul>
-                </li>
-                <li>Android</li>
+            <ol>
+              <li>
+                All
                 <ul>
-                  <li>If you use android 7+ phone youwon't be able to use swex unless you root your phone.</li>
+                  <li>(S:9) Error → this mean that you've messed up cert install, try to clear cert and install it again</li>
                   <li>
-                    Error Code "H:2000" → This happen if you use Android 7+ and try to make SWEX work, you might want to install an emulator to export
-                    your JSON, so you don't root your main phone.
+                    Blank hive screen, with only back to game option → this means that you didn't start the proxy, or didn't enable https, or you are
+                    not on the same Wi-fi.
                   </li>
+                  <li>I can log-in to the game but i don't get my JSON → this mean that you didn't enable HTTPS (or didn't setup proxy)</li>
                 </ul>
-
+              </li>
+              <li>
+                Mumu (multi instance only)
+                <ul>
+                  Sometimes Mumu forgets the proxy settings you've set in the WiFi menu when starting multiple instance simultaneously. When that
+                  happens re-enter the proxy settings in this order: start proxy → set proxy settings in mumu → start game
+                </ul>
+              </li>
+              <li>
+                iOS
+                <ul>
+                  <li>There are multiple steps to install and trust cert, make sure to do them all</li>
+                  <li>Error Code "H:2000" → it seem that you need to clear all cert on PC and all Cert on your IOS, and get a new one.</li>
+                </ul>
+              </li>
+              <li>Android</li>
+              <ul>
+                <li>If you use android 7+ phone you won't be able to use SWEX unless you root your phone.</li>
                 <li>
-                  Nox
-                  <ul>
-                    <li>If you didn't follow the video from XennialGaming, make sure you are on android 5.</li>
-                  </ul>
+                  Error Code "H:2000" → This happen if you use Android 7+ and try to make SWEX work, you might want to install an emulator to export
+                  your JSON, so you don't root your main phone.
                 </li>
-              </ol>
-            </p>
+              </ul>
+              <li>
+                Nox
+                <ul>
+                  <li>If you didn't follow the video from XennialGaming, make sure you are on android 5.</li>
+                </ul>
+              </li>
+            </ol>
           </Accordion.Content>
         </Accordion>
 
-        <p></p>
         <p>Start the game! You should see messages start to appear as the game loads.</p>
         <Image src="../assets/help_success.png" bordered />
         <p>Success!</p>
@@ -409,7 +384,6 @@ class Help extends React.Component {
           </li>
         </ul>
 
-        {/* Keyboard Shortcuts */}
         <h1>Keyboard Shortcuts</h1>
         <Table celled inverted selectable>
           <Table.Header>
