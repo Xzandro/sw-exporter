@@ -99,9 +99,15 @@ class SWProxy extends EventEmitter {
           const endpoint = self.getEndpointInfo(ctx.clientToProxyRequest.socket.servername);
 
           // populate req and resp with the server data if available
-          if (endpoint) {
-            reqData = { ...reqData, ...endpoint };
-            respData = { ...respData, ...endpoint };
+          try {
+            if (endpoint) {
+              reqData = { ...reqData, ...endpoint };
+              respData = { ...respData, ...endpoint };
+            }
+          } catch (error) {
+            // in some cases this might actually would not work if the data is not JSON
+            // thats why we need to catch it
+            console.error(e);
           }
 
           // Emit events, one for the specific API command and one for all commands
