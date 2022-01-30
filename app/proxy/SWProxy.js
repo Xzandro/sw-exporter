@@ -23,6 +23,7 @@ class SWProxy extends EventEmitter {
     this.proxy = null;
     this.logEntries = [];
     this.addresses = [];
+    this.endpoints = new Map();
   }
   async start(port) {
     const self = this;
@@ -36,6 +37,33 @@ class SWProxy extends EventEmitter {
     });
 
     this.proxy.onRequest(function (ctx, callback) {
+      const locationEndpoint = '/api/location_c2.php';
+      if (locationEndpoint.includes(ctx.clientToProxyRequest.url)) {
+        ctx.use(Proxy.gunzip);
+        ctx.SWResponseChunksLocation = [];
+
+        ctx.onResponseData(function (ctx, chunk, callback) {
+          ctx.SWResponseChunksLocation.push(chunk);
+          return callback(null, chunk);
+        });
+
+        ctx.onResponseEnd(function (ctx, callback) {
+          let respData;
+
+          try {
+            respData = decrypt_response(Buffer.concat(ctx.SWResponseChunksLocation).toString());
+            // map the server endpoints by their gateway subdomain
+            if (respData.server_url_list) {
+              self.mapEndpoints(respData.server_url_list);
+            }
+          } catch (e) {
+            console.log(e);
+            return callback();
+          }
+          return callback();
+        });
+      }
+
       if (ctx.clientToProxyRequest.url.includes('/api/gateway_c2.php')) {
         ctx.use(Proxy.gunzip);
         ctx.SWRequestChunks = [];
@@ -65,6 +93,21 @@ class SWProxy extends EventEmitter {
           const { command } = respData;
           if (config.Config.App.clearLogOnLogin && (command === 'HubUserLogin' || command === 'GuestLogin')) {
             self.clearLogs();
+          }
+
+          // get endpoiont and server info
+          const endpoint = self.getEndpointInfo(ctx.clientToProxyRequest.socket.servername);
+
+          // populate req and resp with the server data if available
+          try {
+            if (endpoint) {
+              reqData = { ...reqData, ...endpoint };
+              respData = { ...respData, ...endpoint };
+            }
+          } catch (error) {
+            // in some cases this might actually would not work if the data is not JSON
+            // thats why we need to catch it
+            console.error(e);
           }
 
           // Emit events, one for the specific API command and one for all commands
@@ -172,6 +215,24 @@ class SWProxy extends EventEmitter {
     // make sure the root cert was generated
     await sleep(1000);
     await this.copyCertToPublic();
+  }
+
+  mapEndpoints(serverList) {
+    serverList.forEach((endpoint) => {
+      const parsedGateway = url.parse(endpoint.gateway);
+      if (parsedGateway.host) {
+        this.endpoints.set(parsedGateway.host.split('.').shift(), endpoint);
+      }
+    });
+  }
+
+  getEndpointInfo(serverName) {
+    if (!serverName) {
+      return null;
+    }
+    const parsedserverName = serverName.split('.').shift();
+    const endpoint = this.endpoints.get(parsedserverName);
+    return endpoint ? { server_id: endpoint.server_id, server_endpoint: parsedserverName } : null;
   }
 
   isRunning() {
