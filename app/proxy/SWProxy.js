@@ -8,6 +8,7 @@ const url = require('url');
 const uuidv4 = require('uuid/v4');
 const Proxy = require('http-mitm-proxy');
 const { differenceInMonths } = require('date-fns');
+const storage = require('electron-json-storage');
 
 const { decrypt_request, decrypt_response } = require('./smon_decryptor');
 
@@ -24,6 +25,11 @@ class SWProxy extends EventEmitter {
     this.logEntries = [];
     this.addresses = [];
     this.endpoints = new Map();
+    const restoredEndpoints = storage.getSync('Endpoints');
+    this.restoredEndpoints = Object.keys(restoredEndpoints).length > 0 ? new Map(restoredEndpoints) : new Map();
+
+    this.sensitiveCommands = ['BattleRTPvPStart', 'getRtpvpReplayData'];
+    this.sensitiveProperties = ['runes', 'artifacts', 'skills', 'replay_data'];
   }
   async start(port) {
     const self = this;
@@ -55,6 +61,16 @@ class SWProxy extends EventEmitter {
             // map the server endpoints by their gateway subdomain
             if (respData.server_url_list) {
               self.mapEndpoints(respData.server_url_list);
+              self.log({
+                type: 'debug',
+                source: 'proxy',
+                message: `Mapping server gateways: ${JSON.stringify(
+                  [...self.endpoints].reduce((acc, val) => {
+                    acc[val[0]] = val[1];
+                    return acc;
+                  }, {})
+                )}`,
+              });
             }
           } catch (e) {
             console.log(e);
@@ -100,10 +116,20 @@ class SWProxy extends EventEmitter {
 
           // populate req and resp with the server data if available
           try {
+            respData = self.checkSensitiveCommands(respData);
             if (endpoint) {
+              self.log({
+                type: 'debug',
+                source: 'proxy',
+                message: `Endpoint found for ${ctx.clientToProxyRequest.socket.servername}. Event: ${command} ID: ${endpoint.server_id} Endpoint: ${endpoint.server_endpoint}`,
+              });
               reqData = { ...reqData, ...endpoint };
               respData = { ...respData, ...endpoint };
+            } else {
+              self.log({ type: 'debug', source: 'proxy', message: `No Endpoint found for ${ctx.clientToProxyRequest.socket.servername}` });
             }
+            reqData = { ...reqData, swex_version: app.getVersion() };
+            respData = { ...respData, swex_version: app.getVersion() };
           } catch (error) {
             // in some cases this might actually would not work if the data is not JSON
             // thats why we need to catch it
@@ -224,6 +250,8 @@ class SWProxy extends EventEmitter {
         this.endpoints.set(parsedGateway.host.split('.').shift(), endpoint);
       }
     });
+
+    storage.set('Endpoints', Array.from(this.endpoints.entries()));
   }
 
   getEndpointInfo(serverName) {
@@ -231,8 +259,25 @@ class SWProxy extends EventEmitter {
       return null;
     }
     const parsedserverName = serverName.split('.').shift();
-    const endpoint = this.endpoints.get(parsedserverName);
+    const endpoint = this.endpoints.get(parsedserverName) || this.restoredEndpoints.get(parsedserverName);
     return endpoint ? { server_id: endpoint.server_id, server_endpoint: parsedserverName } : null;
+  }
+
+  checkSensitiveCommands(respData) {
+    return respData.command && this.sensitiveCommands.includes(respData.command) ? this.removeProperties(respData) : respData;
+  }
+
+  removeProperties(data) {
+    if (!(data instanceof Object)) return data;
+    Object.keys(data).forEach((property) => {
+      if (this.sensitiveProperties.includes(property)) {
+        delete data[property];
+      } else if (data[property] instanceof Object) {
+        this.removeProperties(data[property]);
+      }
+    });
+
+    return data;
   }
 
   isRunning() {
