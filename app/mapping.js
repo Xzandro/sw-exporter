@@ -1094,6 +1094,27 @@ module.exports = {
       25814: 'Madeleine',
       25815: 'Deborah',
 
+      259: 'Shadowcaster',
+      25911: 'Minato',
+      25912: 'Ren',
+      25913: 'Zen',
+      25914: 'Shun',
+      25915: 'Ritsu',
+
+      260: 'Hypnomeow',
+      26011: 'Birman',
+      26012: 'Manx',
+      26013: 'Nebelung',
+      26014: 'Siamese',
+      26015: 'Bombay',
+
+      261: 'Battle Angel',
+      26111: 'Amber',
+      26112: 'Claire',
+      26113: 'Sonia',
+      26114: 'Veronica',
+      26115: 'Destiny',
+
       15105: 'Devilmon',
       14314: 'Rainbowmon',
 
