@@ -113,7 +113,7 @@ module.exports = {
         break;
 
       case 'RevalueRune':
-        runesInfo.push(this.logRuneDrop(resp.rune));
+        runesInfo.push("New value:" + this.logRuneDrop(resp.rune));
 
       default:
         break;
