@@ -18,7 +18,7 @@ class Help extends React.Component {
 
     return (
       <div>
-        <h1>Setup Instructions</h1>
+        {/* <h1>Setup Instructions</h1>
         <p>
           Your computer and mobile device must be connected to the same network and be able to communicate. This is normally as simple as connecting
           to the same Wi-Fi network or router. Some situations, like a college campus Wi-Fi connection, might not work.
@@ -28,7 +28,7 @@ class Help extends React.Component {
           you must determine which one is the IP address that talks on the same network as your phone. These numbers are what you will be entering
           into your phone (these numbers are only an example, yours may be different).
         </p>
-        <Image src="../assets/help_network_settings.png" bordered />
+        <Image src="../assets/help_network_settings.png" bordered /> */}
         <h3>Setup Instructions step by step</h3>
         <Accordion>
           <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleAccordionClick.bind(this)}>
@@ -42,7 +42,16 @@ class Help extends React.Component {
             additional steps. Using BlueStacks is not reconmended but may be possible, although the last confirmed working verions for this is 0.0.29
             which doesn't support the needed HTTPS functionality. This also requires root access. We are not liable for any form of damage caused by
             using any BlueStacks setup guide.
+
+            {/* It is also not possible to run use the exporter for the Apple M1/M2 version of Summoners War. This will cause a feedback loop on your network traffic. */}
           </Accordion.Content>
+
+          <ol>Obtaining the HTTPS certificate:
+            <li>Press "Start Proxy" button</li>
+            <li>Press "Get cert" button</li>
+            <li>A file called "ca.pem" should appear in the folder listed as "files path" ins settings.</li>
+            <li>This certificate is valid for at least 1 year after that you may get Error H:2000 ingame, which indicates your Certificate has expired. SWEX will also warn you.</li>
+          </ol>
 
           <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
@@ -290,7 +299,7 @@ class Help extends React.Component {
                 <ul>
                   <li>Try to run SWEX as administrator</li>
                   <li>
-                    Clear cert folder (you need to clear 2 folder, both file path and setting path){' '}
+                    Clear cert folder (you need to clear 2 folders, both file path and setting path){' '}
                     <a href="https://drive.google.com/file/d/1B5mA-wbDWhyCjJvWOh4fTzEAcC9CKa96/view" target="_blank">
                       {' '}
                       [Windows Manual]
