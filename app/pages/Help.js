@@ -18,18 +18,17 @@ class Help extends React.Component {
 
     return (
       <div>
-        {/* <h1>Setup Instructions</h1>
+        <h1>Setup Instructions</h1>
         <p>
           Your computer and mobile device must be connected to the same network and be able to communicate. This is normally as simple as connecting
           to the same Wi-Fi network or router. Some situations, like a college campus Wi-Fi connection, might not work.
         </p>
         <p>
           In the dropdown menu in the top left of this program, there is a list of IP addresses and a port number. If there is more than 1 IP address,
-          you must determine which one is the IP address that talks on the same network as your phone. These numbers are what you will be entering
-          into your phone (these numbers are only an example, yours may be different).
+          you must determine which one is the IP address that talks on the same network as your phone.
         </p>
-        <Image src="../assets/help_network_settings.png" bordered /> */}
-        <h3>Setup Instructions step by step</h3>
+
+        <h2>Setup Instructions step by step</h2>
         <Accordion>
           <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
@@ -42,15 +41,17 @@ class Help extends React.Component {
             additional steps. Using BlueStacks is not reconmended but may be possible, although the last confirmed working verions for this is 0.0.29
             which doesn't support the needed HTTPS functionality. This also requires root access. We are not liable for any form of damage caused by
             using any BlueStacks setup guide.
-
-            {/* It is also not possible to run use the exporter for the Apple M1/M2 version of Summoners War. This will cause a feedback loop on your network traffic. */}
           </Accordion.Content>
 
-          <ol>Obtaining the HTTPS certificate:
+          <ol>
+            Obtaining the HTTPS certificate:
             <li>Press "Start Proxy" button</li>
             <li>Press "Get cert" button</li>
             <li>A file called "ca.pem" should appear in the folder listed as "files path" ins settings.</li>
-            <li>This certificate is valid for at least 1 year after that you may get Error H:2000 ingame, which indicates your Certificate has expired. SWEX will also warn you.</li>
+            <li>
+              This certificate is valid for at least 1 year after that you may get Error H:2000 ingame, which indicates your Certificate has expired.
+              SWEX will also warn you.
+            </li>
           </ol>
 
           <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleAccordionClick.bind(this)}>
@@ -221,9 +222,48 @@ class Help extends React.Component {
 
           <Accordion.Title active={activeIndex === 6} index={6} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
-            Troubleshooting
+            MacOS M1
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 6}>
+            <ol>
+              <li>Obtain the certificate (see at the top)</li>
+              <li>
+                Open the certificate, install it for both <kbd>system</kbd> and <kbd>Local items</kbd>
+              </li>
+              <li>Open the application "keychain access"</li>
+              <li>
+                On the left side go to <kbd>Local items</kbd>
+              </li>
+              <li>On the top search for: "NodeMITMProxyCA"</li>
+              <li>
+                Open it with double clicking then go to <kbd> &gt; Trust</kbd>
+              </li>
+              <li>
+                Change the value after <kbd>When using this certificate</kbd> to <kbd>Always trust</kbd>
+              </li>
+              <li>
+                Repeat this for <kbd>Local items</kbd>
+              </li>
+              <li>
+                Go to <kbd>System Preferences</kbd> → <kbd>Network</kbd> → Select current network connection → <kbd>Advanced</kbd>
+              </li>
+              <li>
+                In here go to <kbd>Proxies</kbd> → check <kbd>Secure Web Proxy (HTTPS)</kbd> → fill out the IP and Port as listed in the top SWEX →
+                press <kbd>OK</kbd> and <kbd>Apply</kbd> in the bottom of the screen
+              </li>
+              <li>Start the game.</li>
+
+              <li>If you have Antivirus or a Firewall on your iOS, disable it</li>
+              <li>If you have a Firewall on your PC, disable it. Or allow SWEX trough by port.</li>
+              <li>Only if you use a VPN on your PC: Disable it. </li>
+            </ol>
+          </Accordion.Content>
+
+          <Accordion.Title active={activeIndex === 93} index={93} onClick={this.handleAccordionClick.bind(this)}>
+            <Icon name="dropdown" />
+            Troubleshooting
+          </Accordion.Title>
+          <Accordion.Content active={activeIndex === 93}>
             Try those steps if you have issues with SWEX. Finding the issue :
             <ol>
               <li>Disable https mode in SWEX settings</li>
@@ -266,11 +306,11 @@ class Help extends React.Component {
             </ol>
           </Accordion.Content>
 
-          <Accordion.Title active={activeIndex === 7} index={7} onClick={this.handleAccordionClick.bind(this)}>
+          <Accordion.Title active={activeIndex === 94} index={94} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
             Common issues in setting up SWEX
           </Accordion.Title>
-          <Accordion.Content active={activeIndex === 7}>
+          <Accordion.Content active={activeIndex === 94}>
             <ol>
               <li>
                 Firewall & VPN
@@ -310,11 +350,11 @@ class Help extends React.Component {
             </ol>
           </Accordion.Content>
 
-          <Accordion.Title active={activeIndex === 8} index={8} onClick={this.handleAccordionClick.bind(this)}>
+          <Accordion.Title active={activeIndex === 95} index={95} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
             Errors by OS
           </Accordion.Title>
-          <Accordion.Content active={activeIndex === 8}>
+          <Accordion.Content active={activeIndex === 95}>
             <ol>
               <li>
                 All
