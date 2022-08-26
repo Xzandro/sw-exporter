@@ -28,6 +28,17 @@ class Help extends React.Component {
           you must determine which one is the IP address that talks on the same network as your phone.
         </p>
 
+        <h3>Obtaining the HTTPS certificate</h3>
+        <ol>
+          <li>Press "Start Proxy" button</li>
+          <li>Press "Get cert" button</li>
+          <li>A file called "ca.pem" should appear in the folder listed as "files path" ins settings.</li>
+          <li>
+            This certificate is valid for at least 1 year after that you may get Error H:2000 ingame, which indicates your Certificate has expired.
+            SWEX will also warn you.
+          </li>
+        </ol>
+
         <h2>Setup Instructions step by step</h2>
         <Accordion>
           <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleAccordionClick.bind(this)}>
@@ -42,17 +53,6 @@ class Help extends React.Component {
             which doesn't support the needed HTTPS functionality. This also requires root access. We are not liable for any form of damage caused by
             using any BlueStacks setup guide.
           </Accordion.Content>
-
-          <ol>
-            Obtaining the HTTPS certificate:
-            <li>Press "Start Proxy" button</li>
-            <li>Press "Get cert" button</li>
-            <li>A file called "ca.pem" should appear in the folder listed as "files path" ins settings.</li>
-            <li>
-              This certificate is valid for at least 1 year after that you may get Error H:2000 ingame, which indicates your Certificate has expired.
-              SWEX will also warn you.
-            </li>
-          </ol>
 
           <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
@@ -125,11 +125,6 @@ class Help extends React.Component {
             Nox Setup
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 3}>
-            {' '}
-            <a href="https://youtu.be/ZLXJgx-cLNg?t=222" target="_blank">
-              {' '}
-              Nox setup video from XennialGaming
-            </a>
             <ol>
               <li>
                 Open Nox
