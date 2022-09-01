@@ -64,21 +64,45 @@ body {
 }
 
 .ui.label.image.horizontal > .detail {
-  padding-top: .4em;
-  padding-bottom: .4em;
-  margin-top: -.4em;
+  padding-top: 0.4em;
+  padding-bottom: 0.4em;
+  margin-top: -0.4em;
 }
 
 @media (prefers-color-scheme: dark) {
-  body { 
-    background:  #333; 
-    color: #ddd; 
-  
+  * {
+    color: rgb(255, 255, 255) !important;
+  }
+  body {
+    background: rgb(51, 51, 51);
+  }
+
+  .main-menu {
+    background-color: rgb(51, 51, 51) !important;
+  }
+  .main-menu * {
+    color: rgb(0, 0, 0) !important;
+  }
+
+  h4.ui.top.header,
+  .ui.attached.segment {
+    background-color: rgb(51, 51, 51);
+  }
+
+  .ui.fluid.action.input *,
+  .ui.fluid.input *,
+  .ui.input *,
+  .ui.compact.icon.right.floated.button *,
+  .ui.small.icon.left.labeled.button *,
+  .ui.top.left.small.popup.transition.visible *,
+  textarea {
+    color: rgb(0, 0, 0) !important;
   }
 }
 
 @media (prefers-color-scheme: light) {
-  body { 
-    background:  white; 
-    color: black; }
+  body {
+    background: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+  }
 }

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Menu, shell, Tray } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, shell, Tray, nativeTheme } = require('electron');
 require('@electron/remote/main').initialize();
 const fs = require('fs-extra');
 const storage = require('electron-json-storage');
@@ -114,6 +114,20 @@ function createWindow() {
   win.webContents.on('new-window', (e, link) => {
     e.preventDefault();
     shell.openExternal(link);
+  });
+
+  //dark mode toggles
+  ipcMain.handle('dark-mode:toggle', () => {
+    if (nativeTheme.shouldUseDarkColors) {
+      nativeTheme.themeSource = 'light';
+    } else {
+      nativeTheme.themeSource = 'dark';
+    }
+    return nativeTheme.shouldUseDarkColors;
+  });
+
+  ipcMain.handle('dark-mode:system', () => {
+    nativeTheme.themeSource = 'system';
   });
 }
 
