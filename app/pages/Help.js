@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Accordion, Icon, Table } from 'semantic-ui-react';
+// import '../../css/style.css';
 
 class Help extends React.Component {
   constructor() {
