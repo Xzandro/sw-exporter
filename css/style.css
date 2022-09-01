@@ -68,3 +68,17 @@ body {
   padding-bottom: .4em;
   margin-top: -.4em;
 }
+
+@media (prefers-color-scheme: dark) {
+  body { 
+    background:  #333; 
+    color: #ddd; 
+  
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  body { 
+    background:  white; 
+    color: black; }
+}
