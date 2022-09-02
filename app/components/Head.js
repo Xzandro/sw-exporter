@@ -72,8 +72,6 @@ class Head extends React.Component {
             labelPosition="right"
             onClick={this.toggleProxy.bind(this)}
           />
-        </Menu.Item>
-        <Menu.Item position="right">
           <Button onClick={this.toggleTheme.bind(this)} icon={'adjust'} />
         </Menu.Item>
       </Menu>
