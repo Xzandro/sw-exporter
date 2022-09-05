@@ -1,6 +1,5 @@
 import React from 'react';
 import { Image, Accordion, Icon, Table } from 'semantic-ui-react';
-// import '../../css/style.css';
 
 class Help extends React.Component {
   constructor() {
@@ -22,7 +21,7 @@ class Help extends React.Component {
         <h1>Setup Instructions</h1>
         <p>
           Your computer and mobile device must be connected to the same network and be able to communicate. This is normally as simple as connecting
-          to the same Wi-Fi network or router. Some situations, like a college campus Wi-Fi connection, might not work.
+          to the same Wi-Fi network or router. In some situations, like a college campus Wi-Fi connection, it might not work.
         </p>
         <p>
           In the dropdown menu in the top left of this program, there is a list of IP addresses and a port number. If there is more than 1 IP address,
@@ -35,7 +34,7 @@ class Help extends React.Component {
           <li>Press "Get cert" button</li>
           <li>A file called "ca.pem" should appear in the folder listed as "files path" ins settings.</li>
           <li>
-            This certificate is valid for at least 1 year after that you may get Error H:2000 ingame, which indicates your Certificate has expired.
+            This certificate is valid for at least 1 year after that you may get Error H:2000 in-game, which indicates your Certificate has expired.
             SWEX will also warn you.
           </li>
         </ol>
@@ -49,10 +48,10 @@ class Help extends React.Component {
           <Accordion.Content active={activeIndex === 0}>
             SWEX won't work for unrooted Android 7+. The reason is that in Android 7+, apps don't accept user signed certs by default. App devs would
             need to allow them specifically. For people that use Android 7+, you need to use Emulators like Mumu or Nox which usually run older
-            Android versions. Device with Android 6 or lower also work. iOS does not have this limitation and works fine in all versions if you do the
-            additional steps. Using BlueStacks is not reconmended but may be possible, although the last confirmed working verions for this is 0.0.29
-            which doesn't support the needed HTTPS functionality. This also requires root access. We are not liable for any form of damage caused by
-            using any BlueStacks setup guide.
+            Android versions. Devices with Android 6 or lower also work. iOS does not have this limitation and works fine in all versions if you do
+            the additional steps. Using BlueStacks is not recommended but may be possible, although the last confirmed working versions for this is
+            0.0.29 which doesn't support the needed HTTPS functionality. This also requires root access. We are not liable for any form of damage
+            caused by using any BlueStacks setup guide.
           </Accordion.Content>
 
           <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleAccordionClick.bind(this)}>
@@ -65,7 +64,7 @@ class Help extends React.Component {
                 <a href="https://www.mumuglobal.com/" target="_blank">
                   Mumu for Windows{' '}
                 </a>
-                , make sure to download the 64 bit verision under the colored button.
+                , make sure to download the 64 bit version under the colored button.
               </li>
               <li>
                 <a href="https://adl.netease.com/d/g/a11/c/mac" target="_blank">
@@ -143,7 +142,7 @@ class Help extends React.Component {
                   <li>Press "Get Cert" (top right)</li>
                   <li>Copy file path for certificate (don't include filename)</li>
                   <li>Navigate to folder with certificate</li>
-                  <li>Drag certificate to Nox homescreen</li>
+                  <li>Drag certificate to Nox home screen</li>
                 </ul>
               </li>
               <li>
@@ -151,7 +150,7 @@ class Help extends React.Component {
                 <ul>
                   <li>Tools → Settings → Security → Screen lock: Create a pin</li>
 
-                  <li>Tools → Settings → Security → Insall from SD Card</li>
+                  <li>Tools → Settings → Security → Install from SD Card</li>
 
                   <li>Navigate to: Internal storage → Pictures</li>
 
@@ -388,7 +387,7 @@ class Help extends React.Component {
               <li>
                 Nox
                 <ul>
-                  <li>If you didn't follow the video from XennialGaming, make sure you are on android 5.</li>
+                  <li>Make sure you are on android 5.</li>
                 </ul>
               </li>
             </ol>
