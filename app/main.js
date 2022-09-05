@@ -38,12 +38,12 @@ let defaultConfigDetails = {
 
 function createWindow() {
   let mainWindowState = windowStateKeeper({
-    defaultWidth: 800,
+    defaultWidth: 900,
     defaultHeight: 600,
   });
 
   global.win = new BrowserWindow({
-    minWidth: 800,
+    minWidth: 900,
     minHeight: 600,
     x: mainWindowState.x,
     y: mainWindowState.y,
