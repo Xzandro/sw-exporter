@@ -93,7 +93,9 @@ body {
   .ui.fluid.input *,
   .ui.input *,
   .ui.compact.icon.right.floated.button *,
+  .ui.compact.icon.left.floated.button *,
   .ui.small.icon.left.labeled.button *,
+  .ui.small.icon.left.labeled.button,
   .ui.top.left.small.popup.transition.visible *,
   textarea {
     color: rgb(0, 0, 0) !important;
