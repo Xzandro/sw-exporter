@@ -89,6 +89,12 @@ body {
     background-color: rgb(51, 51, 51);
   }
 
+  /* only for when using RuneDropEfficiency2 */
+  .gem-table td {
+    min-width: 60px !important;
+    text-align: right !important;
+  }
+
   .ui.fluid.action.input *,
   .ui.fluid.input *,
   .ui.input *,
@@ -100,11 +106,20 @@ body {
   textarea {
     color: rgb(0, 0, 0) !important;
   }
+  /* only for when using RuneDropEfficiency2 */
+  td[bgcolor='lightgreen'] {
+    background-color: #27bb67 !important;
+    color: black !important;
+  }
 }
 
 @media (prefers-color-scheme: light) {
   body {
     background: rgb(255, 255, 255);
     color: rgb(0, 0, 0);
+  }
+  td[bgcolor='lightgreen'] {
+    background-color: #27bb67 !important;
+    color: black !important;
   }
 }
