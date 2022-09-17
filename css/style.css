@@ -110,6 +110,27 @@ td[bgcolor='lightgreen'] {
   textarea {
     color: rgb(0, 0, 0) !important;
   }
+
+  .ui.selection.dropdown *,
+  .listbox,
+  .ui.selection.dropdown,
+  .ui.active.visible.selection.dropdown,
+  .textarea *,
+  .ui.labeled.input *,
+  .ui.fluid.action.input *,
+  .ui.fluid.input *,
+  .ui.input *,
+  .ui.selection.dropdown *,
+  .listbox,
+  .ui.selection.dropdown,
+  .ui.active.visible.selection.dropdown,
+  textarea {
+    background-color: rgb(209, 209, 209) !important;
+  }
+
+  .ui.checkbox label::before {
+    background-color: rgb(190, 190, 190) !important;
+  }
 }
 
 @media (prefers-color-scheme: light) {

@@ -50,11 +50,22 @@ module.exports = {
         }
       }
     });
+    // will leave this for now for legacy purposes
     proxy.on('getUnitStorageList', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled && config.Config.Plugins[this.pluginName].mergeStorage) {
         if (this.temp[req.wizard_id]) {
           this.temp[req.wizard_id] = { ...this.temp[req.wizard_id], unit_storage_list: resp.unit_storage_list };
           this.writeProfileToFile(proxy, req.wizard_id);
+        }
+      }
+    });
+    proxy.on('GetWizardDataPart1', (req, resp) => {
+      if (config.Config.Plugins[this.pluginName].enabled && config.Config.Plugins[this.pluginName].mergeStorage) {
+        if (this.temp[req.wizard_id]) {
+          this.temp[req.wizard_id] = { ...this.temp[req.wizard_id], unit_storage_list: resp.GetUnitStorageList?.unit_storage_list };
+          this.writeProfileToFile(proxy, req.wizard_id);
+          // remove temp so it won't create a new file when opening the shrine again
+          delete this.temp[req.wizard_id];
         }
       }
     });
