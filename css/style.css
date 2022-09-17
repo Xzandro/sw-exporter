@@ -71,7 +71,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
   * {
-    color: rgb(180, 180, 180) !important;
+    color: rgb(255, 255, 255) !important;
   }
   body {
     background: rgb(51, 51, 51);
@@ -115,11 +115,11 @@ body {
   .ui.selection.dropdown,
   .ui.active.visible.selection.dropdown,
   textarea {
-    background-color: rgb(180, 180, 180) !important;
+    background-color: rgb(209, 209, 209) !important;
   }
 
   .ui.checkbox label::before {
-    background-color: rgb(180, 180, 180) !important;
+    background-color: rgb(190, 190, 190) !important;
   }
 }
 
