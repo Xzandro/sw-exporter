@@ -1,7 +1,7 @@
 {
   "name": "sw-exporter",
   "productName": "Summoners War Exporter",
-  "version": "0.0.52",
+  "version": "0.0.52.dev",
   "description": "This tool will parse intercepted data from Summoners War and extract information on the monsters and runes of the user.",
   "main": "./app/main.js",
   "scripts": {
