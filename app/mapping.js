@@ -1115,6 +1115,67 @@ module.exports = {
       26114: 'Veronica',
       26115: 'Destiny',
 
+      262: 'GingerBrave',
+
+      263: 'Pure Vanilla Cookie',
+      26311: 'Pure Vanilla Cookie',
+      26312: 'Pure Vanilla Cookie',
+      26313: 'Pure Vanilla Cookie',
+      26314: 'Pure Vanilla Cookie',
+      26315: 'Pure Vanilla Cookie',
+
+      264: 'Hollyberry Cookie',
+      26411: 'Hollyberry Cookie',
+      26412: 'Hollyberry Cookie',
+      26413: 'Hollyberry Cookie',
+      26414: 'Hollyberry Cookie',
+      26415: 'Hollyberry Cookie',
+
+      265: 'Espresso Cookie',
+      26511: 'Espresso Cookie',
+      26512: 'Espresso Cookie',
+      26513: 'Espresso Cookie',
+      26514: 'Espresso Cookie',
+      26515: 'Espresso Cookie',
+
+      266: 'Madeleine Cookie',
+      26611: 'Madeleine Cookie',
+      26612: 'Madeleine Cookie',
+      26613: 'Madeleine Cookie',
+      26614: 'Madeleine Cookie',
+      26615: 'Madeleine Cookie',
+
+      267: 'Lollipop Warrior',
+      26713: 'Thomas',
+
+      268: 'Pudding Princess',
+      26811: 'Adriana',
+      26812: 'Lucia',
+      26813: 'Angela',
+      26814: 'Ariana',
+      26815: 'Elena',
+
+      269: 'Macaron Guard',
+      26911: 'Manon',
+      26912: 'Alice',
+      26913: 'Jade',
+      26914: 'Audrey',
+      26915: 'Giselle',
+
+      270: 'Black Tea Bunny',
+      27011: 'Rosemary',
+      27012: 'Hibiscus',
+      27013: 'Chamomile',
+      27014: 'Jasmine',
+      27015: 'Lavender',
+
+      271: 'Choco Knight',
+      27111: 'Ganache',
+      27112: 'Pavé',
+      27113: 'Praline',
+      27114: 'Fudge',
+      27115: 'Truffle',
+
       15105: 'Devilmon',
       14314: 'Rainbowmon',
 
