@@ -361,14 +361,16 @@ class Help extends React.Component {
                   </li>
                   <li>
                     I can log-in to the game but i don't get my JSON → this mean that you didn't enable HTTPS (or didn't setup proxy)
-                    <li>
-                      In Windows this can also happen if the Desktop folder is located under Onedrive → In SWEX settings, change the file path to
-                      somewhere not under Onedrive.{'·'}
-                    </li>
-                    <li>
-                      In Windows this can also happen if folder has write protection from apps (common if Onedrive is a parent folder of the save
-                      location) → In SWEX settings, change the file path to somewhere not under Onedrive.{'·'}
-                    </li>
+                    <ol>
+                      <li>
+                        In Windows this can also happen if the Desktop folder is located under Onedrive → In SWEX settings, change the file path to
+                        somewhere not under Onedrive.
+                      </li>
+                      <li>
+                        In Windows this can also happen if folder has write protection from apps (common if Onedrive is a parent folder of the save
+                        location) → In SWEX settings, change the file path to somewhere not under Onedrive.
+                      </li>
+                    </ol>
                   </li>
                   <li>
                     Error screen with blanked out text:
