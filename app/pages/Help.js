@@ -359,7 +359,15 @@ class Help extends React.Component {
                     Blank hive screen, with only back to game option → this means that you didn't start the proxy, or didn't enable https, or you are
                     not on the same Wi-fi.
                   </li>
-                  <li>I can log-in to the game but i don't get my JSON → this mean that you didn't enable HTTPS (or didn't setup proxy)</li>
+                  <li>I can log-in to the game but i don't get my JSON → this mean that you didn't enable HTTPS (or didn't setup proxy)
+                    <li>In Windows this can also happen if the Desktop folder is located under Onedrive → In SWEX settings, change the file path to somewhere not under Onedrive. </li>
+                    <li>In Windows this can also happen if folder has write protection from apps (common if Onedrive is a parent folder of the save location) → In SWEX settings, change the file path to somewhere not under Onedrive. </li>
+                  </li>
+                  <li>Error screen with blanked out text:
+                    <ol>Remove the proxy settings in the device/emulator's wifi settings.</ol>
+                    <ol>Delete the game data and redownload the gamefiles/data</ol>
+                    <ol>reapply the proxy settings in mumu's wifi settings</ol>
+                  </li>
                 </ul>
               </li>
               <li>
