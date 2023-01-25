@@ -315,7 +315,7 @@ class Help extends React.Component {
                     <a href="https://drive.google.com/file/d/1o3ar804O27j3E_VyDpn4MtAl6R_JjeY-/view?usp=sharing" target="_blank">
                       [Link to PDF Guide (windows 10)]{' '}
                     </a>
-                    . If you can't find SWEX in the firewall, Add another app → add SWEX.
+                    If you can't find SWEX in the firewall, Add another app → add SWEX.
                   </li>
                   <li>If you use extra firewall (like McAfee) disable it</li>
                   <li>If you have extra firewall on your phone disable it</li>
@@ -376,6 +376,19 @@ class Help extends React.Component {
                       <li>Remove the proxy settings in the device/emulator's wifi settings.</li>
                       <li>Delete the game data and redownload the gamefiles/data</li>
                       <li>reapply the proxy settings in mumu's wifi settings</li>
+                    </ol>
+                  </li>
+                  <li>
+                    I can log-in to the game but i don't get my JSON → this mean that you didn't enable HTTPS (or didn't setup proxy)
+                    <ol>
+                      <li>
+                        In Windows this can also happen if the Desktop folder is located under Onedrive → In SWEX settings, change the file path to
+                        somewhere not under Onedrive.
+                      </li>
+                      <li>
+                        In Windows this can also happen if folder has write protection from apps (common if Onedrive is a parent folder of the save
+                        location) → In SWEX settings, change the file path to somewhere not under Onedrive.
+                      </li>
                     </ol>
                   </li>
                 </ul>
