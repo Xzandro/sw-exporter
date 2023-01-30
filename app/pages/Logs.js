@@ -7,60 +7,6 @@ const remote = require('@electron/remote');
 
 const config = remote.getGlobal('config');
 
-// colorscheme toggled by darkmode switch
-// function warningColors() {
-//   if ((nativeTheme.themeSource = 'dark')) {
-//     const STATUS_COLOR_MAP = {
-//       success: 'green',
-//       info: 'blue',
-//       warning: 'orange',
-//       error: 'red',
-//       debug: 'black',
-//     };
-
-//     const STATUS_ICON_MAP = {
-//       success: 'check',
-//       info: 'info circle',
-//       warning: 'warning sign',
-//       error: 'x',
-//       debug: 'code',
-//     };
-//   } else {
-//     const STATUS_COLOR_MAP = {
-//       success: 'green',
-//       info: 'blue',
-//       warning: 'yellow',
-//       error: 'red',
-//       debug: 'darkgrey',
-//     };
-//     const STATUS_ICON_MAP = {
-//       success: 'check',
-//       info: 'info circle',
-//       warning: 'warning sign',
-//       error: 'x',
-//       debug: 'code',
-//     };
-//     return STATUS_COLOR_MAP, STATUS_ICON_MAP;
-//   }
-// }
-
-// old color scheme
-// const STATUS_COLOR_MAP = {
-//   success: 'green',
-//   info: 'blue',
-//   warning: 'yellow',
-//   error: 'red',
-//   debug: 'darkgrey',
-// };
-// const STATUS_ICON_MAP = {
-//   success: 'check',
-//   info: 'info circle',
-//   warning: 'warning sign',
-//   error: 'x',
-//   debug: 'code',
-// };
-
-// new color scheme
 const STATUS_COLOR_MAP = {
   success: 'green',
   info: 'blue',
