@@ -1,4 +1,5 @@
 const fs = require('fs');
+const fse = require('fs-extra');
 const path = require('path');
 const sanitize = require('sanitize-filename');
 const dateformat = require("date-fns")
@@ -76,7 +77,7 @@ module.exports = {
     const wizardName = this.temp[wizardID].wizard_info.wizard_name;
     const filename = sanitize(`${wizardName}-${wizardID}-${timestamp}`).concat('.json');
 
-    fs.ensureDirSync(path.join(config.Config.App.filesPath, 'profile saves'));
+    fse.ensureDirSync(path.join(config.Config.App.filesPath, 'profile saves'));
     let outFile = fs.createWriteStream(path.join(config.Config.App.filesPath, 'profile saves', filename), {
       flags: 'w',
       autoClose: true,
