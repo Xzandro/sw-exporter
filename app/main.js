@@ -130,10 +130,9 @@ function createWindow() {
   });
 }
 
-
 const proxy = new SWProxy();
 
-proxy.on('error', () => { });
+proxy.on('error', () => {});
 
 ipcMain.on('proxyIsRunning', (event) => {
   event.returnValue = proxy.isRunning();
