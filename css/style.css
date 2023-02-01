@@ -40,7 +40,7 @@ body {
   text-align: center;
 }
 
-.rune .ui.image.label>img {
+.rune .ui.image.label > img {
   margin: 0 auto;
   max-width: none;
 }
@@ -68,7 +68,7 @@ body {
   color: #ffffff;
 }
 
-.ui.label.image.horizontal>.detail {
+.ui.label.image.horizontal > .detail {
   padding-top: 0.4em;
   padding-bottom: 0.4em;
   margin-top: -0.4em;
@@ -110,8 +110,7 @@ td[bgcolor='lightgreen'] {
   .ui.fluid.action.input *,
   .ui.fluid.input *,
   .ui.input *,
-  .ui.compact.icon.right.floated.button *,
-  .ui.compact.icon.left.floated.button *,
+  .ui.compact.icon *,
   .ui.small.icon.left.labeled.button *,
   .ui.small.icon.left.labeled.button,
   .ui.top.left.small.popup.transition.visible *,
@@ -123,14 +122,9 @@ td[bgcolor='lightgreen'] {
     background-color: rgb(51, 51, 51);
   }
 
-  .ui.selection.dropdown *,
-  .listbox,
-  .ui.selection.dropdown,
-  .ui.active.visible.selection.dropdown,
   .textarea *,
   .ui.labeled.input *,
-  .ui.fluid.action.input *,
-  .ui.fluid.input *,
+  .ui.fluid *,
   .ui.input *,
   .ui.selection.dropdown *,
   .listbox,
