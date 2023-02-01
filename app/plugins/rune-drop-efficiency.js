@@ -112,6 +112,9 @@ module.exports = {
         }
         break;
 
+      case 'RevalueRune':
+        runesInfo.push('New rune efficiency value:' + this.logRuneDrop(resp.rune));
+
       default:
         break;
     }
