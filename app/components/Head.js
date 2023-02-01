@@ -50,6 +50,10 @@ class Head extends React.Component {
     ipcRenderer.send('updateConfig');
   }
 
+  toggleTheme() {
+    ipcRenderer.invoke('dark-mode:toggle');
+  }
+
   render() {
     const interfaces = ipcRenderer.sendSync('proxyGetInterfaces').map((interfaceEntry, i) => ({ key: i, text: interfaceEntry, value: i }));
     return (
@@ -68,6 +72,7 @@ class Head extends React.Component {
             labelPosition="right"
             onClick={this.toggleProxy.bind(this)}
           />
+          <Button onClick={this.toggleTheme.bind(this)} icon={'adjust'} />
         </Menu.Item>
       </Menu>
     );

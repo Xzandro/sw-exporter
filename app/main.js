@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Menu, shell, Tray } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, shell, Tray, nativeTheme } = require('electron');
 require('@electron/remote/main').initialize();
 const fs = require('fs-extra');
 const storage = require('electron-json-storage');
@@ -38,12 +38,12 @@ let defaultConfigDetails = {
 
 function createWindow() {
   let mainWindowState = windowStateKeeper({
-    defaultWidth: 800,
+    defaultWidth: 1100,
     defaultHeight: 600,
   });
 
   global.win = new BrowserWindow({
-    minWidth: 800,
+    minWidth: 1100,
     minHeight: 600,
     x: mainWindowState.x,
     y: mainWindowState.y,
@@ -115,11 +115,25 @@ function createWindow() {
     e.preventDefault();
     shell.openExternal(link);
   });
+  //dark mode toggles
+  ipcMain.handle('dark-mode:toggle', () => {
+    if (nativeTheme.shouldUseDarkColors) {
+      nativeTheme.themeSource = 'light';
+    } else {
+      nativeTheme.themeSource = 'dark';
+    }
+    return nativeTheme.shouldUseDarkColors;
+  });
+
+  ipcMain.handle('dark-mode:system', () => {
+    nativeTheme.themeSource = 'system';
+  });
 }
+
 
 const proxy = new SWProxy();
 
-proxy.on('error', () => {});
+proxy.on('error', () => { });
 
 ipcMain.on('proxyIsRunning', (event) => {
   event.returnValue = proxy.isRunning();
