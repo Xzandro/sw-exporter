@@ -1,6 +1,8 @@
 const fs = require('fs');
+const fse = require('fs-extra');
 const path = require('path');
 const sanitize = require('sanitize-filename');
+const dateformat = require('date-fns');
 const MISSING_DATA_ERROR =
   'No file created. Data was missing during the Export process. This happens sometimes, when com2us failes to include important data during the request. Normally this fixes itself after a few tries.';
 
@@ -71,10 +73,12 @@ module.exports = {
     });
   },
   writeProfileToFile(proxy, wizardID) {
+    const timestamp = dateformat.format(new Date(), 'yyyy-MM-dd_HHmmss');
     const wizardName = this.temp[wizardID].wizard_info.wizard_name;
-    const filename = sanitize(`${wizardName}-${wizardID}`).concat('.json');
+    const filename = sanitize(`${wizardName}-${wizardID}-${timestamp}`).concat('.json');
 
-    let outFile = fs.createWriteStream(path.join(config.Config.App.filesPath, filename), {
+    fse.ensureDirSync(path.join(config.Config.App.filesPath, 'profile saves'));
+    let outFile = fs.createWriteStream(path.join(config.Config.App.filesPath, 'profile saves', filename), {
       flags: 'w',
       autoClose: true,
     });
