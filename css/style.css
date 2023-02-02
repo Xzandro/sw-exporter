@@ -51,6 +51,10 @@ body {
   right: 0;
   width: 100%;
 }
+.rune.content * {
+  color: white;
+}
+
 /* background of plugin tooltip */
 .settings-plugins .icon {
   font-size: 16px !important;
@@ -104,9 +108,15 @@ td[bgcolor='lightgreen'] {
   .ui.fluid.input * {
     color: #ffffff !important;
   }
-  .div.item * {
+  .rune.item .description,
+  .rune.item .header {
+    color: white !important;
+  }
+
+  .ui.list .list > .item .header,
+  .ui.list > .item .header * {
     background: transparent;
-    background-color: #1e1e1e;
+    background-color: #ffffff;
   }
   .ui.compact.icon.button,
   .ui.compact.icon.buttons .button {
