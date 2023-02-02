@@ -1,50 +1,47 @@
 body {
   height: calc(100% - 65px);
 }
-
+.ui.accordion .title:not(.ui) {
+  color: #ffffff;
+}
+/* header background */
 .ui.menu.main-menu {
   margin-bottom: 0;
 }
-
+/* sidemenu background */
 .ui.menu.side-menu {
   top: 65px;
   z-index: 1;
 }
-
+/* default page background */
 .ui.segment.main-content {
   margin-top: 65px;
   margin-left: 210px;
 }
-
 .ui.segment.main-content.compacted {
   margin: 0;
 }
-
 .ui.segment.app-segment {
   border-radius: 0;
   margin-top: 0;
   border-bottom: none;
   border-left: none;
 }
-
+/* label left buttons */
 .main-menu .item.right button {
   margin-left: 15px !important;
 }
-
 .rune .content .star-line .star img {
   width: 11px;
 }
-
 .rune .ui.image.label {
   padding: 2px 0 0 6px;
   text-align: center;
 }
-
 .rune .ui.image.label > img {
   margin: 0 auto;
   max-width: none;
 }
-
 .rune .ui.image.label span.upgrade {
   background: rgba(0, 0, 0, 0.15);
   border-radius: 0 0 2px 2px;
@@ -54,93 +51,151 @@ body {
   right: 0;
   width: 100%;
 }
-
+/* background of plugin tooltip */
 .settings-plugins .icon {
   font-size: 16px !important;
   margin-top: -5px;
   margin-left: 5px;
 }
-
 #version {
   bottom: 68px;
   position: absolute;
   left: 5px;
   color: #ffffff;
 }
-
+/* plugin name for alert label in logs */
 .ui.label.image.horizontal > .detail {
   padding-top: 0.4em;
   padding-bottom: 0.4em;
   margin-top: -0.4em;
 }
-
 /* only for when using RuneDropEfficiency2 */
 .gem-table td {
   min-width: 60px !important;
   text-align: right !important;
 }
-
 td[bgcolor='lightgreen'] {
   background-color: #27bb67 !important;
   color: black !important;
 }
-
 @media (prefers-color-scheme: dark) {
-  * {
-    color: rgb(255, 255, 255) !important;
-  }
-
   body {
-    background: #1e1e1e;
+    color: #ffffff;
+    background: #1e1e1e !important;
   }
-
+  .ui.header,
+  .div,
+  .ui.checkbox label {
+    color: #ffffff;
+  }
   .main-menu {
-    background-color: #1e1e1e !important;
+    background: #1e1e1e !important;
   }
-
-  .main-menu * {
-    color: rgb(0, 0, 0) !important;
-  }
-
   h4.ui.top.header,
   .ui.attached.segment {
+    background: #1e1e1e !important;
+  }
+  /* effects: settings path, settings path.[change] */
+  .ui.fluid.action.input * {
+    color: #ffffff !important;
+  }
+  /* effects: settings path.text */
+  .field *,
+  .ui.fluid.input * {
+    color: #ffffff !important;
+  }
+  .div.item * {
+    background: transparent;
     background-color: #1e1e1e;
   }
-
-  /* effects: port, files path, settings path, settings path.[change], logEntry.max, [regenerate cert button].text, [full screen]*/
-  /* .ui.fluid.action.input *, */
-  .ui.fluid.input *,
-  .ui.input *,
-  .ui.compact.icon *,
-  .ui.small.icon.left.labeled.button *,
-  .ui.small.icon.left.labeled.button .ui.top.left.small.popup.transition.visible * {
-    color: rgb(158, 37, 37) !important;
+  .ui.compact.icon.button,
+  .ui.compact.icon.buttons .button {
+    color: #ffffff;
+    background: #2f2f2f;
+    padding: 0.58928571em 0.58928571em 0.58928571em;
   }
-
+  h1,
+  h3 {
+    margin-top: 0;
+    color: #ffffff;
+  }
+  /* effects:regenerate button icon*/
+  .ui.small.icon.left.labeled.button,
+  .ui.small.icon.left.labeled.button * {
+    color: #000000;
+    background-color: #9e1317 !important;
+  }
+  .ui.menu:not(.vertical) .item > .button {
+    color: #ffffff;
+    background-color: #2f2f2f !important;
+  }
+  .actions.ui.button,
+  .actions.ui.primary.button {
+    color: #00ff6a;
+  }
+  /* plugin tooltip.text */
+  .ui.top.left.small.popup.transition.visible * {
+    color: #ffffff !important;
+    background: #2f2f2f !important;
+  }
+  .ui.small.modal.transition.visible.active button.ui.button {
+    background-color: #139302 !important;
+    color: #ffffff;
+  }
+  .ui.small.modal.transition.visible.active button.ui.primary.button {
+    background-color: #930202 !important;
+    color: #ffffff;
+  }
+  .ui.menu .ui.dropdown .menu > .item,
+  .ui.menu .ui.dropdown .menu > .active.item {
+    color: #ffffff !important;
+    background-color: #2f2f2f !important;
+  }
+  /* plugin tooltip.textbox */
+  .ui.top.left.small.popup.transition.visible {
+    background-color: #2f2f2f !important;
+    border: transparent;
+  }
+  /* regenerate pop-up cert.background */
   .ui.small.modal.transition.visible.active * {
-    background-color: #1e1e1e;
+    background-color: #1e1e1e !important;
+    color: #ffffff;
   }
-
-  .textarea *,
-  .ui.labeled.input *,
-  .ui.fluid *,
-  .ui.input *,
-  .ui.selection.dropdown *,
-  .listbox,
+  /* selected IP background */
   .ui.selection.dropdown,
-  .ui.active.visible.selection.dropdown,
+  .ui.selection.visible.dropdown > .text:not(.default) {
+    color: #ffffff;
+    background-color: hsla(0, 0%, 100%, 0.08) !important;
+  }
+  .ui.selection.dropdown .menu > .item {
+    border-top: none !important;
+  }
+  .ui.selection.dropdown:hover .menu:hover > .item:hover {
+    background-color: #2f2f2f !important;
+  }
+  .ui.feed > .event > .content .summary > .date,
+  .content * {
+    color: #ffffff;
+  }
+  /* effects: port.label, port.text, max.len[log].txt */
+  .ui.input,
+  .ui.input * {
+    background-color: #2f2f2f !important;
+    border-radius: 4px !important;
+    color: #ffffff !important;
+  }
+  /* swarfarm api key.textbox */
   textarea {
     background-color: hsla(0, 0%, 100%, 0.08) !important;
   }
-
+  /* all checkbox icons */
   .ui.checkbox label::before {
-    background-color: rgb(190, 190, 190) !important;
+    background-color: hsla(0, 0%, 100%, 0.31) !important;
   }
-}
-
-@media (prefers-color-scheme: light) {
-  body {
-    background: rgb(255, 255, 255);
-    color: rgb(0, 0, 0);
+  @media (prefers-color-scheme: light) {
+    body {
+      background: #ffffff;
+      color: #000000;
+    }
   }
 }
