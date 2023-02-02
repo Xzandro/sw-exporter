@@ -91,11 +91,11 @@ td[bgcolor='lightgreen'] {
   }
 
   body {
-    background: rgb(51, 51, 51);
+    background: #1e1e1e;
   }
 
   .main-menu {
-    background-color: rgb(51, 51, 51) !important;
+    background-color: #1e1e1e !important;
   }
 
   .main-menu * {
@@ -104,22 +104,21 @@ td[bgcolor='lightgreen'] {
 
   h4.ui.top.header,
   .ui.attached.segment {
-    background-color: rgb(51, 51, 51);
+    background-color: #1e1e1e;
   }
 
-  .ui.fluid.action.input *,
+  /* effects: port, files path, settings path, settings path.[change], logEntry.max, [regenerate cert button].text, [full screen]*/
+  /* .ui.fluid.action.input *, */
   .ui.fluid.input *,
   .ui.input *,
   .ui.compact.icon *,
   .ui.small.icon.left.labeled.button *,
-  .ui.small.icon.left.labeled.button,
-  .ui.top.left.small.popup.transition.visible *,
-  textarea {
-    color: rgb(0, 0, 0) !important;
+  .ui.small.icon.left.labeled.button .ui.top.left.small.popup.transition.visible * {
+    color: rgb(158, 37, 37) !important;
   }
 
   .ui.small.modal.transition.visible.active * {
-    background-color: rgb(51, 51, 51);
+    background-color: #1e1e1e;
   }
 
   .textarea *,
@@ -131,7 +130,7 @@ td[bgcolor='lightgreen'] {
   .ui.selection.dropdown,
   .ui.active.visible.selection.dropdown,
   textarea {
-    background-color: rgb(209, 209, 209) !important;
+    background-color: hsla(0, 0%, 100%, 0.08) !important;
   }
 
   .ui.checkbox label::before {
