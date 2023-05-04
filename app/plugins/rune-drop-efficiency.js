@@ -19,7 +19,7 @@ module.exports = {
     switch (command) {
       case 'BattleDungeonResult':
       case 'BattleScenarioResult':
-      case 'BattleDimensionHoleDungeonResult':
+      case 'BattleDimensionHoleDungeonResult_v2':
         if (resp.win_lose === 1) {
           const reward = resp.reward ? resp.reward : {};
 
