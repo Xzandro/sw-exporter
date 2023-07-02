@@ -1799,6 +1799,8 @@ module.exports = {
         222: (value) => `CRIT DMG+ up to ${value}% as the enemy's HP condition is good`,
         223: (value) => `CRIT DMG+ up to ${value}% as the enemy's HP condition is bad`,
         224: (value) => `Single-target skill CRIT DMG ${value}% on your turn`,
+        225: (value) => `Counterattack/Co-op Attack DMG +${value}%`,
+        226: (value) => `ATK/DEF UP Effect +${value}%`,
         300: (value) => `Damage Dealt on Fire +${value}%`,
         301: (value) => `Damage Dealt on Water +${value}%`,
         302: (value) => `Damage Dealt on Wind +${value}%`,
@@ -1819,6 +1821,8 @@ module.exports = {
         407: (value) => `Skill 1 Accuracy +${value}%`,
         408: (value) => `Skill 2 Accuracy +${value}%`,
         409: (value) => `Skill 3 Accuracy +${value}%`,
+        410: (value) => `[Skill 3/4] CRIT DMG +${value}%`,
+        411: (value) => `First Attack CRIT DMG +${value}%`,
       },
     },
     types: {
