@@ -1311,6 +1311,8 @@ module.exports = {
       21: 'Enhance',
       22: 'Accuracy',
       23: 'Tolerance',
+      24: 'Seal',
+      25: 'Intangible',
       99: 'Immemorial',
     },
     class: {
