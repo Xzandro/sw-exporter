@@ -21,15 +21,25 @@ class Help extends React.Component {
         <h1>Setup Instructions</h1>
         <p>
           Your computer and mobile device must be connected to the same network and be able to communicate. This is normally as simple as connecting
-          to the same Wi-Fi network or router. Some situations, like a college campus Wi-Fi connection, might not work.
+          to the same Wi-Fi network or router. In some situations, like a college campus Wi-Fi connection, it might not work.
         </p>
         <p>
           In the dropdown menu in the top left of this program, there is a list of IP addresses and a port number. If there is more than 1 IP address,
-          you must determine which one is the IP address that talks on the same network as your phone. These numbers are what you will be entering
-          into your phone (these numbers are only an example, yours may be different).
+          you must determine which one is the IP address that talks on the same network as your phone.
         </p>
-        <Image src="../assets/help_network_settings.png" bordered />
-        <h3>Setup Instructions step by step</h3>
+
+        <h3>Obtaining the HTTPS certificate</h3>
+        <ol>
+          <li>Press "Start Proxy" button</li>
+          <li>Press "Get cert" button</li>
+          <li>A file called "ca.pem" should appear in the folder listed as "files path" ins settings.</li>
+          <li>
+            This certificate is valid for at least 1 year after that you may get Error H:2000 in-game, which indicates your Certificate has expired.
+            SWEX will also warn you.
+          </li>
+        </ol>
+
+        <h2>Setup Instructions step by step</h2>
         <Accordion>
           <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
@@ -38,10 +48,10 @@ class Help extends React.Component {
           <Accordion.Content active={activeIndex === 0}>
             SWEX won't work for unrooted Android 7+. The reason is that in Android 7+, apps don't accept user signed certs by default. App devs would
             need to allow them specifically. For people that use Android 7+, you need to use Emulators like Mumu or Nox which usually run older
-            Android versions. Device with Android 6 or lower also work. iOS does not have this limitation and works fine in all versions if you do the
-            additional steps. Using BlueStacks is not reconmended but may be possible, although the last confirmed working verions for this is 0.0.29
-            which doesn't support the needed HTTPS functionality. This also requires root access. We are not liable for any form of damage caused by
-            using any BlueStacks setup guide.
+            Android versions. Devices with Android 6 or lower also work. iOS does not have this limitation and works fine in all versions if you do
+            the additional steps. Using BlueStacks is not recommended but may be possible, although the last confirmed working versions for this is
+            0.0.29 which doesn't support the needed HTTPS functionality. This also requires root access. We are not liable for any form of damage
+            caused by using any BlueStacks setup guide.
           </Accordion.Content>
 
           <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleAccordionClick.bind(this)}>
@@ -54,7 +64,7 @@ class Help extends React.Component {
                 <a href="https://www.mumuglobal.com/" target="_blank">
                   Mumu for Windows{' '}
                 </a>
-                , make sure to download the 64 bit verision under the colored button.
+                , make sure to download the 64 bit version under the colored button.
               </li>
               <li>
                 <a href="https://adl.netease.com/d/g/a11/c/mac" target="_blank">
@@ -115,11 +125,6 @@ class Help extends React.Component {
             Nox Setup
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 3}>
-            {' '}
-            <a href="https://youtu.be/ZLXJgx-cLNg?t=222" target="_blank">
-              {' '}
-              Nox setup video from XennialGaming
-            </a>
             <ol>
               <li>
                 Open Nox
@@ -137,7 +142,7 @@ class Help extends React.Component {
                   <li>Press "Get Cert" (top right)</li>
                   <li>Copy file path for certificate (don't include filename)</li>
                   <li>Navigate to folder with certificate</li>
-                  <li>Drag certificate to Nox homescreen</li>
+                  <li>Drag certificate to Nox home screen</li>
                 </ul>
               </li>
               <li>
@@ -145,7 +150,7 @@ class Help extends React.Component {
                 <ul>
                   <li>Tools → Settings → Security → Screen lock: Create a pin</li>
 
-                  <li>Tools → Settings → Security → Insall from SD Card</li>
+                  <li>Tools → Settings → Security → Install from SD Card</li>
 
                   <li>Navigate to: Internal storage → Pictures</li>
 
@@ -212,9 +217,57 @@ class Help extends React.Component {
 
           <Accordion.Title active={activeIndex === 6} index={6} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
-            Troubleshooting
+            MacOS M1
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 6}>
+            <ol>
+              <li>Obtain the certificate (see at the top)</li>
+              <li>
+                Open the certificate, install it for both <kbd>system</kbd> and <kbd>Local items</kbd>
+              </li>
+              <li>Open the application "keychain access"</li>
+              <li>
+                On the left side go to <kbd>Local items</kbd>
+              </li>
+              <li>On the top search for: "NodeMITMProxyCA"</li>
+              <li>
+                Open it with double clicking then go to <kbd> &gt; Trust</kbd>
+              </li>
+              <li>
+                Change the value after <kbd>When using this certificate</kbd> to <kbd>Always trust</kbd>
+              </li>
+              <li>
+                Repeat this for <kbd>Local items</kbd>
+              </li>
+              <li>
+                Go to <kbd>System Preferences</kbd> → <kbd>Network</kbd> → Select current network connection → <kbd>Advanced</kbd>
+              </li>
+              <li>
+                In here go to <kbd>Proxies</kbd> → check <kbd>Secure Web Proxy (HTTPS)</kbd> → fill out the IP and Port as listed in the top SWEX →
+                press <kbd>OK</kbd> and <kbd>Apply</kbd> in the bottom of the screen
+              </li>
+              <li>Start the game.</li>
+
+              <li>If you have Antivirus or a Firewall on your iOS, disable it</li>
+              <li>If you have a Firewall on your PC, disable it. Or allow SWEX trough by port.</li>
+              <li>Only if you use a VPN on your PC: Disable it. </li>
+            </ol>
+            <ul>
+              Post setup:
+              <li>Leave the exporter in mounted state after installation otherwise the exporter will crash after startup.</li>
+              <li>
+                Want to have internet (on the network previously used for this setup) without running SWEX? → Uncheck{' '}
+                <kbd>Secure Web Proxy (HTTPS)</kbd> press <kbd>OK</kbd> and <kbd>Apply</kbd> in the bottom of the screen. Summoners war will still
+                work.
+              </li>
+            </ul>
+          </Accordion.Content>
+
+          <Accordion.Title active={activeIndex === 93} index={93} onClick={this.handleAccordionClick.bind(this)}>
+            <Icon name="dropdown" />
+            Troubleshooting
+          </Accordion.Title>
+          <Accordion.Content active={activeIndex === 93}>
             Try those steps if you have issues with SWEX. Finding the issue :
             <ol>
               <li>Disable https mode in SWEX settings</li>
@@ -257,11 +310,11 @@ class Help extends React.Component {
             </ol>
           </Accordion.Content>
 
-          <Accordion.Title active={activeIndex === 7} index={7} onClick={this.handleAccordionClick.bind(this)}>
+          <Accordion.Title active={activeIndex === 94} index={94} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
             Common issues in setting up SWEX
           </Accordion.Title>
-          <Accordion.Content active={activeIndex === 7}>
+          <Accordion.Content active={activeIndex === 94}>
             <ol>
               <li>
                 Firewall & VPN
@@ -271,7 +324,7 @@ class Help extends React.Component {
                     <a href="https://drive.google.com/file/d/1o3ar804O27j3E_VyDpn4MtAl6R_JjeY-/view?usp=sharing" target="_blank">
                       [Link to PDF Guide (windows 10)]{' '}
                     </a>
-                    . If you can't find SWEX in the firewall, Add another app → add SWEX.
+                    If you can't find SWEX in the firewall, Add another app → add SWEX.
                   </li>
                   <li>If you use extra firewall (like McAfee) disable it</li>
                   <li>If you have extra firewall on your phone disable it</li>
@@ -290,7 +343,7 @@ class Help extends React.Component {
                 <ul>
                   <li>Try to run SWEX as administrator</li>
                   <li>
-                    Clear cert folder (you need to clear 2 folder, both file path and setting path){' '}
+                    Clear cert folder (you need to clear 2 folders, both file path and setting path){' '}
                     <a href="https://drive.google.com/file/d/1B5mA-wbDWhyCjJvWOh4fTzEAcC9CKa96/view" target="_blank">
                       {' '}
                       [Windows Manual]
@@ -301,11 +354,11 @@ class Help extends React.Component {
             </ol>
           </Accordion.Content>
 
-          <Accordion.Title active={activeIndex === 8} index={8} onClick={this.handleAccordionClick.bind(this)}>
+          <Accordion.Title active={activeIndex === 95} index={95} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
             Errors by OS
           </Accordion.Title>
-          <Accordion.Content active={activeIndex === 8}>
+          <Accordion.Content active={activeIndex === 95}>
             <ol>
               <li>
                 All
@@ -315,7 +368,40 @@ class Help extends React.Component {
                     Blank hive screen, with only back to game option → this means that you didn't start the proxy, or didn't enable https, or you are
                     not on the same Wi-fi.
                   </li>
-                  <li>I can log-in to the game but i don't get my JSON → this mean that you didn't enable HTTPS (or didn't setup proxy)</li>
+                  <li>
+                    I can log-in to the game but i don't get my JSON → this mean that you didn't enable HTTPS (or didn't setup proxy)
+                    <ol>
+                      <li>
+                        In Windows this can also happen if the Desktop folder is located under Onedrive → In SWEX settings, change the file path to
+                        somewhere not under Onedrive.
+                      </li>
+                      <li>
+                        In Windows this can also happen if folder has write protection from apps (common if Onedrive is a parent folder of the save
+                        location) → In SWEX settings, change the file path to somewhere not under Onedrive.
+                      </li>
+                    </ol>
+                  </li>
+                  <li>
+                    Error screen with blanked out text:
+                    <ol type="1">
+                      <li>Remove the proxy settings in the device/emulator's wifi settings.</li>
+                      <li>Delete the game data and redownload the gamefiles/data</li>
+                      <li>reapply the proxy settings in mumu's wifi settings</li>
+                    </ol>
+                  </li>
+                  <li>
+                    I can log-in to the game but i don't get my JSON → this mean that you didn't enable HTTPS (or didn't setup proxy)
+                    <ol>
+                      <li>
+                        In Windows this can also happen if the Desktop folder is located under Onedrive → In SWEX settings, change the file path to
+                        somewhere not under Onedrive.
+                      </li>
+                      <li>
+                        In Windows this can also happen if folder has write protection from apps (common if Onedrive is a parent folder of the save
+                        location) → In SWEX settings, change the file path to somewhere not under Onedrive.
+                      </li>
+                    </ol>
+                  </li>
                 </ul>
               </li>
               <li>
@@ -343,7 +429,7 @@ class Help extends React.Component {
               <li>
                 Nox
                 <ul>
-                  <li>If you didn't follow the video from XennialGaming, make sure you are on android 5.</li>
+                  <li>Make sure you are on android 5.</li>
                 </ul>
               </li>
             </ol>
