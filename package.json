@@ -38,7 +38,8 @@
       "category": "public.app-category.utilities"
     },
     "linux": {
-      "category": "Utility"
+      "category": "Utility",
+      "target": "AppImage"
     },
     "nsis": {
       "artifactName": "${productName}-Setup-${version}-${os}.${ext}"
