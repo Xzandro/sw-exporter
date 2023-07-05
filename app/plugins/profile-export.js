@@ -11,10 +11,13 @@ module.exports = {
     enabled: true,
     sortData: true,
     mergeStorage: true,
+    timestampedCopy:false
   },
   defaultConfigDetails: {
     sortData: { label: 'Sort data like ingame' },
     mergeStorage: { label: 'Merge sealed monster storage into profile data' },
+    timestampedCopy: {label: 'Timestamped copy in separate folder'}
+
   },
   pluginName: 'ProfileExport',
   pluginDescription: 'Exports your monster and rune data.',
@@ -33,6 +36,9 @@ module.exports = {
 
         if (!config.Config.Plugins[this.pluginName].mergeStorage) {
           this.writeProfileToFile(proxy, resp.wizard_info.wizard_id);
+        }
+        if (!config.Config.Plugins[this.pluginName].mergeStorage) {
+          this.writeProfileToFolder(proxy, resp.wizard_info.wizard_id);
         }
       }
     });
@@ -72,7 +78,22 @@ module.exports = {
       }
     });
   },
+  
   writeProfileToFile(proxy, wizardID) {
+    const wizardName = this.temp[wizardID].wizard_info.wizard_name;
+    const filename = sanitize(`${wizardName}-${wizardID}`).concat('.json');
+
+    let outFile = fs.createWriteStream(path.join(config.Config.App.filesPath, filename), {
+      flags: 'w',
+      autoClose: true,
+    });
+
+    outFile.write(JSON.stringify(this.temp[wizardID], true, 2));
+    outFile.end();
+    proxy.log({ type: 'success', source: 'plugin', name: this.pluginName, message: 'Saved profile data to '.concat(filename) });
+  },
+
+  writeProfileToFolder(proxy, wizardID) {
     const timestamp = dateformat.format(new Date(), 'yyyy-MM-dd_HHmmss');
     const wizardName = this.temp[wizardID].wizard_info.wizard_name;
     const filename = sanitize(`${wizardName}-${wizardID}-${timestamp}`).concat('.json');
