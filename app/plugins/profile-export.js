@@ -79,6 +79,7 @@ module.exports = {
     });
   },
   writeProfileToFile(proxy, wizardID) {
+    const timestamp = dateformat.format(new Date(), 'yyyy-MM-dd_HHmmss');
     const wizardName = this.temp[wizardID].wizard_info.wizard_name;
     const filename = sanitize(`${wizardName}-${wizardID}`).concat('.json');
 
