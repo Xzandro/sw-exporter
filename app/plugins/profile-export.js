@@ -37,8 +37,6 @@ module.exports = {
           this.writeProfileToFile(proxy, resp.wizard_info.wizard_id);
         }
 
-        console.info(config.Config.Plugins[this.pluginName]);
-
         if (config.Config.Plugins[this.pluginName].timestampedCopy) {
           this.writeProfileToFolder(proxy, resp.wizard_info.wizard_id);
         }
