@@ -36,7 +36,10 @@ module.exports = {
         if (!config.Config.Plugins[this.pluginName].mergeStorage) {
           this.writeProfileToFile(proxy, resp.wizard_info.wizard_id);
         }
-        if (!config.Config.Plugins[this.pluginName].mergeStorage) {
+
+        console.info(config.Config.Plugins[this.pluginName]);
+
+        if (config.Config.Plugins[this.pluginName].timestampedCopy) {
           this.writeProfileToFolder(proxy, resp.wizard_info.wizard_id);
         }
       }
@@ -92,8 +95,8 @@ module.exports = {
   },
 
   writeProfileToFolder(proxy, wizardID) {
-    const timestamp = dateformat.format(new Date(), 'yyyy-MM-dd_HHmmss');
     const wizardName = this.temp[wizardID].wizard_info.wizard_name;
+    const timestamp = dateformat.format(new Date(), 'yyyy-MM-dd_HHmmss');
     const filename = sanitize(`${wizardName}-${wizardID}-${timestamp}`).concat('.json');
 
     fse.ensureDirSync(path.join(config.Config.App.filesPath, 'profile saves'));
