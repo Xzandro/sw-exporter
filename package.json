@@ -1,13 +1,13 @@
 {
   "name": "sw-exporter",
   "productName": "Summoners War Exporter",
-  "version": "0.0.53.dev",
+  "version": "0.0.54B",
   "description": "This tool will parse intercepted data from Summoners War and extract information on the monsters and runes of the user.",
   "main": "./app/main.js",
   "scripts": {
     "start": "electron .",
     "rebuild": "electron-rebuild -f -w sw-exporter",
-    "pack": "webpack --mode=production",
+    "build": "webpack --mode=production",
     "dist": "electron-builder",
     "dev": "webpack --watch",
     "lint": "eslint . --ext .js"
@@ -38,7 +38,8 @@
       "category": "public.app-category.utilities"
     },
     "linux": {
-      "category": "Utility"
+      "category": "Utility",
+      "target": "AppImage"
     },
     "nsis": {
       "artifactName": "${productName}-Setup-${version}-${os}.${ext}"
@@ -68,7 +69,7 @@
     "@babel/preset-react": "^7.16.5",
     "babel-loader": "^8.2.3",
     "electron": "^15.1.0",
-    "electron-builder": "^22.14.5",
+    "electron-builder": "^24.4.0",
     "electron-rebuild": "^1.11.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^7.2.0",

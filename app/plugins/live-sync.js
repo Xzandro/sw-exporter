@@ -38,7 +38,7 @@ module.exports = {
       case 'SellRune':
         this.logSellRune(proxy, req, resp);
         break;
-      case 'UpgradeRune':
+      case 'upgradeRune_v2':
         this.logUpgradeRune(proxy, req, resp);
         break;
       case 'EquipRune':
@@ -166,12 +166,7 @@ module.exports = {
   },
 
   logUpgradeRune(proxy, req, resp) {
-    const originalLevel = req.upgrade_curr;
-    const newLevel = resp.rune.upgrade_curr;
-
-    if (newLevel > originalLevel) {
-      this.saveAction(proxy, req.wizard_id, resp.tvalue, 'upgrade_rune', { rune: resp.rune });
-    }
+    this.saveAction(proxy, req.wizard_id, resp.tvalue, 'upgrade_rune', { rune: resp.rune });
   },
 
   logSellRune(proxy, req, resp) {

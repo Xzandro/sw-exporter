@@ -41,11 +41,10 @@ module.exports = {
           }
         }
         break;
-      case 'UpgradeRune': {
-        const originalLevel = req.upgrade_curr;
+      case 'upgradeRune_v2': {
         const newLevel = resp.rune.upgrade_curr;
 
-        if (newLevel > originalLevel && newLevel % 3 === 0 && newLevel <= 12) {
+        if (newLevel % 3 === 0 && newLevel <= 12) {
           runesInfo.push(this.logRuneDrop(resp.rune));
         }
         break;
