@@ -8,11 +8,11 @@ module.exports = {
   defaultConfig: {
     enabled: true,
     sortData: true,
-    mergeStorage: true,
+    mergeStorage: false,
   },
   defaultConfigDetails: {
     sortData: { label: 'Sort data like ingame' },
-    mergeStorage: { label: 'Merge sealed monster storage into profile data' },
+    mergeStorage: { label: 'Merge sealed monster storage into profile data (Currently not working)' },
   },
   pluginName: 'ProfileExport',
   pluginDescription: 'Exports your monster and rune data.',
