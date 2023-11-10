@@ -1263,6 +1263,27 @@ module.exports = {
       28514: 'Danu',
       28515: 'Vritra',
 
+      286: 'Devil Maiden',
+      28611: 'Irène',
+      28612: 'Bloodya',
+      28613: 'Layla',
+      28614: 'Jessica',
+      28615: 'Liliana',
+
+      289: 'Dokkaebi Lord',
+      28911: 'Jeongnam',
+      28912: 'Moogwang',
+      28913: 'Byungchul',
+      28914: 'Euldong',
+      28915: 'Gapsoo',
+
+      290: 'Dokkaebi Princess and Sapsaree',
+      29011: 'Minji and Sapsaree',
+      29012: 'Yeji and Sapsaree',
+      29013: 'Yuna and Sapsaree',
+      29014: 'Eunbee and Sapsaree',
+      29015: 'Damee and Sapsaree',
+
       15105: 'Devilmon',
       14314: 'Rainbowmon',
 
