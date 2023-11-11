@@ -1896,7 +1896,7 @@ module.exports = {
     9501: 'Steel Fortress',
     9502: `Punisher's Crypt`,
     9503: `Spiritual Realm`,
-    9513: `Spiritual Realm Abyss`
+    9513: `Spiritual Realm Abyss`,
   },
   elemental_rift_dungeon: {
     1001: 'Rift Dungeon - Ice Beast',
