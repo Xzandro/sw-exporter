@@ -10,12 +10,12 @@ module.exports = {
   defaultConfig: {
     enabled: true,
     sortData: true,
-    mergeStorage: true,
+    mergeStorage: false,
     timestampedCopy: false,
   },
   defaultConfigDetails: {
     sortData: { label: 'Sort data like ingame' },
-    mergeStorage: { label: 'Merge sealed monster storage into profile data' },
+    mergeStorage: { label: 'Merge sealed monster storage into profile data (Currently not working)' },
     timestampedCopy: { label: 'Timestamped copy in separate folder' },
   },
   pluginName: 'ProfileExport',
