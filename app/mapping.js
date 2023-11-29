@@ -6,6 +6,7 @@ module.exports = {
       3: 'Wind',
       4: 'Light',
       5: 'Dark',
+      98: 'Intangible',
     },
     archetypes: {
       0: 'None',
@@ -1894,6 +1895,7 @@ module.exports = {
     9001: `Dragon's Lair`,
     9011: `Dragon's Lair Abyss`,
     9501: 'Steel Fortress',
+    9511: 'Steel Fortress Abyss',
     9502: `Punisher's Crypt`,
     9503: `Spiritual Realm`,
     9513: `Spiritual Realm Abyss`,
