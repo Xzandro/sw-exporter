@@ -307,8 +307,6 @@ async function updatePlugins(plugins) {
       continue;
     }
 
-    console.log(versionData.version, plugin.version);
-
     if (!versionData.url.startsWith('https') || !versionData.url.endsWith('.asar')) {
       proxy.log({
         type: 'debug',

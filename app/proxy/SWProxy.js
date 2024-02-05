@@ -146,7 +146,7 @@ class SWProxy extends EventEmitter {
     });
     this.proxy.onConnect(function (req, socket, head, callback) {
       const serverUrl = url.parse(`https://${req.url}`);
-      if (req.url.includes('qpyou.cn') && config.Config.App.httpsMode) {
+      if (req.url.includes('lb.qpyou.cn') && config.Config.App.httpsMode) {
         return callback();
       } else {
         const srvSocket = net.connect(serverUrl.port, serverUrl.hostname, () => {
