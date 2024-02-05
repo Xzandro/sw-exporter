@@ -1,9 +1,15 @@
-const { app, BrowserWindow, ipcMain, Menu, shell, Tray } = require('electron');
+const { app, BrowserWindow, dialog, ipcMain, Menu, shell, Tray } = require('electron');
 require('@electron/remote/main').initialize();
+const { createHash } = require('crypto');
+const { EOL } = require('os');
 const fs = require('fs-extra');
 const storage = require('electron-json-storage');
 const windowStateKeeper = require('electron-window-state');
 const _ = require('lodash');
+const axios = require('axios');
+const { object, string, number, date } = require('yup');
+const { parse } = require('yaml');
+const { validate, compare } = require('compare-versions');
 const SWProxy = require('./proxy/SWProxy');
 
 const path = require('path');
@@ -11,13 +17,30 @@ const url = require('url');
 
 const iconPath = path.join(process.resourcesPath, 'icon.ico');
 
+let pluginVersionSchema = object({
+  version: string().required(),
+  file: string().required(),
+  url: string().url().required(),
+  sha512: string().required(),
+  size: number().required().positive().integer(),
+  releaseDate: date().required(),
+});
+
 global.gMapping = require('./mapping');
 global.appVersion = app.getVersion();
 
 let defaultFilePath = path.join(app.getPath('desktop'), `${app.name} Files`);
 let defaultConfig = {
   Config: {
-    App: { filesPath: defaultFilePath, debug: false, clearLogOnLogin: false, maxLogEntries: 100, httpsMode: true, minimizeToTray: false },
+    App: {
+      filesPath: defaultFilePath,
+      debug: false,
+      clearLogOnLogin: false,
+      maxLogEntries: 100,
+      httpsMode: true,
+      minimizeToTray: false,
+      autoUpdatePlugins: true,
+    },
     Proxy: { port: 8080, autoStart: false },
     Plugins: {},
   },
@@ -30,11 +53,14 @@ let defaultConfigDetails = {
       maxLogEntries: { label: 'Maximum amount of log entries.' },
       httpsMode: { label: 'HTTPS mode' },
       minimizeToTray: { label: 'Minimize to System Tray' },
+      autoUpdatePlugins: { label: 'Auto update plugins (if supported)' },
     },
     Proxy: { autoStart: { label: 'Start proxy automatically' } },
     Plugins: {},
   },
 };
+
+const updatedPluginsFolder = path.join(app.getPath('temp'), 'SWEX', 'plugins');
 
 function createWindow() {
   let mainWindowState = windowStateKeeper({
@@ -222,7 +248,147 @@ function loadPlugins() {
   return plugins;
 }
 
-app.on('ready', () => {
+async function updatePlugins(plugins) {
+  if (!global.config.Config.App.autoUpdatePlugins) {
+    return;
+  }
+
+  const updatedPlugins = [];
+  const validPlugins = plugins.filter((plugin) => plugin.version && plugin.autoUpdate?.versionURL);
+  for (const plugin of validPlugins) {
+    if (!validate(plugin.version)) {
+      proxy.log({
+        type: 'debug',
+        source: 'proxy',
+        message: `Update failed: ${plugin.pluginName}: version string is not valid.`,
+      });
+      continue;
+    }
+    if (!plugin.autoUpdate.versionURL.startsWith('https') || !plugin.autoUpdate.versionURL.endsWith('.yml')) {
+      proxy.log({
+        type: 'debug',
+        source: 'proxy',
+        message: `Update failed: ${plugin.pluginName}: version url is not valid.`,
+      });
+      continue;
+    }
+
+    let versionData;
+    try {
+      const versionText = await axios.get(plugin.autoUpdate.versionURL);
+      versionData = parse(versionText.data);
+    } catch (error) {
+      proxy.log({
+        type: 'debug',
+        source: 'proxy',
+        message: `Update failed: ${plugin.pluginName}: could not get version yml file.`,
+      });
+      continue;
+    }
+
+    try {
+      await pluginVersionSchema.validate(versionData);
+    } catch (error) {
+      proxy.log({
+        type: 'debug',
+        source: 'proxy',
+        message: `Update failed: ${plugin.pluginName}: yml schema did not match.`,
+      });
+      continue;
+    }
+
+    // check if version is actually newer
+    if (compare(versionData.version, plugin.version, '<=')) {
+      proxy.log({
+        type: 'debug',
+        source: 'proxy',
+        message: `Update failed: ${plugin.pluginName}: remote version is equal or lower than local version.`,
+      });
+      continue;
+    }
+
+    console.log(versionData.version, plugin.version);
+
+    if (!versionData.url.startsWith('https') || !versionData.url.endsWith('.asar')) {
+      proxy.log({
+        type: 'debug',
+        source: 'proxy',
+        message: `Update failed: ${plugin.pluginName}: file url is not valid.`,
+      });
+      continue;
+    }
+
+    // download file and check for hashes
+    let file;
+    try {
+      fileBuff = await axios.get(versionData.url, {
+        responseType: 'arraybuffer',
+        decompress: true,
+      });
+
+      file = fileBuff.data;
+    } catch (error) {
+      proxy.log({
+        type: 'debug',
+        source: 'proxy',
+        message: `Update failed: ${plugin.pluginName}: could not get remote plugin file.`,
+      });
+      continue;
+    }
+
+    if (versionData.sha512 !== createHash('sha512').update(file).digest('hex')) {
+      proxy.log({
+        type: 'debug',
+        source: 'proxy',
+        message: `Update failed: ${plugin.pluginName}: file hash does not match.`,
+      });
+      continue;
+    }
+
+    // replace it with the old one
+    const filePath = path.join(updatedPluginsFolder, versionData.file.replace('.asar', ''));
+    fs.writeFileSync(filePath, Buffer.from(file));
+
+    updatedPlugins.push({
+      name: plugin.pluginName,
+      oldVersion: plugin.version,
+      newVersion: versionData.version,
+    });
+  }
+
+  if (updatedPlugins.length > 0) {
+    const dialogMessage = updatedPlugins.map((plugin) => `${plugin.name}: ${plugin.oldVersion} -> ${plugin.newVersion}`).join(EOL);
+    dialog
+      .showMessageBox(global.win, {
+        title: 'Plugins can be updated!',
+        message: dialogMessage,
+        buttons: ['Later', 'Restart SWEX'],
+      })
+      .then((result) => {
+        if (result.response > 0) {
+          app.relaunch();
+          app.exit();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+}
+
+async function applyPluginUpdates() {
+  const pluginsFolderPath = path.join(global.config.Config.App.filesPath, 'plugins');
+  const updatablePlugins = await fs.readdir(updatedPluginsFolder);
+  for await (const plugin of updatablePlugins) {
+    await fs.unlink(path.join(global.config.Config.App.filesPath, 'plugins', `${plugin}.asar`));
+    await fs.move(path.join(updatedPluginsFolder, plugin), path.join(pluginsFolderPath, plugin), {
+      overwrite: true,
+    });
+    await fs.rename(path.join(pluginsFolderPath, plugin), path.join(pluginsFolderPath, `${plugin}.asar`));
+  }
+}
+
+app.on('ready', async () => {
   app.setAppUserModelId(process.execPath);
   createWindow();
 
@@ -248,7 +414,7 @@ app.on('ready', () => {
     );
   }
 
-  storage.getAll((error, data) => {
+  storage.getAll(async (error, data) => {
     if (error) throw error;
 
     global.config = _.merge(defaultConfig, data);
@@ -256,8 +422,12 @@ app.on('ready', () => {
 
     fs.ensureDirSync(global.config.Config.App.filesPath);
     fs.ensureDirSync(path.join(global.config.Config.App.filesPath, 'plugins'));
+    fs.ensureDirSync(updatedPluginsFolder);
+
+    await applyPluginUpdates();
 
     global.plugins = loadPlugins();
+    updatePlugins(global.plugins);
 
     if (process.env.autostart || global.config.Config.Proxy.autoStart) {
       proxy.start(process.env.port || config.Config.Proxy.port);
