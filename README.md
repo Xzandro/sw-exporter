@@ -59,6 +59,37 @@ To correctly package your plugin, run `$ asar pack <plugin-folder-name> <plugin-
 Summoners War Exporter Files\plugins\my-fancy-plugin.asar
 ```
 
+### Auto Updates
+
+External plugins can utilize auto updates. Auto updates for plugins are only available if you pack your plugin as an `asar` file. You would need to add more information to your `index.js` file.
+
+```javascript
+module.exports = {
+  // ... other config
+  version: '2.0.0',
+  autoUpdate: {
+    versionURL: 'https://example.com/latest.yml',
+  },
+};
+```
+
+`version` and `autoUpdate.versionURL` need to be present. Version follows the [semver specs](https://semver.org/). autoUpdate.versionURL needs to be a valid URL, starting with `https` and ending with `.yml`.
+
+The `.yml` file needs to have a specific schema.
+
+```yml
+version: 2.1.0
+file: plugin-name.asar
+url: https://example.com/plugin-name.asar
+sha512: 1e2bb05da57d1ed20dcd751abcf670b67f6f848c9a3278b7a631e414b41545ac07fca47d5f8eeb638ea61047c54a45df16a0301079909e14ac362b6d264bb93b
+size: 827
+releaseDate: 2024-02-04T03:53:12.848Z
+```
+
+`url` needs to be valid, starting with `https` and ending with `.asar`. `sha512` is basically that, sha512 hash represented as hex.
+
+SWEX will call your `.yml` version file, looks up the versions, checks if the remote version is newer than the local one and then downloads the plugin itself. SWEX will also check the `sha512` hash. If the hash of the downloaded file and the one from the `.yml` does not match, the plugin will not be updated.
+
 ## Developing SW-Exporter
 
 Install [node.js](https://nodejs.org/).
