@@ -64,6 +64,8 @@ let defaultConfigDetails = {
 
 const updatedPluginsFolder = path.join(app.getPath('temp'), 'SWEX', 'plugins');
 
+let quitting = false;
+
 function createWindow() {
   let mainWindowState = windowStateKeeper({
     defaultWidth: 800,
@@ -446,5 +448,14 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (win === null) {
     createWindow();
+  }
+});
+
+app.on('before-quit', async (event) => {
+  if (config.Config.Proxy.steamMode && process.platform == 'win32' && !quitting) {
+    event.preventDefault();
+    quitting = true;
+    await proxy.removeHostsModifications();
+    app.quit();
   }
 });

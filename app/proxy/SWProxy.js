@@ -242,15 +242,19 @@ class SWProxy extends EventEmitter {
       this.loopbackProxies = [];
     }
 
+    await this.removeHostsModifications();
+
+    win.webContents.send('proxyStopped');
+    this.log({ type: 'info', source: 'proxy', message: 'Proxy stopped' });
+  }
+
+  async removeHostsModifications() {
     await removeHostsEntries(
       Object.entries(this.proxiedHostnames).map(([host, ip]) => {
         return { ip, host, wrapper: 'SWEX' };
       }),
       { name: 'SWEX' }
     );
-
-    win.webContents.send('proxyStopped');
-    this.log({ type: 'info', source: 'proxy', message: 'Proxy stopped' });
   }
 
   getInterfaces() {
