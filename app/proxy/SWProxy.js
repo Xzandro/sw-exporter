@@ -43,6 +43,7 @@ class SWProxy extends EventEmitter {
       'summonerswar-kr-lb.qpyou.cn': '127.11.12.17',
       'summonerswar-cn-lb.qpyou.cn': '127.11.12.18',
     };
+    this.loopbackProxies = [];
   }
   async start(port, steamMode) {
     const self = this;
@@ -62,6 +63,7 @@ class SWProxy extends EventEmitter {
         const loopbackProxy = new this.steamproxy.TransparentProxy(hostname, 443, proxyHost, proxyPort);
         const bindAddr = this.proxiedHostnames[hostname];
         loopbackProxy.run(bindAddr, 443);
+        this.loopbackProxies.push(loopbackProxy);
       }
     }
 
@@ -232,6 +234,13 @@ class SWProxy extends EventEmitter {
   async stop() {
     this.proxy.close();
     this.proxy = null;
+
+    if (this.loopbackProxies.length > 0) {
+      for (const loopbackProxy of this.loopbackProxies) {
+        loopbackProxy.server.close();
+      }
+      this.loopbackProxies = [];
+    }
 
     await removeHostsEntries(
       Object.entries(this.proxiedHostnames).map(([host, ip]) => {
