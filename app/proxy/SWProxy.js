@@ -11,6 +11,7 @@ const uuidv4 = require('uuid/v4');
 const Proxy = require('http-mitm-proxy');
 const { differenceInMonths } = require('date-fns');
 const storage = require('electron-json-storage');
+const { addHostsEntries, removeHostsEntries } = require('electron-hostile');
 
 const { decrypt_request, decrypt_response } = require('./smon_decryptor');
 
@@ -20,7 +21,7 @@ const sleep = promisify(setTimeout);
 const CERT_MAX_LIFETIME_IN_MONTHS = 12;
 
 class SWProxy extends EventEmitter {
-  constructor() {
+  constructor(steamproxy) {
     super();
     this.httpServer = null;
     this.proxy = null;
@@ -32,9 +33,38 @@ class SWProxy extends EventEmitter {
 
     this.sensitiveCommands = ['BattleRTPvPStart', 'getRtpvpReplayData'];
     this.sensitiveProperties = ['runes', 'artifacts', 'skills', 'replay_data'];
+
+    this.steamproxy = steamproxy;
+    this.proxiedHostnames = {
+      'summonerswar-eu-lb.qpyou.cn': '127.11.12.13',
+      'summonerswar-gb-lb.qpyou.cn': '127.11.12.14',
+      'summonerswar-sea-lb.qpyou.cn': '127.11.12.15',
+      'summonerswar-jp-lb.qpyou.cn': '127.11.12.16',
+      'summonerswar-kr-lb.qpyou.cn': '127.11.12.17',
+      'summonerswar-cn-lb.qpyou.cn': '127.11.12.18',
+    };
   }
-  async start(port) {
+  async start(port, steamMode) {
     const self = this;
+
+    if (steamMode && process.platform == 'win32') {
+      await addHostsEntries(
+        Object.entries(this.proxiedHostnames).map(([host, ip]) => {
+          return { ip, host, wrapper: 'SWEX' };
+        }),
+        { name: 'SWEX' }
+      );
+
+      const proxyHost = '127.0.0.1';
+      const proxyPort = port;
+
+      for (const hostname in this.proxiedHostnames) {
+        const loopbackProxy = new this.steamproxy.TransparentProxy(hostname, 443, proxyHost, proxyPort);
+        const bindAddr = this.proxiedHostnames[hostname];
+        loopbackProxy.run(bindAddr, 443);
+      }
+    }
+
     this.proxy = Proxy();
 
     this.proxy.onError(function (ctx, e, errorKind) {
@@ -167,14 +197,17 @@ class SWProxy extends EventEmitter {
         host: '::',
         port,
         sslCaDir: path.join(app.getPath('userData'), 'swcerts'),
-        httpsAgent: new https.Agent({
-          keepAlive: false,
-          lookup: (hostname, options, callback) => {
-            dnsResolver.resolve4(hostname, (err, result) => {
-              callback(err, result[0], 4);
-            });
-          },
-        }),
+        httpsAgent:
+          steamMode && process.platform == 'win32'
+            ? new https.Agent({
+                keepAlive: false,
+                lookup: (hostname, options, callback) => {
+                  dnsResolver.resolve4(hostname, (err, result) => {
+                    callback(err, result[0], 4);
+                  });
+                },
+              })
+            : undefined,
       },
       async (e) => {
         this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
@@ -199,6 +232,14 @@ class SWProxy extends EventEmitter {
   async stop() {
     this.proxy.close();
     this.proxy = null;
+
+    await removeHostsEntries(
+      Object.entries(this.proxiedHostnames).map(([host, ip]) => {
+        return { ip, host, wrapper: 'SWEX' };
+      }),
+      { name: 'SWEX' }
+    );
+
     win.webContents.send('proxyStopped');
     this.log({ type: 'info', source: 'proxy', message: 'Proxy stopped' });
   }
