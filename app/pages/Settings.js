@@ -107,6 +107,9 @@ class Settings extends React.Component {
             <Form.Group widths={2}>
               <Button content="Regenerate Cert" icon="refresh" size="small" labelPosition="left" onClick={this.openCertCinfirmDialog.bind(this)} />
             </Form.Group>
+            <Form.Group widths={2}>
+              <SettingsItem section="Proxy" setting="steamMode" type="checkbox" />
+            </Form.Group>
           </Form>
         </Segment>
 

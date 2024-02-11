@@ -57,7 +57,7 @@ let defaultConfigDetails = {
       minimizeToTray: { label: 'Minimize to System Tray' },
       autoUpdatePlugins: { label: 'Auto update plugins (if supported)' },
     },
-    Proxy: { autoStart: { label: 'Start proxy automatically' } },
+    Proxy: { autoStart: { label: 'Start proxy automatically' }, steamMode: { label: 'Steam Mode' } },
     Plugins: {},
   },
 };
