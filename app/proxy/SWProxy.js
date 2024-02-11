@@ -4,6 +4,8 @@ const fs = require('fs-extra');
 const path = require('path');
 const os = require('os');
 const net = require('net');
+const https = require('https');
+const dns = require('dns');
 const url = require('url');
 const uuidv4 = require('uuid/v4');
 const Proxy = require('http-mitm-proxy');
@@ -159,18 +161,34 @@ class SWProxy extends EventEmitter {
         socket.on('error', () => {});
       }
     });
-    this.proxy.listen({ host: '::', port, sslCaDir: path.join(app.getPath('userData'), 'swcerts') }, async (e) => {
-      this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
-      const expired = await this.checkCertExpiration();
+    const dnsResolver = new dns.Resolver();
+    this.proxy.listen(
+      {
+        host: '::',
+        port,
+        sslCaDir: path.join(app.getPath('userData'), 'swcerts'),
+        httpsAgent: new https.Agent({
+          keepAlive: false,
+          lookup: (hostname, options, callback) => {
+            dnsResolver.resolve4(hostname, (err, result) => {
+              callback(err, result[0], 4);
+            });
+          },
+        }),
+      },
+      async (e) => {
+        this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
+        const expired = await this.checkCertExpiration();
 
-      if (expired) {
-        this.log({
-          type: 'warning',
-          source: 'proxy',
-          message: `Your certificate is older than ${CERT_MAX_LIFETIME_IN_MONTHS} months. If you experience connection issues, please regenerate a new one via the Settings.`,
-        });
+        if (expired) {
+          this.log({
+            type: 'warning',
+            source: 'proxy',
+            message: `Your certificate is older than ${CERT_MAX_LIFETIME_IN_MONTHS} months. If you experience connection issues, please regenerate a new one via the Settings.`,
+          });
+        }
       }
-    });
+    );
 
     if (process.env.autostart) {
       console.log(`SW Exporter Proxy is listening on port ${port}`);
