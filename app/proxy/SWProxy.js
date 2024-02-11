@@ -12,6 +12,7 @@ const Proxy = require('http-mitm-proxy');
 const { differenceInMonths } = require('date-fns');
 const storage = require('electron-json-storage');
 const { addHostsEntries, removeHostsEntries } = require('electron-hostile');
+const { exec } = require('child_process');
 
 const { decrypt_request, decrypt_response } = require('./smon_decryptor');
 
@@ -55,6 +56,7 @@ class SWProxy extends EventEmitter {
         }),
         { name: 'SWEX' }
       );
+      exec('ipconfig /flushdns');
 
       const proxyHost = '127.0.0.1';
       const proxyPort = port;
@@ -255,6 +257,8 @@ class SWProxy extends EventEmitter {
       }),
       { name: 'SWEX' }
     );
+
+    exec('ipconfig /flushdns');
   }
 
   getInterfaces() {
