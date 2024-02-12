@@ -11,7 +11,7 @@ const uuidv4 = require('uuid/v4');
 const Proxy = require('http-mitm-proxy');
 const { differenceInMonths } = require('date-fns');
 const storage = require('electron-json-storage');
-const { addHostsEntries, removeHostsEntries } = require('electron-hostile');
+const { addHostsEntries, getEntries, removeHostsEntries } = require('electron-hostile');
 const { exec } = require('child_process');
 
 const { decrypt_request, decrypt_response } = require('./smon_decryptor');
@@ -251,6 +251,11 @@ class SWProxy extends EventEmitter {
   }
 
   async removeHostsModifications() {
+    const hostsEntries = await getEntries();
+    const foundEntry = hostsEntries.find((entry) => entry[1].includes('lb.qpyou.cn'));
+
+    if (!foundEntry) return;
+
     await removeHostsEntries(
       Object.entries(this.proxiedHostnames).map(([host, ip]) => {
         return { ip, host, wrapper: 'SWEX' };
