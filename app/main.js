@@ -157,8 +157,16 @@ ipcMain.on('proxyGetInterfaces', (event) => {
   event.returnValue = proxy.getInterfaces();
 });
 
-ipcMain.on('proxyStart', () => {
-  proxy.start(config.Config.Proxy.port, config.Config.Proxy.steamMode);
+ipcMain.on('proxyStart', (event, steamMode) => {
+  proxy.start(config.Config.Proxy.port, steamMode);
+  if (steamMode !== config.Config.Proxy.steamMode) {
+    config.Config.Proxy.steamMode = steamMode;
+    storage.set('Config', config.Config, (error) => {
+      if (error) throw error;
+
+      win.webContents.send('steamModeChanged', steamMode);
+    });
+  }
 });
 
 ipcMain.on('proxyStop', () => {
