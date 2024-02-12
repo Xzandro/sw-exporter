@@ -20,8 +20,9 @@ class Help extends React.Component {
       <div>
         <h1>Setup Instructions</h1>
         <p>
-          Your computer and mobile device must be connected to the same network and be able to communicate. This is normally as simple as connecting
-          to the same Wi-Fi network or router. In some situations, like a college campus Wi-Fi connection, it might not work.
+          The following is mostly for the remote proxy mode: Your computer and mobile device must be connected to the same network and be able to
+          communicate. This is normally as simple as connecting to the same Wi-Fi network or router. In some situations, like a college campus Wi-Fi
+          connection, it might not work.
         </p>
         <p>
           In the dropdown menu in the top left of this program, there is a list of IP addresses and a port number. If there is more than 1 IP address,
@@ -90,13 +91,53 @@ class Help extends React.Component {
             </ul>
           </Accordion.Content>
 
+          <Accordion.Title active={activeIndex === 201} index={201} onClick={this.handleAccordionClick.bind(this)}>
+            <Icon name="dropdown" />
+            Steam Mode Setup
+          </Accordion.Title>
+          <Accordion.Content active={activeIndex === 201}>
+            <p>
+              Steam mode might be the easiest way to get your JSON file if you use Windows and actually do use the Steam version of Summoners War.
+              Make sure when you start the proxy to choose Steam mode. (Windows only)
+            </p>
+            <p>
+              This also requires Admin permissions when you start AND stop the proxy. The reason is, that we do modification to the hosts file. Some
+              security software could recognize this as malicious activity, so make sure to act accordingly and grant SWEX access to do that.
+            </p>
+            <p>Additionally, make sure to keep other software like Proxyfier off during the process, it is not needed.</p>
+            <p>
+              After starting the proxy in Steeam mode, you only need to do one instruction; installing the cert to the Windoed trusted root storage.
+            </p>
+            <ol>
+              <li> SWEX get cert </li>
+              <li>
+                Install certificate to the TrustedRoot certificate storage of Windows.
+                <ul>
+                  <li>
+                    You could look at{' '}
+                    <a
+                      href="https://asu.my.salesforce-sites.com/kb/articles/FAQ/How-Do-I-Add-Certificates-to-the-Trusted-Root-Certification-Authorities-Store-for-a-Local-Computer"
+                      target="_blank"
+                    >
+                      this guide.
+                    </a>
+                  </li>
+                  <li>You can skip to step 7, if you hit the Windows key and search for "certificate" to then go to "Manage User Certificates"</li>
+                  <li>Continue following the guide.</li>
+                </ul>
+              </li>
+              <li> In SWEX: confirm HTTPS is turned on</li>
+              <li> In SWEX: make sure SWEX is running in Steam Mode.</li>
+            </ol>
+          </Accordion.Content>
+
           <Accordion.Title active={activeIndex === 2} index={2} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
-            Mumu Setup
+            Mumu 6 Setup
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 2}>
             <a href="https://drive.google.com/file/d/1mQuivBo2lpRvPI4Obapvcb9NYDcaSUoh/view" target="_blank">
-              Mumu setup guide
+              Mumu 6 setup guide
             </a>
             <ol>
               <li> SWEX get cert </li>
@@ -114,6 +155,41 @@ class Help extends React.Component {
               <li> Long press listed network → modify network</li>
               <li> Change "Proxy" to "Manual"</li>
               <li> server: ip listed in SWEX, usually 192.168.x.x; Port: Port listed in SWEX, default = 8080</li>
+              <li> Press Save</li>
+              <li> In SWEX: confirm HTTPS is turned on</li>
+              <li> In SWEX: Start proxy</li>
+            </ol>
+          </Accordion.Content>
+
+          <Accordion.Title active={activeIndex === 200} index={200} onClick={this.handleAccordionClick.bind(this)}>
+            <Icon name="dropdown" />
+            Mumu 12 Setup
+          </Accordion.Title>
+          <Accordion.Content active={activeIndex === 200}>
+            <ol>
+              <li> SWEX get cert </li>
+              <li> Open mumu shared folder</li>
+              <li> Copy cert from your SWEX files folder into the MuMuSharedFolder.</li>
+              <li>
+                Navigate to: System Application folder → Settings → Network & Internet → Internet → Network preferences → Install certificates →
+                $MuMuSharedFolder
+              </li>
+              <li>
+                Navigate to: System Application folder → Settings → Network & Internet → Internet → Network preferences → Install certificates →
+                $MuMuSharedFolder
+                <ul>
+                  <li>If the cert file is greyed out for some reason try to rename the extension from .pem to .cer</li>
+                </ul>
+              </li>
+              <li> Back to Internet Menu</li>
+              <li> Click the active connection → pen icon in the top right</li>
+              <li> Start the proxy in SWEX (if not already done)</li>
+              <li> Change "Proxy" to "Manual"</li>
+              <li>
+                Server: ip listed in the top left of SWEX, usually one of 192.168.x.x / 172.16.x.x / 10.x.x.x; Port: Port listed in SWEX, default =
+                8080
+              </li>
+              <li> Fill out the port. Otherwise this change is not saved.</li>
               <li> Press Save</li>
               <li> In SWEX: confirm HTTPS is turned on</li>
               <li> In SWEX: Start proxy</li>

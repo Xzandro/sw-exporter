@@ -141,8 +141,12 @@ class Head extends React.Component {
                         </Button>
                       </GridColumn>
                     </GridRow>
+                    <GridRow verticalAlign="middle">
+                      <GridColumn></GridColumn>
+                    </GridRow>
                   </Grid>
                 </Segment>
+                <p>For further instructions, please go to the Help section.</p>
               </ModalContent>
             </Modal>
           ) : (
