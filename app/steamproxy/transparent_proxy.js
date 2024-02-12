@@ -4,7 +4,7 @@ const net = require('net');
 const sockUtil = require('./sock_util');
 
 class TransparentProxy {
-  constructor(proxiedHostname, proxiedPort, proxyHost, proxyPort) {
+  constructor(proxiedHostname, proxiedPort, proxyHost, proxyPort, logger = console) {
     this.proxiedHostname = proxiedHostname;
     this.proxiedPort = proxiedPort;
     this.proxyHost = proxyHost;
@@ -12,6 +12,7 @@ class TransparentProxy {
     this.server = net.createServer((connection) => {
       this.onConnect(connection);
     });
+    this.logger = logger;
   }
 
   /**
@@ -23,9 +24,9 @@ class TransparentProxy {
       this.httpProxyConnect(connection, upstreamConnection);
     });
     const onSocketError = (err) => {
-      console.error(`Socket error: ${err}`);
       connection.destroy();
       upstreamConnection.destroy();
+      this.logger.log({type: 'error', source: 'Transparent proxy', message: `Socket error: ${err}`});
     };
     const onSocketClose = () => {
       connection.destroy();
@@ -56,8 +57,8 @@ class TransparentProxy {
       downstream.pipe(upstream);
       upstream.pipe(downstream);
     } catch (error) {
-      console.error(`Error while connecting to http proxy: ${error}`);
       upstream.destroy(); // downstream is destroyed in onSocketClose function
+      this.logger.log({type: 'error', source: 'Transparent proxy', message: `Error while connecting to http proxy: ${error}`});
     }
   }
 
