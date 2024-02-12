@@ -26,7 +26,7 @@ class TransparentProxy {
     const onSocketError = (err) => {
       connection.destroy();
       upstreamConnection.destroy();
-      this.logger.log({type: 'error', source: 'Transparent proxy', message: `Socket error: ${err}`});
+      this.logger.log({ type: 'error', source: 'Transparent proxy', message: `Socket error: ${err}` });
     };
     const onSocketClose = () => {
       connection.destroy();
@@ -51,14 +51,14 @@ class TransparentProxy {
       const statusLine = await sockUtil.readUntil(upstream, '\n');
       const statusCode = Number.parseInt(statusLine.split(' ')[1]);
       if (statusCode < 200 || statusCode > 299) {
-        throw Error(`Proxy server returned non-200 status code: ${statusCode}`);
+        throw Error(`Server returned non-200 status code: ${statusCode}`);
       }
       while ((await sockUtil.readUntil(upstream, '\n')).trim().length !== 0) {} // read headers
       downstream.pipe(upstream);
       upstream.pipe(downstream);
     } catch (error) {
       upstream.destroy(); // downstream is destroyed in onSocketClose function
-      this.logger.log({type: 'error', source: 'Transparent proxy', message: `Error while connecting to http proxy: ${error}`});
+      this.logger.log({ type: 'error', source: 'Transparent proxy', message: `Error while connecting to http proxy: ${error}` });
     }
   }
 
