@@ -214,7 +214,7 @@ class SWProxy extends EventEmitter {
             : undefined,
       },
       async (e) => {
-        this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
+        this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}${steamMode ? ' in Steam Mode' : ''}` });
         const expired = await this.checkCertExpiration();
 
         if (expired) {
@@ -228,7 +228,7 @@ class SWProxy extends EventEmitter {
     );
 
     if (process.env.autostart) {
-      console.log(`SW Exporter Proxy is listening on port ${port}`);
+      console.log(`SW Exporter Proxy is listening on port ${port}${steamMode ? ' in Steam Mode' : ''}`);
     }
     win.webContents.send('proxyStarted');
   }
