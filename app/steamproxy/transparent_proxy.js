@@ -51,7 +51,7 @@ class TransparentProxy {
       const statusLine = await sockUtil.readUntil(upstream, '\n');
       const statusCode = Number.parseInt(statusLine.split(' ')[1]);
       if (statusCode < 200 || statusCode > 299) {
-        throw Error(`Server returned non-200 status code: ${statusCode}`);
+        throw Error(`Proxy server returned non-200 status code: ${statusCode}`);
       }
       while ((await sockUtil.readUntil(upstream, '\n')).trim().length !== 0) {} // read headers
       downstream.pipe(upstream);
