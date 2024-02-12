@@ -11,6 +11,8 @@ const { object, string, number, date } = require('yup');
 const { parse } = require('yaml');
 const { validate, compare } = require('compare-versions');
 const SWProxy = require('./proxy/SWProxy');
+const transparentProxy = require('./steamproxy/transparent_proxy');
+const proxy = new SWProxy(transparentProxy);
 
 const path = require('path');
 const url = require('url');
@@ -41,7 +43,7 @@ let defaultConfig = {
       minimizeToTray: false,
       autoUpdatePlugins: true,
     },
-    Proxy: { port: 8080, autoStart: false },
+    Proxy: { port: 8080, autoStart: false, steamMode: true },
     Plugins: {},
   },
 };
@@ -55,12 +57,14 @@ let defaultConfigDetails = {
       minimizeToTray: { label: 'Minimize to System Tray' },
       autoUpdatePlugins: { label: 'Auto update plugins (if supported)' },
     },
-    Proxy: { autoStart: { label: 'Start proxy automatically' } },
+    Proxy: { autoStart: { label: 'Start proxy automatically' }, steamMode: { label: 'Steam Mode' } },
     Plugins: {},
   },
 };
 
 const updatedPluginsFolder = path.join(app.getPath('temp'), 'SWEX', 'plugins');
+
+let quitting = false;
 
 function createWindow() {
   let mainWindowState = windowStateKeeper({
@@ -143,8 +147,6 @@ function createWindow() {
   });
 }
 
-const proxy = new SWProxy();
-
 proxy.on('error', () => {});
 
 ipcMain.on('proxyIsRunning', (event) => {
@@ -155,8 +157,16 @@ ipcMain.on('proxyGetInterfaces', (event) => {
   event.returnValue = proxy.getInterfaces();
 });
 
-ipcMain.on('proxyStart', () => {
-  proxy.start(config.Config.Proxy.port);
+ipcMain.on('proxyStart', (event, steamMode) => {
+  proxy.start(config.Config.Proxy.port, steamMode);
+  if (steamMode !== config.Config.Proxy.steamMode) {
+    config.Config.Proxy.steamMode = steamMode;
+    storage.set('Config', config.Config, (error) => {
+      if (error) throw error;
+
+      win.webContents.send('steamModeChanged', steamMode);
+    });
+  }
 });
 
 ipcMain.on('proxyStop', () => {
@@ -428,7 +438,7 @@ app.on('ready', async () => {
     updatePlugins(global.plugins);
 
     if (process.env.autostart || global.config.Config.Proxy.autoStart) {
-      proxy.start(process.env.port || config.Config.Proxy.port);
+      proxy.start(process.env.port || config.Config.Proxy.port, config.Config.Proxy.steamMode);
     }
   });
 });
@@ -446,5 +456,14 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (win === null) {
     createWindow();
+  }
+});
+
+app.on('before-quit', async (event) => {
+  if (config.Config.Proxy.steamMode && process.platform == 'win32' && !quitting) {
+    event.preventDefault();
+    quitting = true;
+    await proxy.removeHostsModifications();
+    app.quit();
   }
 });

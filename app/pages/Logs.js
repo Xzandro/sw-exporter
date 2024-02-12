@@ -12,7 +12,7 @@ const STATUS_COLOR_MAP = {
   info: 'blue',
   warning: 'yellow',
   error: 'red',
-  debug: 'darkgrey',
+  debug: 'grey',
 };
 const STATUS_ICON_MAP = {
   success: 'check',

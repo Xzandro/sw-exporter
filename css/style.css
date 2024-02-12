@@ -4,6 +4,7 @@ body {
 
 .ui.menu.main-menu {
   margin-bottom: 0;
+  min-height: 4.7rem;
 }
 .ui.menu.side-menu {
   top: 65px;
@@ -64,7 +65,7 @@ body {
 }
 
 .ui.label.image.horizontal > .detail {
-  padding-top: .4em;
-  padding-bottom: .4em;
-  margin-top: -.4em;
+  padding-top: 0.4em;
+  padding-bottom: 0.4em;
+  margin-top: -0.4em;
 }

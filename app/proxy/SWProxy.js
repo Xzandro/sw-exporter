@@ -4,11 +4,15 @@ const fs = require('fs-extra');
 const path = require('path');
 const os = require('os');
 const net = require('net');
+const https = require('https');
+const dns = require('dns');
 const url = require('url');
 const uuidv4 = require('uuid/v4');
 const Proxy = require('http-mitm-proxy');
 const { differenceInMonths } = require('date-fns');
 const storage = require('electron-json-storage');
+const { addHostsEntries, getEntries, removeHostsEntries } = require('electron-hostile');
+const { exec } = require('child_process');
 
 const { decrypt_request, decrypt_response } = require('./smon_decryptor');
 
@@ -18,7 +22,7 @@ const sleep = promisify(setTimeout);
 const CERT_MAX_LIFETIME_IN_MONTHS = 12;
 
 class SWProxy extends EventEmitter {
-  constructor() {
+  constructor(steamproxy) {
     super();
     this.httpServer = null;
     this.proxy = null;
@@ -30,9 +34,41 @@ class SWProxy extends EventEmitter {
 
     this.sensitiveCommands = ['BattleRTPvPStart', 'getRtpvpReplayData'];
     this.sensitiveProperties = ['runes', 'artifacts', 'skills', 'replay_data'];
+
+    this.steamproxy = steamproxy;
+    this.proxiedHostnames = {
+      'summonerswar-eu-lb.qpyou.cn': '127.11.12.13',
+      'summonerswar-gb-lb.qpyou.cn': '127.11.12.14',
+      'summonerswar-sea-lb.qpyou.cn': '127.11.12.15',
+      'summonerswar-jp-lb.qpyou.cn': '127.11.12.16',
+      'summonerswar-kr-lb.qpyou.cn': '127.11.12.17',
+      'summonerswar-cn-lb.qpyou.cn': '127.11.12.18',
+    };
+    this.loopbackProxies = [];
   }
-  async start(port) {
+  async start(port, steamMode) {
     const self = this;
+
+    if (steamMode && process.platform == 'win32') {
+      await addHostsEntries(
+        Object.entries(this.proxiedHostnames).map(([host, ip]) => {
+          return { ip, host, wrapper: 'SWEX' };
+        }),
+        { name: 'SWEX' }
+      );
+      exec('ipconfig /flushdns');
+
+      const proxyHost = '127.0.0.1';
+      const proxyPort = port;
+
+      for (const hostname in this.proxiedHostnames) {
+        const loopbackProxy = new this.steamproxy.TransparentProxy(hostname, 443, proxyHost, proxyPort);
+        const bindAddr = this.proxiedHostnames[hostname];
+        loopbackProxy.run(bindAddr, 443);
+        this.loopbackProxies.push(loopbackProxy);
+      }
+    }
+
     this.proxy = Proxy();
 
     this.proxy.onError(function (ctx, e, errorKind) {
@@ -159,21 +195,40 @@ class SWProxy extends EventEmitter {
         socket.on('error', () => {});
       }
     });
-    this.proxy.listen({ host: '::', port, sslCaDir: path.join(app.getPath('userData'), 'swcerts') }, async (e) => {
-      this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
-      const expired = await this.checkCertExpiration();
+    const dnsResolver = new dns.Resolver();
+    this.proxy.listen(
+      {
+        host: '::',
+        port,
+        sslCaDir: path.join(app.getPath('userData'), 'swcerts'),
+        httpsAgent:
+          steamMode && process.platform == 'win32'
+            ? new https.Agent({
+                keepAlive: false,
+                lookup: (hostname, options, callback) => {
+                  dnsResolver.resolve4(hostname, (err, result) => {
+                    callback(err, result[0], 4);
+                  });
+                },
+              })
+            : undefined,
+      },
+      async (e) => {
+        this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}${steamMode ? ' in Steam Mode' : ''}` });
+        const expired = await this.checkCertExpiration();
 
-      if (expired) {
-        this.log({
-          type: 'warning',
-          source: 'proxy',
-          message: `Your certificate is older than ${CERT_MAX_LIFETIME_IN_MONTHS} months. If you experience connection issues, please regenerate a new one via the Settings.`,
-        });
+        if (expired) {
+          this.log({
+            type: 'warning',
+            source: 'proxy',
+            message: `Your certificate is older than ${CERT_MAX_LIFETIME_IN_MONTHS} months. If you experience connection issues, please regenerate a new one via the Settings.`,
+          });
+        }
       }
-    });
+    );
 
     if (process.env.autostart) {
-      console.log(`SW Exporter Proxy is listening on port ${port}`);
+      console.log(`SW Exporter Proxy is listening on port ${port}${steamMode ? ' in Steam Mode' : ''}`);
     }
     win.webContents.send('proxyStarted');
   }
@@ -181,8 +236,34 @@ class SWProxy extends EventEmitter {
   async stop() {
     this.proxy.close();
     this.proxy = null;
+
+    if (this.loopbackProxies.length > 0) {
+      for (const loopbackProxy of this.loopbackProxies) {
+        loopbackProxy.server.close();
+      }
+      this.loopbackProxies = [];
+    }
+
+    await this.removeHostsModifications();
+
     win.webContents.send('proxyStopped');
     this.log({ type: 'info', source: 'proxy', message: 'Proxy stopped' });
+  }
+
+  async removeHostsModifications() {
+    const hostsEntries = await getEntries();
+    const foundEntry = hostsEntries.find((entry) => entry[1].includes('lb.qpyou.cn'));
+
+    if (!foundEntry) return;
+
+    await removeHostsEntries(
+      Object.entries(this.proxiedHostnames).map(([host, ip]) => {
+        return { ip, host, wrapper: 'SWEX' };
+      }),
+      { name: 'SWEX' }
+    );
+
+    exec('ipconfig /flushdns');
   }
 
   getInterfaces() {
