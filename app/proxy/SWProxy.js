@@ -47,12 +47,17 @@ class SWProxy extends EventEmitter {
     const self = this;
 
     if (steamMode && process.platform == 'win32') {
-      await addHostsEntries(
-        Object.entries(this.proxiedHostnames).map(([host, ip]) => {
-          return { ip, host, wrapper: 'SWEX' };
-        }),
-        { name: 'SWEX' }
-      );
+      try {
+        await addHostsEntries(
+          Object.entries(this.proxiedHostnames).map(([host, ip]) => {
+            return { ip, host, wrapper: 'SWEX' };
+          }),
+          { name: 'SWEX' }
+        );
+      } catch (error) {
+        this.log({ type: 'error', source: 'proxy', message: `Could not modify hosts file: ${error.message}` });
+      }
+
       exec('ipconfig /flushdns');
 
       const proxyHost = '127.0.0.1';
@@ -187,8 +192,11 @@ class SWProxy extends EventEmitter {
       }
       this.loopbackProxies = [];
     }
-
-    await this.removeHostsModifications();
+    try {
+      await this.removeHostsModifications();
+    } catch (error) {
+      this.log({ type: 'error', source: 'proxy', message: `Could not modify hosts file: ${error.message}` });
+    }
 
     win.webContents.send('proxyStopped');
     this.log({ type: 'info', source: 'proxy', message: 'Proxy stopped' });
