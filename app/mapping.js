@@ -1284,6 +1284,20 @@ module.exports = {
       29014: 'Eunbee and Sapsaree',
       29015: 'Damee and Sapsaree',
 
+      291: 'Twin Angels',
+      29111: 'Ramael and Judiah',
+      29112: 'Karuel and Lanoah',
+      29113: 'Sadiel and Zeryah',
+      29114: 'Miruel and Graciah',
+      29115: 'Jaduel and Aepiah',
+
+      292: 'Geralt',
+      29211: 'Geralt',
+      29212: 'Geralt',
+      29213: 'Geralt',
+      29214: 'Geralt',
+      29215: 'Geralt',
+
       15105: 'Devilmon',
       14314: 'Rainbowmon',
 
