@@ -43,7 +43,7 @@ let defaultConfig = {
       minimizeToTray: false,
       autoUpdatePlugins: true,
     },
-    Proxy: { port: 8080, autoStart: false, steamMode: true },
+    Proxy: { port: 8080, autoStart: false, steamMode: false },
     Plugins: {},
   },
 };
