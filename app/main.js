@@ -4,6 +4,7 @@ const { createHash } = require('crypto');
 const { EOL } = require('os');
 const fs = require('fs-extra');
 const storage = require('electron-json-storage');
+const electron = require('electron');
 const windowStateKeeper = require('electron-window-state');
 const _ = require('lodash');
 const axios = require('axios');
@@ -174,7 +175,12 @@ ipcMain.on('proxyStop', () => {
 });
 
 ipcMain.on('getCert', async () => {
-  await proxy.copyCertToPublic();
+  await proxy.copyPemCertToPublic();
+});
+
+ipcMain.on('getAndInstallCertSteam', async () => {
+  const certPath = await proxy.copyPkcs12CertToPublic();
+  await electron.shell.openPath(certPath);
 });
 
 ipcMain.on('reGenCert', async () => {

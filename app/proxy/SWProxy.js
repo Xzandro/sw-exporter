@@ -1,6 +1,7 @@
 const EventEmitter = require('events');
 const { app } = require('electron');
 const fs = require('fs-extra');
+const forge = require('node-forge');
 const path = require('path');
 const os = require('os');
 const net = require('net');
@@ -244,24 +245,61 @@ class SWProxy extends EventEmitter {
     }
   }
 
-  async copyCertToPublic() {
-    const fileExists = await fs.pathExists(path.join(app.getPath('userData'), 'swcerts', 'certs', 'ca.pem'));
+  pemToPkcs12(pemBytes) {
+    const cert = forge.pki.certificateFromPem(pemBytes);
+    const asn1 = forge.pkcs12.toPkcs12Asn1(null, cert);
+    return forge.asn1.toDer(asn1).getBytes();
+  }
 
-    if (fileExists) {
-      const copyPath = path.join(global.config.Config.App.filesPath, 'cert', 'ca.pem');
-      await fs.copy(path.join(app.getPath('userData'), 'swcerts', 'certs', 'ca.pem'), copyPath);
-      this.log({
-        type: 'success',
-        source: 'proxy',
-        message: `Certificate copied to ${copyPath}.`,
-      });
-    } else {
-      this.log({
+  logCertUnavailable() {
+    this.log({
         type: 'info',
         source: 'proxy',
         message: 'No certificate available yet. You might have to start the proxy once and then try again.',
       });
+  }
+
+  async getPemCertPath(log = false) {
+    const pemCertPath = path.join(app.getPath('userData'), 'swcerts', 'certs', 'ca.pem');
+    if (await fs.pathExists(pemCertPath))
+    {
+      return pemCertPath;
     }
+    if (log) {
+      this.logCertUnavailable();
+    }
+    return null;
+   }
+
+  async copyPkcs12CertToPublic() {
+    const pemCertPath = await this.getPemCertPath(true);
+    if (pemCertPath === null) {
+      return;
+    }
+    const pemBytes = await fs.readFile(pemCertPath, 'ascii');
+    const exportPath = path.join(global.config.Config.App.filesPath, 'cert', 'cert_windows.p12');
+
+    await fs.writeFile(exportPath, this.pemToPkcs12(pemBytes), 'binary');
+    this.log({
+      type: 'success',
+      source: 'proxy',
+      message: `Certificate copied to ${exportPath}.`,})
+    return exportPath;
+  }
+
+  async copyPemCertToPublic() {
+    const pemCertPath = await this.getPemCertPath(true);
+    if (pemCertPath === null) {
+      return;
+    }
+    const copyPath = path.join(global.config.Config.App.filesPath, 'cert', 'ca.pem');
+    await fs.copy(pemCertPath, copyPath);
+    this.log({
+      type: 'success',
+      source: 'proxy',
+      message: `Certificate copied to ${copyPath}.`,
+    })
+    return copyPath;
   }
 
   async reGenCert() {
@@ -273,7 +311,7 @@ class SWProxy extends EventEmitter {
     await this.start(process.env.port || config.Config.Proxy.port);
     // make sure the root cert was generated
     await sleep(1000);
-    await this.copyCertToPublic();
+    await this.copyPemCertToPublic();
   }
 
   checkSensitiveCommands(respData) {
