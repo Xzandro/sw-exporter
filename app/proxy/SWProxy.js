@@ -253,23 +253,22 @@ class SWProxy extends EventEmitter {
 
   logCertUnavailable() {
     this.log({
-        type: 'info',
-        source: 'proxy',
-        message: 'No certificate available yet. You might have to start the proxy once and then try again.',
-      });
+      type: 'info',
+      source: 'proxy',
+      message: 'No certificate available yet. You might have to start the proxy once and then try again.',
+    });
   }
 
   async getPemCertPath(log = false) {
     const pemCertPath = path.join(app.getPath('userData'), 'swcerts', 'certs', 'ca.pem');
-    if (await fs.pathExists(pemCertPath))
-    {
+    if (await fs.pathExists(pemCertPath)) {
       return pemCertPath;
     }
     if (log) {
       this.logCertUnavailable();
     }
     return null;
-   }
+  }
 
   async copyPkcs12CertToPublic() {
     const pemCertPath = await this.getPemCertPath(true);
@@ -283,7 +282,8 @@ class SWProxy extends EventEmitter {
     this.log({
       type: 'success',
       source: 'proxy',
-      message: `Certificate copied to ${exportPath}.`,})
+      message: `Certificate copied to ${exportPath}.`,
+    });
     return exportPath;
   }
 
@@ -298,7 +298,7 @@ class SWProxy extends EventEmitter {
       type: 'success',
       source: 'proxy',
       message: `Certificate copied to ${copyPath}.`,
-    })
+    });
     return copyPath;
   }
 

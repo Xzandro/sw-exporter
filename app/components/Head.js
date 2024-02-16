@@ -105,8 +105,8 @@ class Head extends React.Component {
 
         <Menu.Item position="right">
           {this.isSteamMode() && (
-          <Button content="Get & Install Cert (Steam)" icon="share" labelPosition="right" onClick={this.getAndInstallCertSteam.bind(this)} />)
-          }
+            <Button content="Get & Install Cert (Steam)" icon="share" labelPosition="right" onClick={this.getAndInstallCertSteam.bind(this)} />
+          )}
           <Button content="Get Cert" icon="share" labelPosition="right" onClick={this.getCert.bind(this)} />
 
           {this.state.proxyRunning ? (
