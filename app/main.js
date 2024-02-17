@@ -174,7 +174,12 @@ ipcMain.on('proxyStop', () => {
 });
 
 ipcMain.on('getCert', async () => {
-  await proxy.copyCertToPublic();
+  await proxy.copyPemCertToPublic();
+});
+
+ipcMain.on('getAndInstallCertSteam', async () => {
+  const certPath = await proxy.copyPkcs12CertToPublic();
+  await shell.openPath(certPath);
 });
 
 ipcMain.on('reGenCert', async () => {

@@ -64,6 +64,10 @@ class Head extends React.Component {
     ipcRenderer.send('getCert');
   }
 
+  getAndInstallCertSteam() {
+    ipcRenderer.send('getAndInstallCertSteam');
+  }
+
   changePort(e) {
     const port = Number(e.target.value);
     config.Config.Proxy.port = port;
@@ -71,7 +75,7 @@ class Head extends React.Component {
   }
 
   isSteamMode() {
-    return remote.process.platform === 'win32' && config.Config.Proxy.steamMode;
+    return this.isWindows() && config.Config.Proxy.steamMode;
   }
 
   isWindows() {
@@ -100,6 +104,9 @@ class Head extends React.Component {
         </Menu.Item>
 
         <Menu.Item position="right">
+          {this.isSteamMode() && (
+            <Button content="Get & Install Cert (Steam)" icon="share" labelPosition="right" onClick={this.getAndInstallCertSteam.bind(this)} />
+          )}
           <Button content="Get Cert" icon="share" labelPosition="right" onClick={this.getCert.bind(this)} />
 
           {this.state.proxyRunning ? (
