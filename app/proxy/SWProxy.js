@@ -65,7 +65,7 @@ class SWProxy extends EventEmitter {
       const proxyPort = port;
 
       for (const hostname in this.proxiedHostnames) {
-        const loopbackProxy = new this.steamproxy.TransparentProxy(hostname, 443, proxyHost, proxyPort);
+        const loopbackProxy = new this.steamproxy.TransparentProxy(hostname, 443, proxyHost, proxyPort, this);
         const bindAddr = this.proxiedHostnames[hostname];
         loopbackProxy.run(bindAddr, 443);
         this.loopbackProxies.push(loopbackProxy);
