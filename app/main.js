@@ -180,7 +180,7 @@ ipcMain.on('getCert', async () => {
 
 ipcMain.on('getAndInstallCertSteam', async () => {
   const certPath = await proxy.copyPkcs12CertToPublic();
-  await electron.shell.openPath(certPath);
+  await shell.openPath(certPath);
 });
 
 ipcMain.on('reGenCert', async () => {
