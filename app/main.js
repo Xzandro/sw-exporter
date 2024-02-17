@@ -4,7 +4,6 @@ const { createHash } = require('crypto');
 const { EOL } = require('os');
 const fs = require('fs-extra');
 const storage = require('electron-json-storage');
-const electron = require('electron');
 const windowStateKeeper = require('electron-window-state');
 const _ = require('lodash');
 const axios = require('axios');
