@@ -109,21 +109,12 @@ class Help extends React.Component {
               After starting the proxy in Steeam mode, you only need to do one instruction; installing the cert to the Windoed trusted root storage.
             </p>
             <ol>
-              <li> SWEX get cert </li>
+              <li> SWEX Start proxy in Steam mode </li>
               <li>
-                Install certificate to the TrustedRoot certificate storage of Windows.
+                SWEX Get & Install Cert (Steam)
                 <ul>
-                  <li>
-                    You could look at{' '}
-                    <a
-                      href="https://asu.my.salesforce-sites.com/kb/articles/FAQ/How-Do-I-Add-Certificates-to-the-Trusted-Root-Certification-Authorities-Store-for-a-Local-Computer"
-                      target="_blank"
-                    >
-                      this guide.
-                    </a>
-                  </li>
-                  <li>You can skip to step 7, if you hit the Windows key and search for "certificate" to then go to "Manage User Certificates"</li>
-                  <li>Continue following the guide.</li>
+                  <li>Choose "Local Computer" as import location</li>
+                  <li>Click next until the certificate was successfully imported</li>
                 </ul>
               </li>
               <li> In SWEX: confirm HTTPS is turned on</li>
