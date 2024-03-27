@@ -131,7 +131,7 @@ module.exports = {
       });
     }
   },
-  
+
   halveFlats(rune) {
     const flatStats = [1, 3, 5];
 
