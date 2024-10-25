@@ -1,0 +1,29 @@
+name: Build
+on:
+  workflow_dispatch:
+  create:
+    tags:
+      - v*
+
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - run: npm install
+      - run: npm run dist
+      - name: Set artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: |
+            ./dist/*.dmg
+            ./dist/*.yml
