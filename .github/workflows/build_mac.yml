@@ -1,9 +1,6 @@
 name: Build Mac
 on:
   workflow_dispatch:
-  create:
-    tags:
-      - v*
 
 jobs:
   build:
@@ -22,7 +19,7 @@ jobs:
       - run: npm install
       - run: npm run dist
       - name: Set artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           path: |
             ./dist/*.dmg
