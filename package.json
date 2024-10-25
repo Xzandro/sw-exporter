@@ -9,6 +9,7 @@
     "rebuild": "electron-rebuild -f -w sw-exporter",
     "build": "webpack --mode=production",
     "dist": "electron-builder",
+    "dist-no-publish": "electron-builder --publish=never",
     "dev": "webpack --watch",
     "lint": "eslint . --ext .js"
   },
