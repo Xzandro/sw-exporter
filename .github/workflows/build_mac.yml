@@ -17,7 +17,8 @@ jobs:
         with:
           node-version: 16
       - run: npm install
-      - run: npm run dist-no-publish
+      - run: npm run build
+      - run: npm run dist
       - name: Set artifacts
         uses: actions/upload-artifact@v4
         with:
