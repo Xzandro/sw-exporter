@@ -35,7 +35,7 @@ module.exports = {
             command === 'BattleScenarioResult' ||
             command === 'BattleDungeonResult' ||
             command === 'BattleDungeonResult_V2' ||
-            command === 'BattleDimensionHoleDungeonResult'
+            command === 'BattleDimensionHoleDungeonResult_v2'
           ) {
             this.log(proxy, req, resp);
           }
@@ -231,7 +231,7 @@ module.exports = {
       entry.dungeon = this.temp[wizardID].stage ? this.temp[wizardID].stage : 'Unknown';
     }
 
-    if (command === 'BattleDimensionHoleDungeonResult') {
+    if (command === 'BattleDimensionHoleDungeonResult_v2') {
       if (gMapping.dungeon[resp.dungeon_id]) {
         entry.dungeon = `${gMapping.dungeon[resp.dungeon_id]} Level ${resp.difficulty}`;
       }
