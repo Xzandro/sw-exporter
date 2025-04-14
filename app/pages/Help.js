@@ -20,8 +20,9 @@ class Help extends React.Component {
       <div>
         <h1>Setup Instructions</h1>
         <p>
-          Your computer and mobile device must be connected to the same network and be able to communicate. This is normally as simple as connecting
-          to the same Wi-Fi network or router. In some situations, like a college campus Wi-Fi connection, it might not work.
+          The following is mostly for the remote proxy mode: Your computer and mobile device must be connected to the same network and be able to
+          communicate. This is normally as simple as connecting to the same Wi-Fi network or router. In some situations, like a college campus Wi-Fi
+          connection, it might not work.
         </p>
         <p>
           In the dropdown menu in the top left of this program, there is a list of IP addresses and a port number. If there is more than 1 IP address,
@@ -103,15 +104,14 @@ class Help extends React.Component {
               </li>
             </ul>
           </Accordion.Content>
-        </Accordion>
-        <Accordion>
+
           <Accordion.Title active={activeIndex === 2} index={2} onClick={this.handleAccordionClick.bind(this)}>
             <Icon name="dropdown" />
-            Mumu Setup
+            Mumu 6 Setup
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 2}>
             <a href="https://drive.google.com/file/d/1mQuivBo2lpRvPI4Obapvcb9NYDcaSUoh/view" target="_blank">
-              Mumu setup guide
+              Mumu 6 setup guide
             </a>
             <ol>
               <li> SWEX get cert </li>
@@ -129,6 +129,41 @@ class Help extends React.Component {
               <li> Long press listed network → modify network</li>
               <li> Change "Proxy" to "Manual"</li>
               <li> server: ip listed in SWEX, usually 192.168.x.x; Port: Port listed in SWEX, default = 8080</li>
+              <li> Press Save</li>
+              <li> In SWEX: confirm HTTPS is turned on</li>
+              <li> In SWEX: Start proxy</li>
+            </ol>
+          </Accordion.Content>
+
+          <Accordion.Title active={activeIndex === 200} index={200} onClick={this.handleAccordionClick.bind(this)}>
+            <Icon name="dropdown" />
+            Mumu 12 Setup
+          </Accordion.Title>
+          <Accordion.Content active={activeIndex === 200}>
+            <ol>
+              <li> SWEX get cert </li>
+              <li> Open mumu shared folder</li>
+              <li> Copy cert from your SWEX files folder into the MuMuSharedFolder.</li>
+              <li>
+                Navigate to: System Application folder → Settings → Network & Internet → Internet → Network preferences → Install certificates →
+                $MuMuSharedFolder
+              </li>
+              <li>
+                Navigate to: System Application folder → Settings → Network & Internet → Internet → Network preferences → Install certificates →
+                $MuMuSharedFolder
+                <ul>
+                  <li>If the cert file is greyed out for some reason try to rename the extension from .pem to .cer</li>
+                </ul>
+              </li>
+              <li> Back to Internet Menu</li>
+              <li> Click the active connection → pen icon in the top right</li>
+              <li> Start the proxy in SWEX (if not already done)</li>
+              <li> Change "Proxy" to "Manual"</li>
+              <li>
+                Server: ip listed in the top left of SWEX, usually one of 192.168.x.x / 172.16.x.x / 10.x.x.x; Port: Port listed in SWEX, default =
+                8080
+              </li>
+              <li> Fill out the port. Otherwise this change is not saved.</li>
               <li> Press Save</li>
               <li> In SWEX: confirm HTTPS is turned on</li>
               <li> In SWEX: Start proxy</li>

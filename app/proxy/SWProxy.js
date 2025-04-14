@@ -1,14 +1,19 @@
 const EventEmitter = require('events');
 const { app } = require('electron');
 const fs = require('fs-extra');
+const forge = require('node-forge');
 const path = require('path');
 const os = require('os');
 const net = require('net');
+const https = require('https');
+const dns = require('dns');
 const url = require('url');
 const { v4: uuidv4 } = require('uuid');
 const Proxy = require('http-mitm-proxy');
 const { differenceInMonths } = require('date-fns');
 const storage = require('electron-json-storage');
+const { addHostsEntries, getEntries, removeHostsEntries } = require('electron-hostile');
+const { exec } = require('child_process');
 
 const { decrypt_request, decrypt_response } = require('./smon_decryptor');
 
@@ -18,21 +23,55 @@ const sleep = promisify(setTimeout);
 const CERT_MAX_LIFETIME_IN_MONTHS = 12;
 
 class SWProxy extends EventEmitter {
-  constructor() {
+  constructor(steamproxy) {
     super();
     this.httpServer = null;
     this.proxy = null;
     this.logEntries = [];
     this.addresses = [];
-    this.endpoints = new Map();
-    const restoredEndpoints = storage.getSync('Endpoints');
-    this.restoredEndpoints = Object.keys(restoredEndpoints).length > 0 ? new Map(restoredEndpoints) : new Map();
 
     this.sensitiveCommands = ['BattleRTPvPStart', 'getRtpvpReplayData'];
     this.sensitiveProperties = ['runes', 'artifacts', 'skills', 'replay_data'];
+
+    this.steamproxy = steamproxy;
+    this.proxiedHostnames = {
+      'summonerswar-eu-lb.qpyou.cn': '127.11.12.13',
+      'summonerswar-gb-lb.qpyou.cn': '127.11.12.14',
+      'summonerswar-sea-lb.qpyou.cn': '127.11.12.15',
+      'summonerswar-jp-lb.qpyou.cn': '127.11.12.16',
+      'summonerswar-kr-lb.qpyou.cn': '127.11.12.17',
+      'summonerswar-cn-lb.qpyou.cn': '127.11.12.18',
+    };
+    this.loopbackProxies = [];
   }
-  async start(port) {
+  async start(port, steamMode) {
     const self = this;
+
+    if (steamMode && process.platform == 'win32') {
+      try {
+        await addHostsEntries(
+          Object.entries(this.proxiedHostnames).map(([host, ip]) => {
+            return { ip, host, wrapper: 'SWEX' };
+          }),
+          { name: 'SWEX' }
+        );
+      } catch (error) {
+        this.log({ type: 'error', source: 'proxy', message: `Could not modify hosts file: ${error.message}` });
+      }
+
+      exec('ipconfig /flushdns');
+
+      const proxyHost = '127.0.0.1';
+      const proxyPort = port;
+
+      for (const hostname in this.proxiedHostnames) {
+        const loopbackProxy = new this.steamproxy.TransparentProxy(hostname, 443, proxyHost, proxyPort);
+        const bindAddr = this.proxiedHostnames[hostname];
+        loopbackProxy.run(bindAddr, 443);
+        this.loopbackProxies.push(loopbackProxy);
+      }
+    }
+
     this.proxy = Proxy();
 
     this.proxy.onError(function (ctx, e, errorKind) {
@@ -43,43 +82,6 @@ class SWProxy extends EventEmitter {
     });
 
     this.proxy.onRequest(function (ctx, callback) {
-      const locationEndpoint = '/api/location_c2.php';
-      if (locationEndpoint.includes(ctx.clientToProxyRequest.url)) {
-        ctx.use(Proxy.gunzip);
-        ctx.SWResponseChunksLocation = [];
-
-        ctx.onResponseData(function (ctx, chunk, callback) {
-          ctx.SWResponseChunksLocation.push(chunk);
-          return callback(null, chunk);
-        });
-
-        ctx.onResponseEnd(function (ctx, callback) {
-          let respData;
-
-          try {
-            respData = decrypt_response(Buffer.concat(ctx.SWResponseChunksLocation).toString());
-            // map the server endpoints by their gateway subdomain
-            if (respData.server_url_list) {
-              self.mapEndpoints(respData.server_url_list);
-              self.log({
-                type: 'debug',
-                source: 'proxy',
-                message: `Mapping server gateways: ${JSON.stringify(
-                  [...self.endpoints].reduce((acc, val) => {
-                    acc[val[0]] = val[1];
-                    return acc;
-                  }, {})
-                )}`,
-              });
-            }
-          } catch (e) {
-            console.log(e);
-            return callback();
-          }
-          return callback();
-        });
-      }
-
       if (ctx.clientToProxyRequest.url.includes('/api/gateway_c2.php')) {
         ctx.use(Proxy.gunzip);
         ctx.SWRequestChunks = [];
@@ -111,25 +113,9 @@ class SWProxy extends EventEmitter {
             self.clearLogs();
           }
 
-          // get endpoiont and server info
-          const endpoint = self.getEndpointInfo(ctx.clientToProxyRequest.socket.servername);
-
           // populate req and resp with the server data if available
           try {
             respData = self.checkSensitiveCommands(respData);
-            if (endpoint) {
-              self.log({
-                type: 'debug',
-                source: 'proxy',
-                message: `Endpoint found for ${ctx.clientToProxyRequest.socket.servername}. Event: ${command} ID: ${endpoint.server_id} Endpoint: ${endpoint.server_endpoint}`,
-              });
-              reqData = { ...reqData, ...endpoint };
-              respData = { ...respData, ...endpoint };
-            } else {
-              self.log({ type: 'debug', source: 'proxy', message: `No Endpoint found for ${ctx.clientToProxyRequest.socket.servername}` });
-            }
-            reqData = { ...reqData, swex_version: app.getVersion() };
-            respData = { ...respData, swex_version: app.getVersion() };
           } catch (error) {
             // in some cases this might actually would not work if the data is not JSON
             // thats why we need to catch it
@@ -146,7 +132,7 @@ class SWProxy extends EventEmitter {
     });
     this.proxy.onConnect(function (req, socket, head, callback) {
       const serverUrl = url.parse(`https://${req.url}`);
-      if (req.url.includes('qpyou.cn') && config.Config.App.httpsMode) {
+      if (req.url.includes('lb.qpyou.cn') && config.Config.App.httpsMode) {
         return callback();
       } else {
         const srvSocket = net.connect(serverUrl.port, serverUrl.hostname, () => {
@@ -159,21 +145,40 @@ class SWProxy extends EventEmitter {
         socket.on('error', () => {});
       }
     });
-    this.proxy.listen({ host: '::', port, sslCaDir: path.join(app.getPath('userData'), 'swcerts') }, async (e) => {
-      this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}` });
-      const expired = await this.checkCertExpiration();
+    const dnsResolver = new dns.Resolver();
+    this.proxy.listen(
+      {
+        host: '::',
+        port,
+        sslCaDir: path.join(app.getPath('userData'), 'swcerts'),
+        httpsAgent:
+          steamMode && process.platform == 'win32'
+            ? new https.Agent({
+                keepAlive: false,
+                lookup: (hostname, options, callback) => {
+                  dnsResolver.resolve4(hostname, (err, result) => {
+                    callback(err, result[0], 4);
+                  });
+                },
+              })
+            : undefined,
+      },
+      async (e) => {
+        this.log({ type: 'info', source: 'proxy', message: `Now listening on port ${port}${steamMode ? ' in Steam Mode' : ''}` });
+        const expired = await this.checkCertExpiration();
 
-      if (expired) {
-        this.log({
-          type: 'warning',
-          source: 'proxy',
-          message: `Your certificate is older than ${CERT_MAX_LIFETIME_IN_MONTHS} months. If you experience connection issues, please regenerate a new one via the Settings.`,
-        });
+        if (expired) {
+          this.log({
+            type: 'warning',
+            source: 'proxy',
+            message: `Your certificate is older than ${CERT_MAX_LIFETIME_IN_MONTHS} months. If you experience connection issues, please regenerate a new one via the Settings.`,
+          });
+        }
       }
-    });
+    );
 
     if (process.env.autostart) {
-      console.log(`SW Exporter Proxy is listening on port ${port}`);
+      console.log(`SW Exporter Proxy is listening on port ${port}${steamMode ? ' in Steam Mode' : ''}`);
     }
     win.webContents.send('proxyStarted');
   }
@@ -181,8 +186,37 @@ class SWProxy extends EventEmitter {
   async stop() {
     this.proxy.close();
     this.proxy = null;
+
+    if (this.loopbackProxies.length > 0) {
+      for (const loopbackProxy of this.loopbackProxies) {
+        loopbackProxy.server.close();
+      }
+      this.loopbackProxies = [];
+    }
+    try {
+      await this.removeHostsModifications();
+    } catch (error) {
+      this.log({ type: 'error', source: 'proxy', message: `Could not modify hosts file: ${error.message}` });
+    }
+
     win.webContents.send('proxyStopped');
     this.log({ type: 'info', source: 'proxy', message: 'Proxy stopped' });
+  }
+
+  async removeHostsModifications() {
+    const hostsEntries = await getEntries();
+    const foundEntry = hostsEntries.find((entry) => entry[1].includes('lb.qpyou.cn'));
+
+    if (!foundEntry) return;
+
+    await removeHostsEntries(
+      Object.entries(this.proxiedHostnames).map(([host, ip]) => {
+        return { ip, host, wrapper: 'SWEX' };
+      }),
+      { name: 'SWEX' }
+    );
+
+    exec('ipconfig /flushdns');
   }
 
   getInterfaces() {
@@ -211,24 +245,61 @@ class SWProxy extends EventEmitter {
     }
   }
 
-  async copyCertToPublic() {
-    const fileExists = await fs.pathExists(path.join(app.getPath('userData'), 'swcerts', 'certs', 'ca.pem'));
+  pemToPkcs12(pemBytes) {
+    const cert = forge.pki.certificateFromPem(pemBytes);
+    const asn1 = forge.pkcs12.toPkcs12Asn1(null, cert);
+    return forge.asn1.toDer(asn1).getBytes();
+  }
 
-    if (fileExists) {
-      const copyPath = path.join(global.config.Config.App.filesPath, 'cert', 'ca.pem');
-      await fs.copy(path.join(app.getPath('userData'), 'swcerts', 'certs', 'ca.pem'), copyPath);
-      this.log({
-        type: 'success',
-        source: 'proxy',
-        message: `Certificate copied to ${copyPath}.`,
-      });
-    } else {
-      this.log({
-        type: 'info',
-        source: 'proxy',
-        message: 'No certificate available yet. You might have to start the proxy once and then try again.',
-      });
+  logCertUnavailable() {
+    this.log({
+      type: 'info',
+      source: 'proxy',
+      message: 'No certificate available yet. You might have to start the proxy once and then try again.',
+    });
+  }
+
+  async getPemCertPath(log = false) {
+    const pemCertPath = path.join(app.getPath('userData'), 'swcerts', 'certs', 'ca.pem');
+    if (await fs.pathExists(pemCertPath)) {
+      return pemCertPath;
     }
+    if (log) {
+      this.logCertUnavailable();
+    }
+    return null;
+  }
+
+  async copyPkcs12CertToPublic() {
+    const pemCertPath = await this.getPemCertPath(true);
+    if (pemCertPath === null) {
+      return;
+    }
+    const pemBytes = await fs.readFile(pemCertPath, 'ascii');
+    const exportPath = path.join(global.config.Config.App.filesPath, 'cert', 'cert_windows.p12');
+
+    await fs.writeFile(exportPath, this.pemToPkcs12(pemBytes), 'binary');
+    this.log({
+      type: 'success',
+      source: 'proxy',
+      message: `Certificate copied to ${exportPath}.`,
+    });
+    return exportPath;
+  }
+
+  async copyPemCertToPublic() {
+    const pemCertPath = await this.getPemCertPath(true);
+    if (pemCertPath === null) {
+      return;
+    }
+    const copyPath = path.join(global.config.Config.App.filesPath, 'cert', 'ca.pem');
+    await fs.copy(pemCertPath, copyPath);
+    this.log({
+      type: 'success',
+      source: 'proxy',
+      message: `Certificate copied to ${copyPath}.`,
+    });
+    return copyPath;
   }
 
   async reGenCert() {
@@ -240,27 +311,7 @@ class SWProxy extends EventEmitter {
     await this.start(process.env.port || config.Config.Proxy.port);
     // make sure the root cert was generated
     await sleep(1000);
-    await this.copyCertToPublic();
-  }
-
-  mapEndpoints(serverList) {
-    serverList.forEach((endpoint) => {
-      const parsedGateway = url.parse(endpoint.gateway);
-      if (parsedGateway.host) {
-        this.endpoints.set(parsedGateway.host.split('.').shift(), endpoint);
-      }
-    });
-
-    storage.set('Endpoints', Array.from(this.endpoints.entries()));
-  }
-
-  getEndpointInfo(serverName) {
-    if (!serverName) {
-      return null;
-    }
-    const parsedserverName = serverName.split('.').shift();
-    const endpoint = this.endpoints.get(parsedserverName) || this.restoredEndpoints.get(parsedserverName);
-    return endpoint ? { server_id: endpoint.server_id, server_endpoint: parsedserverName } : null;
+    await this.copyPemCertToPublic();
   }
 
   checkSensitiveCommands(respData) {

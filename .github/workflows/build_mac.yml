@@ -1,9 +1,6 @@
-name: Build
+name: Build Mac
 on:
   workflow_dispatch:
-  create:
-    tags:
-      - v*
 
 jobs:
   build:
@@ -11,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+        os: [macos-latest]
 
     steps:
       - uses: actions/checkout@v2
@@ -20,8 +17,11 @@ jobs:
         with:
           node-version: 16
       - run: npm install
-      - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1
+      - run: npm run build
+      - run: npm run dist
+      - name: Set artifacts
+        uses: actions/upload-artifact@v4
         with:
-          github_token: ${{ secrets.github_token }}
-          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+          path: |
+            ./dist/*.dmg
+            ./dist/*.yml

@@ -60,7 +60,7 @@ class Settings extends React.Component {
       return (
         <Grid.Column key={i}>
           <Header as="h5">
-            {plugin.pluginName}
+            {plugin.pluginName} {plugin.version ? `v${plugin.version}` : ''}
             {description}
           </Header>
           <SettingsPlugin pluginName={plugin.pluginName} />
@@ -94,6 +94,9 @@ class Settings extends React.Component {
               <SettingsItem section="App" setting="debug" type="checkbox" />
             </Form.Group>
             <Form.Group widths={2}>
+              <SettingsItem section="App" setting="autoUpdatePlugins" type="checkbox" />
+            </Form.Group>
+            <Form.Group widths={2}>
               <SettingsItem section="App" setting="clearLogOnLogin" type="checkbox" />
               <SettingsItem section="App" setting="maxLogEntries" type="input" />
             </Form.Group>
@@ -103,6 +106,9 @@ class Settings extends React.Component {
             </Form.Group>
             <Form.Group widths={2}>
               <Button content="Regenerate Cert" icon="refresh" size="small" labelPosition="left" onClick={this.openCertCinfirmDialog.bind(this)} />
+            </Form.Group>
+            <Form.Group widths={2}>
+              <SettingsItem section="Proxy" setting="steamMode" type="checkbox" />
             </Form.Group>
           </Form>
         </Segment>
