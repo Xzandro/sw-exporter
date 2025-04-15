@@ -13,6 +13,8 @@ const { validate, compare } = require('compare-versions');
 const SWProxy = require('./proxy/SWProxy');
 const transparentProxy = require('./steamproxy/transparent_proxy');
 const proxy = new SWProxy(transparentProxy);
+const electron = require('electron');
+const nativeTheme = electron.nativeTheme;
 
 const path = require('path');
 const url = require('url');
@@ -161,7 +163,7 @@ function createWindow() {
   });
 }
 
-proxy.on('error', () => { });
+proxy.on('error', () => {});
 
 ipcMain.on('proxyIsRunning', (event) => {
   event.returnValue = proxy.isRunning();
@@ -425,21 +427,21 @@ app.on('ready', async () => {
     // { role: 'appMenu' }
     ...(isMac
       ? [
-        {
-          label: app.name,
-          submenu: [
-            { role: 'about' },
-            { type: 'separator' },
-            { role: 'services' },
-            { type: 'separator' },
-            { role: 'hide' },
-            { role: 'hideOthers' },
-            { role: 'unhide' },
-            { type: 'separator' },
-            { role: 'quit' },
-          ],
-        },
-      ]
+          {
+            label: app.name,
+            submenu: [
+              { role: 'about' },
+              { type: 'separator' },
+              { role: 'services' },
+              { type: 'separator' },
+              { role: 'hide' },
+              { role: 'hideOthers' },
+              { role: 'unhide' },
+              { type: 'separator' },
+              { role: 'quit' },
+            ],
+          },
+        ]
       : []),
     // { role: 'editMenu' }
     {
@@ -453,15 +455,15 @@ app.on('ready', async () => {
         { role: 'paste' },
         ...(isMac
           ? [
-            { role: 'pasteAndMatchStyle' },
-            { role: 'delete' },
-            { role: 'selectAll' },
-            { type: 'separator' },
-            {
-              label: 'Speech',
-              submenu: [{ role: 'startSpeaking' }, { role: 'stopSpeaking' }],
-            },
-          ]
+              { role: 'pasteAndMatchStyle' },
+              { role: 'delete' },
+              { role: 'selectAll' },
+              { type: 'separator' },
+              {
+                label: 'Speech',
+                submenu: [{ role: 'startSpeaking' }, { role: 'stopSpeaking' }],
+              },
+            ]
           : [{ role: 'delete' }, { type: 'separator' }, { role: 'selectAll' }]),
       ],
     },

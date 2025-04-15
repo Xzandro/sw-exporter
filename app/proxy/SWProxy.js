@@ -15,7 +15,7 @@ const storage = require('electron-json-storage');
 const { addHostsEntries, getEntries, removeHostsEntries } = require('electron-hostile');
 const { exec } = require('child_process');
 
-const { decrypt_request, decrypt_response } = require('./smon_decryptor');
+const { decrypt_request, decrypt_response } = require('./smon_decryptor.js');
 
 const { promisify } = require('util');
 const sleep = promisify(setTimeout);
