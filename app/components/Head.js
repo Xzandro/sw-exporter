@@ -74,6 +74,9 @@ class Head extends React.Component {
     ipcRenderer.send('updateConfig');
   }
 
+  toggleTheme() {
+    ipcRenderer.invoke('dark-mode:toggle');
+  }
   isSteamMode() {
     return this.isWindows() && config.Config.Proxy.steamMode;
   }
@@ -108,6 +111,8 @@ class Head extends React.Component {
             <Button content="Get & Install Cert (Steam)" icon="share" labelPosition="right" onClick={this.getAndInstallCertSteam.bind(this)} />
           )}
           <Button content="Get Cert" icon="share" labelPosition="right" onClick={this.getCert.bind(this)} />
+
+          <Button onClick={this.toggleTheme.bind(this)} icon={'adjust'} />
 
           {this.state.proxyRunning ? (
             <Button content="Stop Proxy" icon="stop" labelPosition="right" onClick={this.toggleProxy.bind(this)} />

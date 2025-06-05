@@ -1,6 +1,8 @@
 const fs = require('fs');
+const fse = require('fs-extra');
 const path = require('path');
 const sanitize = require('sanitize-filename');
+const dateformat = require('date-fns');
 const MISSING_DATA_ERROR =
   'No file created. Data was missing during the Export process. This happens sometimes, when com2us failes to include important data during the request. Normally this fixes itself after a few tries.';
 
@@ -9,10 +11,12 @@ module.exports = {
     enabled: true,
     sortData: true,
     mergeStorage: false,
+    timestampedCopy: false,
   },
   defaultConfigDetails: {
     sortData: { label: 'Sort data like ingame' },
     mergeStorage: { label: 'Merge sealed monster storage into profile data (Currently not working)' },
+    timestampedCopy: { label: 'Timestamped copy in separate folder' },
   },
   pluginName: 'ProfileExport',
   pluginDescription: 'Exports your monster and rune data.',
@@ -31,6 +35,10 @@ module.exports = {
 
         if (!config.Config.Plugins[this.pluginName].mergeStorage) {
           this.writeProfileToFile(proxy, resp.wizard_info.wizard_id);
+        }
+
+        if (config.Config.Plugins[this.pluginName].timestampedCopy) {
+          this.writeProfileToFolder(proxy, resp.wizard_info.wizard_id);
         }
       }
     });
@@ -71,10 +79,27 @@ module.exports = {
     });
   },
   writeProfileToFile(proxy, wizardID) {
+    const timestamp = dateformat.format(new Date(), 'yyyy-MM-dd_HHmmss');
     const wizardName = this.temp[wizardID].wizard_info.wizard_name;
     const filename = sanitize(`${wizardName}-${wizardID}`).concat('.json');
 
     let outFile = fs.createWriteStream(path.join(config.Config.App.filesPath, filename), {
+      flags: 'w',
+      autoClose: true,
+    });
+
+    outFile.write(JSON.stringify(this.temp[wizardID], true, 2));
+    outFile.end();
+    proxy.log({ type: 'success', source: 'plugin', name: this.pluginName, message: 'Saved profile data to '.concat(filename) });
+  },
+
+  writeProfileToFolder(proxy, wizardID) {
+    const wizardName = this.temp[wizardID].wizard_info.wizard_name;
+    const timestamp = dateformat.format(new Date(), 'yyyy-MM-dd_HHmmss');
+    const filename = sanitize(`${wizardName}-${wizardID}-${timestamp}`).concat('.json');
+
+    fse.ensureDirSync(path.join(config.Config.App.filesPath, 'profile saves'));
+    let outFile = fs.createWriteStream(path.join(config.Config.App.filesPath, 'profile saves', filename), {
       flags: 'w',
       autoClose: true,
     });

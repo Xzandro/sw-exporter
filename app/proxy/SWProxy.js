@@ -8,14 +8,14 @@ const net = require('net');
 const https = require('https');
 const dns = require('dns');
 const url = require('url');
-const uuidv4 = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
 const Proxy = require('http-mitm-proxy');
 const { differenceInMonths } = require('date-fns');
 const storage = require('electron-json-storage');
 const { addHostsEntries, getEntries, removeHostsEntries } = require('electron-hostile');
 const { exec } = require('child_process');
 
-const { decrypt_request, decrypt_response } = require('./smon_decryptor');
+const { decrypt_request, decrypt_response } = require('./smon_decryptor.js');
 
 const { promisify } = require('util');
 const sleep = promisify(setTimeout);
