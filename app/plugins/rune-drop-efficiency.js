@@ -1,6 +1,10 @@
 module.exports = {
   defaultConfig: {
     enabled: true,
+    SWOPformula: false,
+  },
+  defaultConfigDetails: {
+    SWOPformula: { label: 'Flat stat at half value' },
   },
   pluginName: 'RuneDropEfficiency',
   pluginDescription: 'Logs the maximum possible efficiency for runes as they drop.',
@@ -128,8 +132,31 @@ module.exports = {
     }
   },
 
+  halveFlats(rune) {
+    const flatStats = [1, 3, 5];
+
+    // sub stats
+    rune.sec_eff.forEach((stat) => {
+      if (flatStats.includes(stat[0])) {
+        stat[1] *= 0.5;
+        if (stat[3] && stat[3] > 0) {
+          stat[3] *= 0.5;
+        }
+      }
+    });
+
+    // innate stat
+    if (flatStats.includes(rune.prefix_eff[0])) {
+      rune.prefix_eff[1] *= 0.5;
+    }
+
+    return rune;
+  },
+
   logRuneDrop(rune) {
-    const efficiency = gMapping.getRuneEfficiency(rune);
+    const efficiency = config.Config.Plugins[this.pluginName].SWOPformula
+      ? gMapping.getRuneEfficiency(this.halveFlats(rune))
+      : gMapping.getRuneEfficiency(rune);
     const runeQuality = gMapping.rune.quality[rune.rank];
     const colorTable = {
       Common: 'grey',
