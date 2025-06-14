@@ -23,15 +23,18 @@ module.exports = {
     switch (command) {
       case 'BattleDungeonResult':
       case 'BattleScenarioResult':
-      case 'BattleDimensionHoleDungeonResult':
+      case 'BattleDimensionHoleDungeonResult_v2':
         if (resp.win_lose === 1) {
-          const reward = resp.reward ? resp.reward : {};
+          const rewards = resp.changed_item_list ? resp.changed_item_list : [];
 
-          if (reward.crate && reward.crate.rune) {
-            runesInfo.push(this.logRuneDrop(reward.crate.rune));
+          if (rewards) {
+            rewards.forEach((reward) => {
+              if (reward.type === 8) {
+                runesInfo.push(this.logRuneDrop(reward.info));
+              }
+            });
           }
         }
-        break;
       case 'BattleDungeonResult_V2':
         if (resp.win_lose === 1) {
           const rewards = resp.changed_item_list ? resp.changed_item_list : [];
