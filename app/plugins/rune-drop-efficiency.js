@@ -45,7 +45,7 @@ module.exports = {
           }
         }
         break;
-      case 'upgradeRune_v2': {
+      case 'UpgradeRune_v2': {
         const newLevel = resp.rune.upgrade_curr;
 
         if (newLevel % 3 === 0 && newLevel <= 12) {
