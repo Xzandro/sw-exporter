@@ -2,7 +2,7 @@ import React from 'react';
 import { Header, Feed, Divider, Label, Icon } from 'semantic-ui-react';
 import { capitalize, toLower } from 'lodash/string';
 
-const { ipcRenderer } = require('electron');
+const { ipcRenderer, ipcMain } = require('electron');
 const remote = require('@electron/remote');
 
 const config = remote.getGlobal('config');
@@ -10,10 +10,11 @@ const config = remote.getGlobal('config');
 const STATUS_COLOR_MAP = {
   success: 'green',
   info: 'blue',
-  warning: 'yellow',
+  warning: 'orange',
   error: 'red',
-  debug: 'grey',
+  debug: 'black',
 };
+
 const STATUS_ICON_MAP = {
   success: 'check',
   info: 'info circle',
@@ -21,6 +22,7 @@ const STATUS_ICON_MAP = {
   error: 'x',
   debug: 'code',
 };
+
 const determineLabelColor = (status) => STATUS_COLOR_MAP[status] || 'grey';
 const determineLabelIcon = (status) => STATUS_ICON_MAP[status] || 'question';
 
