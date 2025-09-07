@@ -13,6 +13,8 @@ const { validate, compare } = require('compare-versions');
 const SWProxy = require('./proxy/SWProxy');
 const transparentProxy = require('./steamproxy/transparent_proxy');
 const proxy = new SWProxy(transparentProxy);
+const electron = require('electron');
+const nativeTheme = electron.nativeTheme;
 
 const path = require('path');
 const url = require('url');
@@ -68,12 +70,12 @@ let quitting = false;
 
 function createWindow() {
   let mainWindowState = windowStateKeeper({
-    defaultWidth: 800,
+    defaultWidth: 1100,
     defaultHeight: 600,
   });
 
   global.win = new BrowserWindow({
-    minWidth: 800,
+    minWidth: 1100,
     minHeight: 600,
     x: mainWindowState.x,
     y: mainWindowState.y,
@@ -144,6 +146,20 @@ function createWindow() {
   win.webContents.on('new-window', (e, link) => {
     e.preventDefault();
     shell.openExternal(link);
+  });
+
+  //dark mode toggles
+  ipcMain.handle('dark-mode:toggle', () => {
+    if (nativeTheme.shouldUseDarkColors) {
+      nativeTheme.themeSource = 'light';
+    } else {
+      nativeTheme.themeSource = 'dark';
+    }
+    return nativeTheme.shouldUseDarkColors;
+  });
+
+  ipcMain.handle('dark-mode:system', () => {
+    nativeTheme.themeSource = 'system';
   });
 }
 
