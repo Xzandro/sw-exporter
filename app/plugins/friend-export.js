@@ -16,7 +16,8 @@ module.exports = {
     proxy.on('VisitFriend', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {
         if (config.Config.Plugins[this.pluginName].sortData) {
-          resp.friend = this.sortUserData(resp.friend);
+          const clonedResp = structuredClone(resp);
+          clonedResp.friend = this.sortUserData(clonedResp.friend);
         }
         this.writeProfileToFile(proxy, req, resp);
       }

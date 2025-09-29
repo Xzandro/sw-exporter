@@ -123,8 +123,10 @@ class SWProxy extends EventEmitter {
           }
 
           // Emit events, one for the specific API command and one for all commands
-          self.emit(command, reqData, respData);
-          self.emit('apiCommand', reqData, respData);
+          const frozenReqData = self.deepFreeze(reqData);
+          const frozenRespData = self.deepFreeze(respData);
+          self.emit(command, frozenReqData, frozenRespData);
+          self.emit('apiCommand', frozenReqData, frozenRespData);
           return callback();
         });
       }
@@ -329,6 +331,21 @@ class SWProxy extends EventEmitter {
     });
 
     return data;
+  }
+
+  deepFreeze(object) {
+    const propNames = Reflect.ownKeys(object);
+
+    // Freeze properties before freezing self
+    for (const name of propNames) {
+      const value = object[name];
+
+      if ((value && typeof value === 'object') || typeof value === 'function') {
+        this.deepFreeze(value);
+      }
+    }
+
+    return Object.freeze(object);
   }
 
   isRunning() {

@@ -27,11 +27,13 @@ module.exports = {
         if (!this.checkData(resp)) {
           return proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: MISSING_DATA_ERROR });
         }
+
+        let clonedResp = structuredClone(resp);
         if (config.Config.Plugins[this.pluginName].sortData) {
-          resp = this.sortUserData(resp);
+          clonedResp = this.sortUserData(clonedResp);
         }
 
-        this.temp[resp.wizard_info.wizard_id] = resp;
+        this.temp[resp.wizard_info.wizard_id] = clonedResp;
 
         if (!config.Config.Plugins[this.pluginName].mergeStorage) {
           this.writeProfileToFile(proxy, resp.wizard_info.wizard_id);
@@ -47,11 +49,13 @@ module.exports = {
         if (!this.checkData(resp)) {
           return proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: MISSING_DATA_ERROR });
         }
+
+        let clonedResp = structuredClone(resp);
         if (config.Config.Plugins[this.pluginName].sortData) {
-          resp = this.sortUserData(resp);
+          clonedResp = this.sortUserData(clonedResp);
         }
 
-        this.temp[resp.wizard_info.wizard_id] = resp;
+        this.temp[resp.wizard_info.wizard_id] = clonedResp;
 
         if (!config.Config.Plugins[this.pluginName].mergeStorage) {
           this.writeProfileToFile(proxy, resp.wizard_info.wizard_id);
