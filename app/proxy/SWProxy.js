@@ -22,9 +22,10 @@ const sleep = promisify(setTimeout);
 
 const CERT_MAX_LIFETIME_IN_MONTHS = 12;
 
-class SWProxy extends EventEmitter {
+class SWProxy {
+  #emitter;
   constructor(steamproxy) {
-    super();
+    this.#emitter = new EventEmitter();
     this.httpServer = null;
     this.proxy = null;
     this.logEntries = [];
@@ -44,6 +45,22 @@ class SWProxy extends EventEmitter {
     };
     this.loopbackProxies = [];
   }
+
+  on(event, listener) {
+    this.#emitter.on(event, listener);
+    return this; // optional chaining
+  }
+
+  once(event, listener) {
+    this.#emitter.once(event, listener);
+    return this;
+  }
+
+  off(event, listener) {
+    this.#emitter.off(event, listener);
+    return this;
+  }
+
   async start(port, steamMode) {
     const self = this;
 
@@ -125,8 +142,8 @@ class SWProxy extends EventEmitter {
           // Emit events, one for the specific API command and one for all commands
           const frozenReqData = self.deepFreeze(reqData);
           const frozenRespData = self.deepFreeze(respData);
-          self.emit(command, frozenReqData, frozenRespData);
-          self.emit('apiCommand', frozenReqData, frozenRespData);
+          self.#emitter.emit(command, frozenReqData, frozenRespData);
+          self.#emitter.emit('apiCommand', frozenReqData, frozenRespData);
           return callback();
         });
       }
