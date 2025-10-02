@@ -11,7 +11,8 @@ module.exports = {
   init(proxy) {
     proxy.on('apiCommand', (req, resp) => {
       if (config.Config.Plugins[this.pluginName].enabled) {
-        this.processCommand(proxy, req, resp);
+        const clonedResp = structuredClone(resp);
+        this.processCommand(proxy, req, clonedResp);
       }
     });
   },
