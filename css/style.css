@@ -6,23 +6,28 @@ body {
   margin-bottom: 0;
   min-height: 4.7rem;
 }
+
 .ui.menu.side-menu {
   top: 65px;
   z-index: 1;
 }
+
 .ui.segment.main-content {
   margin-top: 65px;
   margin-left: 210px;
 }
+
 .ui.segment.main-content.compacted {
   margin: 0;
 }
+
 .ui.segment.app-segment {
   border-radius: 0;
   margin-top: 0;
   border-bottom: none;
   border-left: none;
 }
+
 .main-menu .item.right button {
   margin-left: 15px !important;
 }
@@ -68,4 +73,82 @@ body {
   padding-top: 0.4em;
   padding-bottom: 0.4em;
   margin-top: -0.4em;
+}
+
+/* only for when using RuneDropEfficiency2 */
+.gem-table td {
+  min-width: 60px !important;
+  text-align: right !important;
+}
+
+td[bgcolor='lightgreen'] {
+  background-color: #27bb67 !important;
+  color: black !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  * {
+    color: rgb(255, 255, 255) !important;
+  }
+
+  body {
+    background: rgb(51, 51, 51);
+  }
+
+  .main-menu {
+    background-color: rgb(51, 51, 51) !important;
+  }
+
+  .main-menu * {
+    color: rgb(0, 0, 0) !important;
+  }
+
+  h4.ui.top.header,
+  .ui.attached.segment {
+    background-color: rgb(51, 51, 51);
+  }
+
+  .ui.fluid.action.input *,
+  .ui.fluid.input *,
+  .ui.input *,
+  .ui.compact.icon.right.floated.button *,
+  .ui.compact.icon.left.floated.button *,
+  .ui.small.icon.left.labeled.button *,
+  .ui.small.icon.left.labeled.button,
+  .ui.top.left.small.popup.transition.visible *,
+  textarea {
+    color: rgb(0, 0, 0) !important;
+  }
+
+  .ui.small.modal.transition.visible.active * {
+    background-color: rgb(51, 51, 51);
+  }
+
+  .ui.selection.dropdown *,
+  .listbox,
+  .ui.selection.dropdown,
+  .ui.active.visible.selection.dropdown,
+  .textarea *,
+  .ui.labeled.input *,
+  .ui.fluid.action.input *,
+  .ui.fluid.input *,
+  .ui.input *,
+  .ui.selection.dropdown *,
+  .listbox,
+  .ui.selection.dropdown,
+  .ui.active.visible.selection.dropdown,
+  textarea {
+    background-color: rgb(209, 209, 209) !important;
+  }
+
+  .ui.checkbox label::before {
+    background-color: rgb(190, 190, 190) !important;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    background: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+  }
 }
