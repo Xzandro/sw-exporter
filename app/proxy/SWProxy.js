@@ -297,7 +297,7 @@ class SWProxy {
     const pemBytes = await fs.readFile(pemCertPath, 'ascii');
     const exportPath = path.join(global.config.Config.App.filesPath, 'cert', 'cert_windows.p12');
 
-    await fs.writeFile(exportPath, this.pemToPkcs12(pemBytes), 'binary');
+    await fs.outputFile(exportPath, this.pemToPkcs12(pemBytes), 'binary');
     this.log({
       type: 'success',
       source: 'proxy',

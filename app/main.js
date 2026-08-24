@@ -178,8 +178,28 @@ ipcMain.on('getCert', async () => {
 });
 
 ipcMain.on('getAndInstallCertSteam', async () => {
-  const certPath = await proxy.copyPkcs12CertToPublic();
-  await shell.openPath(certPath);
+  try {
+    const certPath = await proxy.copyPkcs12CertToPublic();
+    if (!certPath) {
+      return;
+    }
+
+    // openPath resolves with an error string instead of rejecting, so it needs its own check.
+    const openError = await shell.openPath(certPath);
+    if (openError) {
+      proxy.log({
+        type: 'error',
+        source: 'proxy',
+        message: `Could not open ${certPath}: ${openError}. Open the file manually to install the certificate.`,
+      });
+    }
+  } catch (error) {
+    proxy.log({
+      type: 'error',
+      source: 'proxy',
+      message: `Could not export the certificate: ${error.message}`,
+    });
+  }
 });
 
 ipcMain.on('reGenCert', async () => {
