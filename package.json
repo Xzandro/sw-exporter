@@ -77,7 +77,7 @@
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-react": "^7.16.5",
     "babel-loader": "^8.2.3",
-    "electron": "^24.8.8",
+    "electron": "^38.2.0",
     "electron-builder": "^24.13.3",
     "electron-rebuild": "^1.11.0",
     "eslint": "^8.56.0",
