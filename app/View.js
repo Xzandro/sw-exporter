@@ -1,22 +1,24 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 
 import Layout from './pages/Layout';
 import Logs from './pages/Logs';
 import Settings from './pages/Settings';
 import Help from './pages/Help';
 
-ReactDOM.render(
+const container = document.getElementById('app');
+const root = createRoot(container);
+
+root.render(
   <BrowserRouter>
     <Layout>
-      <Switch>
-        <Route exact path="/" component={Logs} />
-        <Route exact path="/settings" component={Settings} />
-        <Route exact path="/help" component={Help} />
-        <Redirect to="/" />
-      </Switch>
+      <Routes>
+        <Route path="/" element={<Logs />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/help" element={<Help />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </Layout>
-  </BrowserRouter>,
-  document.getElementById('app')
+  </BrowserRouter>
 );

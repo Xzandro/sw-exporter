@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { Segment, Menu, Icon, Button } from 'semantic-ui-react';
 import Mousetrap from 'mousetrap';
@@ -19,11 +19,11 @@ class Layout extends React.Component {
     });
 
     Mousetrap.bind(['command+2', 'alt+2'], () => {
-      this.navigate('settings', 'settings');
+      this.navigate('/settings', 'settings');
     });
 
     Mousetrap.bind(['command+3', 'alt+3'], () => {
-      this.navigate('help', 'help');
+      this.navigate('/help', 'help');
     });
 
     Mousetrap.bind(['command+b', 'ctrl+b'], () => {
@@ -32,7 +32,7 @@ class Layout extends React.Component {
   }
 
   navigate(path, name) {
-    this.props.history.push(path);
+    this.props.navigate(path);
     this.setState({ activeItem: name });
   }
 
@@ -58,13 +58,13 @@ class Layout extends React.Component {
               name="settings"
               link
               active={this.state.activeItem === 'settings'}
-              data-path="settings"
+              data-path="/settings"
               onClick={this.navigateFromElement.bind(this)}
             >
               <Icon name="settings" />
               Settings
             </Menu.Item>
-            <Menu.Item name="help" link active={this.state.activeItem === 'help'} data-path="help" onClick={this.navigateFromElement.bind(this)}>
+            <Menu.Item name="help" link active={this.state.activeItem === 'help'} data-path="/help" onClick={this.navigateFromElement.bind(this)}>
               <Icon name="help circle" />
               Help
             </Menu.Item>
@@ -81,4 +81,6 @@ class Layout extends React.Component {
   }
 }
 
-module.exports = withRouter(Layout);
+const LayoutWithRouter = (props) => <Layout {...props} navigate={useNavigate()} />;
+
+module.exports = LayoutWithRouter;
