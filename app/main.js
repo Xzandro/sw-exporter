@@ -121,6 +121,17 @@ function createWindow() {
     appIcon.setContextMenu(contextMenu);
   });
 
+  // macOS keeps the app running without windows, so hide instead of destroying the window
+  // to let the tray and dock bring it back. Once the app quits, closing must work again.
+  if (process.platform === 'darwin') {
+    const hideOnClose = (event) => {
+      event.preventDefault();
+      global.win.hide();
+    };
+    global.win.on('close', hideOnClose);
+    app.once('before-quit', () => global.win.off('close', hideOnClose));
+  }
+
   global.win.on('minimize', function (event) {
     if (!config.Config.App.minimizeToTray) return;
 
@@ -542,11 +553,8 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (win === null) {
-    createWindow();
-  }
+  // On macOS, clicking the dock icon brings back the window hidden on close.
+  global.win?.show();
 });
 
 app.on('before-quit', async (event) => {
