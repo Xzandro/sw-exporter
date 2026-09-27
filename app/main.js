@@ -17,7 +17,8 @@ const proxy = new SWProxy(transparentProxy);
 const path = require('path');
 const url = require('url');
 
-const iconPath = path.join(process.resourcesPath, 'icon.ico');
+const trayIconFiles = { darwin: 'trayIconTemplate.png', win32: 'trayIcon.ico' };
+const trayIconPath = path.join(__dirname, '..', 'assets', 'tray', trayIconFiles[process.platform] ?? 'trayIcon.png');
 
 let pluginVersionSchema = object({
   version: string().required(),
@@ -102,8 +103,7 @@ function createWindow() {
   let appIcon = null;
   let bounds = undefined;
   app.whenReady().then(() => {
-    const iconExists = fs.existsSync(iconPath);
-    appIcon = new Tray(iconExists ? iconPath : './build/icon.ico');
+    appIcon = new Tray(trayIconPath);
     appIcon.on('double-click', restoreWindowFromSystemTray);
     const contextMenu = Menu.buildFromTemplate([
       {
