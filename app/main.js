@@ -104,7 +104,10 @@ function createWindow() {
   let bounds = undefined;
   app.whenReady().then(() => {
     appIcon = new Tray(trayIconPath);
-    appIcon.on('double-click', restoreWindowFromSystemTray);
+
+    const clickEvent = process.platform === 'win32' ? 'double-click' : 'click';
+    appIcon.on(clickEvent, restoreWindowFromSystemTray);
+
     const contextMenu = Menu.buildFromTemplate([
       {
         label: 'Show',
