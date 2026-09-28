@@ -21,8 +21,10 @@ jobs:
           node-version: 24
           package-manager-cache: false
       - run: npm install
+      - run: npm run build
       - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        run: >-
+          npx --no electron-builder --
+          --publish ${{ startsWith(github.ref, 'refs/tags/v') && 'always' || 'never' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
