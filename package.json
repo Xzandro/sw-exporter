@@ -58,13 +58,7 @@
     },
     "dmg": {
       "title": "${productName} ${version}"
-    },
-    "extraFiles": [
-      {
-        "from": "build/icon.ico",
-        "to": "resources"
-      }
-    ]
+    }
   },
   "keywords": [],
   "author": "porksmash & Xzandro",
