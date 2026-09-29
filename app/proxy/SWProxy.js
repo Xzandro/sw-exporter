@@ -174,9 +174,11 @@ class SWProxy {
           steamMode && process.platform == 'win32'
             ? new https.Agent({
                 keepAlive: false,
+                autoSelectFamily: false,
                 lookup: (hostname, options, callback) => {
-                  dnsResolver.resolve4(hostname, (err, result) => {
-                    callback(err, result[0], 4);
+                  dnsResolver.resolve4(hostname, (err, addresses) => {
+                    if (err) return callback(err);
+                    callback(null, addresses[0], 4);
                   });
                 },
               })
