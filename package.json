@@ -105,5 +105,8 @@
     "uuid": "^3.4.0",
     "yaml": "^2.3.4",
     "yup": "^1.3.3"
+  },
+  "overrides": {
+    "sudo-prompt": "npm:@vscode/sudo-prompt@^9.3.2"
   }
 }
