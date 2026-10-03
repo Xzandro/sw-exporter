@@ -1,4 +1,4 @@
-const request = require('request');
+const axios = require('axios');
 
 module.exports = {
   defaultConfig: {
@@ -22,30 +22,18 @@ module.exports = {
 
   log(proxy, req, resp) {
     const { command } = req;
-
-    let options = {
-      method: 'post',
-      uri: this.log_url,
-      json: true,
-      body: resp,
+    const options = {
+      validateStatus: (status) => status === 200,
+      maxRedirects: 0,
     };
 
-    request(options, (error, response) => {
-      if (error) {
-        proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: `Error: ${error.message}` });
-        return;
-      }
-
-      if (response.statusCode === 200) {
+    axios
+      .post(this.log_url, resp, options)
+      .then(() => {
         proxy.log({ type: 'success', source: 'plugin', name: this.pluginName, message: `${command} logged successfully` });
-      } else {
-        proxy.log({
-          type: 'error',
-          source: 'plugin',
-          name: this.pluginName,
-          message: `Request failed: Server responded with code: ${response.statusCode}`,
-        });
-      }
-    });
+      })
+      .catch((error) => {
+        proxy.log({ type: 'error', source: 'plugin', name: this.pluginName, message: `Error: ${error.message}` });
+      });
   },
 };

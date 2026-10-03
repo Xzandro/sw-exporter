@@ -324,13 +324,16 @@ async function updatePlugins(plugins) {
 
     let versionData;
     try {
-      const versionText = await axios.get(plugin.autoUpdate.versionURL);
+      const versionText = await axios.get(plugin.autoUpdate.versionURL, {
+        responseType: 'text',
+      });
+
       versionData = parse(versionText.data);
     } catch (error) {
       proxy.log({
         type: 'debug',
         source: 'proxy',
-        message: `Update failed: ${plugin.pluginName}: could not get version yml file.`,
+        message: `Update failed: ${plugin.pluginName}: could not get version yml file: ${error.message}`,
       });
       continue;
     }
@@ -368,17 +371,16 @@ async function updatePlugins(plugins) {
     // download file and check for hashes
     let file;
     try {
-      fileBuff = await axios.get(versionData.url, {
+      const pluginFileResp = await axios.get(versionData.url, {
         responseType: 'arraybuffer',
-        decompress: true,
       });
 
-      file = fileBuff.data;
+      file = pluginFileResp.data;
     } catch (error) {
       proxy.log({
         type: 'debug',
         source: 'proxy',
-        message: `Update failed: ${plugin.pluginName}: could not get remote plugin file.`,
+        message: `Update failed: ${plugin.pluginName}: could not get remote plugin file: ${error.message}`,
       });
       continue;
     }
@@ -394,7 +396,7 @@ async function updatePlugins(plugins) {
 
     // replace it with the old one
     const filePath = path.join(updatedPluginsFolder, versionData.file.replace('.asar', ''));
-    fs.writeFileSync(filePath, Buffer.from(file));
+    fs.writeFileSync(filePath, file);
 
     updatedPlugins.push({
       name: plugin.pluginName,
