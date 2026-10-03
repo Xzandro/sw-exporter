@@ -91,7 +91,7 @@
     "electron-hostile": "github:kotapeter/electron-hostile",
     "electron-json-storage": "^4.5.0",
     "electron-window-state": "^5.0.3",
-    "fast-csv": "^4.3.6",
+    "fast-csv": "^5.0.7",
     "fs-extra": "^11.2.0",
     "http-mitm-proxy": "github:Xzandro/node-http-mitm-proxy",
     "lodash": "^4.17.21",
