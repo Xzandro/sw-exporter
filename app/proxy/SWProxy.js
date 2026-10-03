@@ -8,8 +8,8 @@ const net = require('net');
 const https = require('https');
 const dns = require('dns');
 const url = require('url');
-const uuidv4 = require('uuid/v4');
-const Proxy = require('http-mitm-proxy');
+const { v4: uuidv4 } = require('uuid');
+const { Proxy } = require('http-mitm-proxy');
 const { differenceInMonths } = require('date-fns');
 const storage = require('electron-json-storage');
 const { addHostsEntries, getEntries, removeHostsEntries } = require('electron-hostile');
@@ -89,13 +89,25 @@ class SWProxy {
       }
     }
 
-    this.proxy = Proxy();
+    this.proxy = new Proxy();
 
     this.proxy.onError(function (ctx, e, errorKind) {
       if (e.code === 'EADDRINUSE') {
         self.log({ type: 'warning', source: 'proxy', message: 'Port is in use from another process. Try another port.' });
       }
       // we do not show further errors here, since they are mostly meaningless regarding the proxy itself
+    });
+
+    // Responses with a Trailer header but no chunked transfer-encoding (e.g. from HTTP/2 upstreams) make
+    // writeHead throw ERR_HTTP_TRAILER_INVALID. Upstream fixed this after 1.1.0 (joeferner/node-http-mitm-proxy#303).
+    // todo: remove when upstream released a new version!
+    this.proxy.onResponse(function (ctx, callback) {
+      const { headers } = ctx.serverToProxyResponse;
+      if (headers['trailer']) {
+        headers['transfer-encoding'] = 'chunked';
+        delete headers['content-length'];
+      }
+      return callback();
     });
 
     this.proxy.onRequest(function (ctx, callback) {
