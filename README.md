@@ -32,7 +32,7 @@ module.exports = {
 }
 ```
 
-The [NodeJS 10 standard library](https://nodejs.org/dist/latest-v10.x/docs/api/) is available to use within your plugin. To receive game events, you must subscribe to events from `proxy`. See the [example plugin](https://github.com/Xzandro/sw-exporter/blob/master/app/plugins/example-plugin.js) for the two options to receive events - every game event, or specific events. `proxy` is an [EventEmitter](https://nodejs.org/docs/latest-v10.x/api/events.html). `config` is the configuration for the full SW-Exporter application. You can access your specific plugin's configuration like this: `config.Config.Plugins[<pluginName>]`. When in doubt, browse through the [prepackaged plugins](https://github.com/Xzandro/sw-exporter/tree/master/app/plugins) for examples.
+The [Node.js 24 standard library](https://nodejs.org/dist/latest-v24.x/docs/api/) is available to use within your plugin (Electron 44.4.3 bundles Node.js 24.21.0). To receive game events, you must subscribe to events from `proxy`. See the [example plugin](https://github.com/Xzandro/sw-exporter/blob/master/app/plugins/example-plugin.js) for the two options to receive events - every game event, or specific events. `proxy` is an [EventEmitter](https://nodejs.org/docs/latest-v24.x/api/events.html). `config` is the configuration for the full SW-Exporter application. You can access your specific plugin's configuration like this: `config.Config.Plugins[<pluginName>]`. When in doubt, browse through the [prepackaged plugins](https://github.com/Xzandro/sw-exporter/tree/master/app/plugins) for examples.
 
 ### Single Javascript File
 
@@ -92,7 +92,7 @@ SWEX will call your `.yml` version file, looks up the versions, checks if the re
 
 ## Developing SW-Exporter
 
-Install [node.js](https://nodejs.org/).
+Install [Node.js 24.x](https://nodejs.org/). Electron 44.4.3 bundles Node.js 24.21.0.
 
 ```
 $ git clone https://github.com/Xzandro/sw-exporter.git
