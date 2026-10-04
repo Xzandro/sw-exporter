@@ -43,6 +43,7 @@ let defaultConfig = {
       httpsMode: true,
       minimizeToTray: false,
       autoUpdatePlugins: true,
+      skippedPluginUpdates: {},
     },
     Proxy: { port: 8080, autoStart: false, steamMode: false },
     Plugins: {},
@@ -56,7 +57,7 @@ let defaultConfigDetails = {
       maxLogEntries: { label: 'Maximum amount of log entries.' },
       httpsMode: { label: 'HTTPS mode' },
       minimizeToTray: { label: 'Minimize to System Tray' },
-      autoUpdatePlugins: { label: 'Auto update plugins (if supported)' },
+      autoUpdatePlugins: { label: 'Check for plugin updates (if supported)' },
     },
     Proxy: { autoStart: { label: 'Start proxy automatically' }, steamMode: { label: 'Steam Mode' } },
     Plugins: {},
@@ -230,6 +231,13 @@ ipcMain.on('updateConfig', () => {
   });
 });
 
+ipcMain.on('resetSkippedPluginUpdates', () => {
+  global.config.Config.App.skippedPluginUpdates = {};
+  storage.set('Config', global.config.Config, (error) => {
+    if (error) throw error;
+  });
+});
+
 ipcMain.on('getFolderLocations', (event) => {
   event.returnValue = {
     settings: app.getPath('userData'),
@@ -309,7 +317,7 @@ async function updatePlugins(plugins) {
       proxy.log({
         type: 'debug',
         source: 'proxy',
-        message: `Update failed: ${plugin.pluginName}: version string is not valid.`,
+        message: `Plugin check failed: ${plugin.pluginName}: version string is not valid.`,
       });
       continue;
     }
@@ -317,7 +325,7 @@ async function updatePlugins(plugins) {
       proxy.log({
         type: 'debug',
         source: 'proxy',
-        message: `Update failed: ${plugin.pluginName}: version url is not valid.`,
+        message: `Plugin check failed: ${plugin.pluginName}: version url is not valid.`,
       });
       continue;
     }
@@ -333,7 +341,7 @@ async function updatePlugins(plugins) {
       proxy.log({
         type: 'debug',
         source: 'proxy',
-        message: `Update failed: ${plugin.pluginName}: could not get version yml file: ${error.message}`,
+        message: `Plugin check failed: ${plugin.pluginName}: could not fetch version yml file. Got error: ${error.message}`,
       });
       continue;
     }
@@ -344,7 +352,7 @@ async function updatePlugins(plugins) {
       proxy.log({
         type: 'debug',
         source: 'proxy',
-        message: `Update failed: ${plugin.pluginName}: yml schema did not match.`,
+        message: `Plugin check failed: ${plugin.pluginName}: yml schema did not match.`,
       });
       continue;
     }
@@ -354,7 +362,7 @@ async function updatePlugins(plugins) {
       proxy.log({
         type: 'debug',
         source: 'proxy',
-        message: `Update failed: ${plugin.pluginName}: remote version is equal or lower than local version.`,
+        message: `Plugin update skipped: ${plugin.pluginName}: no update available.`,
       });
       continue;
     }
@@ -363,7 +371,54 @@ async function updatePlugins(plugins) {
       proxy.log({
         type: 'debug',
         source: 'proxy',
-        message: `Update failed: ${plugin.pluginName}: file url is not valid.`,
+        message: `Plugin update failed: ${plugin.pluginName}: file url is not valid.`,
+      });
+      continue;
+    }
+
+    proxy.log({
+      type: 'info',
+      source: 'proxy',
+      message: `Plugin update available: ${plugin.pluginName} has a new version ${versionData.version} available!`,
+    });
+
+    if (global.config.Config.App.skippedPluginUpdates[plugin.pluginName] === versionData.version) {
+      proxy.log({
+        type: 'debug',
+        source: 'proxy',
+        message: `Plugin update skipped: ${plugin.pluginName}: version ${versionData.version} was skipped by user.`,
+      });
+      continue;
+    }
+
+    let userConsent;
+    try {
+      userConsent = await dialog.showMessageBox(global.win, {
+        type: 'question',
+        title: 'Plugin update available',
+        message: `An update for ${plugin.pluginName} is available.`,
+        detail: `${plugin.version} -> ${versionData.version}${EOL}Do you want to update this plugin?`,
+        buttons: ['Skip', 'Update'],
+        defaultId: 1,
+        cancelId: 0,
+        checkboxLabel: "Don't ask again for this version",
+      });
+    } catch (error) {
+      console.log(error);
+      continue;
+    }
+
+    if (userConsent.response !== 1) {
+      if (userConsent.checkboxChecked) {
+        global.config.Config.App.skippedPluginUpdates[plugin.pluginName] = versionData.version;
+        storage.set('Config', global.config.Config, (error) => {
+          if (error) console.log(error);
+        });
+      }
+      proxy.log({
+        type: 'debug',
+        source: 'proxy',
+        message: `Plugin update skipped: ${plugin.pluginName}: declined by user.`,
       });
       continue;
     }
@@ -378,18 +433,18 @@ async function updatePlugins(plugins) {
       file = pluginFileResp.data;
     } catch (error) {
       proxy.log({
-        type: 'debug',
+        type: 'error',
         source: 'proxy',
-        message: `Update failed: ${plugin.pluginName}: could not get remote plugin file: ${error.message}`,
+        message: `Plugin update failed: ${plugin.pluginName}: could not get remote plugin file. Got error: ${error.message}`,
       });
       continue;
     }
 
     if (versionData.sha512 !== createHash('sha512').update(file).digest('hex')) {
       proxy.log({
-        type: 'debug',
+        type: 'error',
         source: 'proxy',
-        message: `Update failed: ${plugin.pluginName}: file hash does not match.`,
+        message: `Plugin update failed: ${plugin.pluginName}: file hash does not match. Try again later or report to plugin author!`,
       });
       continue;
     }
@@ -409,8 +464,9 @@ async function updatePlugins(plugins) {
     const dialogMessage = updatedPlugins.map((plugin) => `${plugin.name}: ${plugin.oldVersion} -> ${plugin.newVersion}`).join(EOL);
     dialog
       .showMessageBox(global.win, {
-        title: 'Plugins can be updated!',
-        message: dialogMessage,
+        title: 'Plugins updated',
+        message: 'The updates will be applied when SWEX restarts.',
+        detail: dialogMessage,
         buttons: ['Later', 'Restart SWEX'],
       })
       .then((result) => {

@@ -17,7 +17,13 @@ class Settings extends React.Component {
     this.state = {
       filesPath: config.Config.App.filesPath,
       confirmCertDialog: false,
+      hasSkippedPluginUpdates: Object.keys(config.Config.App.skippedPluginUpdates || {}).length > 0,
     };
+  }
+
+  resetSkippedPluginUpdates() {
+    ipcRenderer.send('resetSkippedPluginUpdates');
+    this.setState({ hasSkippedPluginUpdates: false });
   }
 
   openDialog(e) {
@@ -95,6 +101,15 @@ class Settings extends React.Component {
             </Form.Group>
             <Form.Group widths={2}>
               <SettingsItem section="App" setting="autoUpdatePlugins" type="checkbox" />
+              {this.state.hasSkippedPluginUpdates && (
+                <Button
+                  content="Reset skipped plugin updates"
+                  icon="undo"
+                  size="small"
+                  labelPosition="left"
+                  onClick={this.resetSkippedPluginUpdates.bind(this)}
+                />
+              )}
             </Form.Group>
             <Form.Group widths={2}>
               <SettingsItem section="App" setting="clearLogOnLogin" type="checkbox" />
