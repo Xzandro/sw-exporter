@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { HashRouter, Route, Routes, Navigate } from 'react-router-dom';
 
 import Layout from './pages/Layout';
 import Logs from './pages/Logs';
@@ -11,7 +11,7 @@ const container = document.getElementById('app');
 const root = createRoot(container);
 
 root.render(
-  <BrowserRouter>
+  <HashRouter>
     <Layout>
       <Routes>
         <Route path="/" element={<Logs />} />
@@ -20,5 +20,5 @@ root.render(
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>
-  </BrowserRouter>
+  </HashRouter>
 );
