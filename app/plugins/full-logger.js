@@ -1,5 +1,5 @@
 const { app } = require('electron');
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const eol = require('os').EOL;
 
@@ -21,7 +21,7 @@ module.exports = {
     });
     app.on('will-quit', () => {
       if (config.Config.Plugins[this.pluginName].deleteFileOnQuit) {
-        fs.unlinkSync(path.join(config.Config.App.filesPath, 'full_log.txt'));
+        fs.removeSync(path.join(config.Config.App.filesPath, 'full_log.txt'));
       }
     });
   },
