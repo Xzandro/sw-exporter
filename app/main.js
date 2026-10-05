@@ -1,6 +1,6 @@
 const { app, BrowserWindow, dialog, ipcMain, Menu, shell, Tray } = require('electron');
 require('@electron/remote/main').initialize();
-const { createHash } = require('crypto');
+const { createHash, verify } = require('crypto');
 const { EOL } = require('os');
 const fs = require('fs-extra');
 const storage = require('electron-json-storage');
@@ -440,11 +440,25 @@ async function updatePlugins(plugins) {
       continue;
     }
 
-    if (versionData.sha512 !== createHash('sha512').update(file).digest('hex')) {
+    // The hash in versionData comes from the same untrusted source as the file itself, so comparing
+    // against it alone does not prove authenticity (only that the bytes weren't corrupted in transit).
+    // Instead, verify a signature over the file using a public key trusted locally from the already
+    // installed plugin, independent of the (potentially compromised) update server.
+    if (!plugin.autoUpdate.publicKey || typeof versionData.signature !== 'string') {
       proxy.log({
         type: 'error',
         source: 'proxy',
-        message: `Plugin update failed: ${plugin.pluginName}: file hash does not match. Try again later or report to plugin author!`,
+        message: `Plugin update failed: ${plugin.pluginName}: missing trusted public key or signature, cannot verify file authenticity.`,
+      });
+      continue;
+    }
+
+    const isAuthentic = verify(null, file, plugin.autoUpdate.publicKey, Buffer.from(versionData.signature, 'base64'));
+    if (!isAuthentic) {
+      proxy.log({
+        type: 'error',
+        source: 'proxy',
+        message: `Plugin update failed: ${plugin.pluginName}: file signature verification failed. Try again later or report to plugin author!`,
       });
       continue;
     }
