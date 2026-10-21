@@ -42,6 +42,7 @@ let defaultConfig = {
       maxLogEntries: 100,
       httpsMode: true,
       minimizeToTray: false,
+      startMinimized: false,
       autoUpdatePlugins: true,
       skippedPluginUpdates: {},
     },
@@ -57,6 +58,7 @@ let defaultConfigDetails = {
       maxLogEntries: { label: 'Maximum amount of log entries.' },
       httpsMode: { label: 'HTTPS mode' },
       minimizeToTray: { label: 'Minimize to System Tray' },
+      startMinimized: { label: 'Start minimized' },
       autoUpdatePlugins: { label: 'Check for plugin updates (if supported)' },
     },
     Proxy: { autoStart: { label: 'Start proxy automatically' }, steamMode: { label: 'Steam Mode' } },
@@ -83,6 +85,8 @@ function createWindow() {
     height: mainWindowState.height,
     acceptFirstMouse: true,
     autoHideMenuBar: true,
+    // shown once the config is loaded, so it can start minimized
+    show: false,
     webPreferences: {
       nodeIntegration: true,
       // TODO: remote will be removed with electron 13, so this should be migrated to ipcRenderer.invoke at some point
@@ -589,6 +593,14 @@ app.on('ready', async () => {
 
     global.config = _.merge(defaultConfig, data);
     global.config.ConfigDetails = defaultConfigDetails.ConfigDetails;
+
+    if (!global.config.Config.App.startMinimized) {
+      global.win.show();
+    } else if (!global.config.Config.App.minimizeToTray) {
+      global.win.showInactive();
+      global.win.minimize();
+    }
+    // with minimizeToTray enabled, the window stays hidden and can be restored from the tray
 
     fs.ensureDirSync(global.config.Config.App.filesPath);
     fs.ensureDirSync(path.join(global.config.Config.App.filesPath, 'plugins'));

@@ -120,6 +120,9 @@ class Settings extends React.Component {
               <SettingsItem section="App" setting="minimizeToTray" type="checkbox" />
             </Form.Group>
             <Form.Group widths={2}>
+              <SettingsItem section="App" setting="startMinimized" type="checkbox" />
+            </Form.Group>
+            <Form.Group widths={2}>
               <Button content="Regenerate Cert" icon="refresh" size="small" labelPosition="left" onClick={this.openCertCinfirmDialog.bind(this)} />
             </Form.Group>
             <Form.Group widths={2}>
