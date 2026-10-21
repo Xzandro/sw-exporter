@@ -256,16 +256,11 @@ module.exports = {
       const time = [Math.floor(req.clear_time / 1000 / 60), seconds];
       entry.time = `${time[0]}:${time[1]}`;
     }
-    if (command === 'BattleDungeonResult_V2') {
-      entry.mana = reward.mana ? entry.mana + reward.mana : entry.mana;
-      entry.energy = reward.energy ? entry.energy + reward.energy : entry.energy;
-      entry.crystal = reward.crystal ? entry.crystal + reward.crystal : entry.crystal;
-    } else {
-      if (reward.crate) {
-        entry.mana = reward.crate.mana ? entry.mana + reward.crate.mana : entry.mana;
-        entry.energy = reward.crate.energy ? entry.energy + reward.crate.energy : entry.energy;
-        entry.crystal = reward.crate.crystal ? entry.crystal + reward.crate.crystal : entry.crystal;
-      }
+    // V2 results only report the top level reward, which is already counted above
+    if (command !== 'BattleDungeonResult_V2' && reward.crate) {
+      entry.mana = reward.crate.mana ? entry.mana + reward.crate.mana : entry.mana;
+      entry.energy = reward.crate.energy ? entry.energy + reward.crate.energy : entry.energy;
+      entry.crystal = reward.crate.crystal ? entry.crystal + reward.crate.crystal : entry.crystal;
     }
     if (winLost === 'Win') {
       entry =
