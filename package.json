@@ -53,7 +53,9 @@
       "target": "AppImage"
     },
     "nsis": {
-      "artifactName": "${productName}-Setup-${version}-${os}.${ext}"
+      "artifactName": "${productName}-Setup-${version}-${os}.${ext}",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
     },
     "portable": {
       "artifactName": "${productName}-Portable-${version}-${os}.${ext}"
