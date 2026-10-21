@@ -35,7 +35,8 @@ module.exports = {
             command === 'BattleScenarioResult' ||
             command === 'BattleDungeonResult' ||
             command === 'BattleDungeonResult_V2' ||
-            command === 'BattleDimensionHoleDungeonResult'
+            command === 'BattleDimensionHoleDungeonResult' ||
+            command === 'BattleDimensionHoleDungeonResult_V2'
           ) {
             this.log(proxy, req, resp);
           }
@@ -231,7 +232,7 @@ module.exports = {
       entry.dungeon = this.temp[wizardID].stage ? this.temp[wizardID].stage : 'Unknown';
     }
 
-    if (command === 'BattleDimensionHoleDungeonResult') {
+    if (command === 'BattleDimensionHoleDungeonResult' || command === 'BattleDimensionHoleDungeonResult_V2') {
       if (gMapping.dungeon[resp.dungeon_id]) {
         entry.dungeon = `${gMapping.dungeon[resp.dungeon_id]} Level ${resp.difficulty}`;
       }
@@ -269,8 +270,8 @@ module.exports = {
     }
     if (winLost === 'Win') {
       entry =
-        command === 'BattleDungeonResult_V2' && resp.changed_item_list
-          ? Object.assign({}, entry, this.getItemV2(resp.changed_item_list || []))
+        (command === 'BattleDungeonResult_V2' || command === 'BattleDimensionHoleDungeonResult_V2') && resp.changed_item_list
+          ? Object.assign({}, entry, this.getItemV2(resp.changed_item_list))
           : Object.assign({}, entry, this.getItem(reward.crate || null));
     }
 
