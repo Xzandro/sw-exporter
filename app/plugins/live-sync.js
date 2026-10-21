@@ -1,9 +1,14 @@
+const { app } = require('electron');
 const fs = require('fs-extra');
 const path = require('path');
 
 module.exports = {
   defaultConfig: {
     enabled: false,
+    deleteFilesOnQuit: false,
+  },
+  defaultConfigDetails: {
+    deleteFilesOnQuit: { label: 'Delete live files before quitting app' },
   },
   pluginName: 'LiveSync',
   pluginDescription: 'Keep SWOP synched with SW.',
@@ -13,6 +18,22 @@ module.exports = {
         this.processCommand(proxy, req, resp);
       }
     });
+    app.on('will-quit', () => {
+      if (config.Config.Plugins[this.pluginName].deleteFilesOnQuit) {
+        this.deleteLiveFiles();
+      }
+    });
+  },
+  deleteLiveFiles() {
+    const liveFolder = path.join(config.Config.App.filesPath, 'live');
+    if (!fs.existsSync(liveFolder)) {
+      return;
+    }
+
+    // only remove files created by this plugin
+    fs.readdirSync(liveFolder)
+      .filter((filename) => /-live-.*\.json$/.test(filename))
+      .forEach((filename) => fs.removeSync(path.join(liveFolder, filename)));
   },
   processCommand(proxy, req, resp) {
     const { command } = req;
