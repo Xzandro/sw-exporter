@@ -34,6 +34,7 @@ module.exports = {
         }
         break;
       case 'BattleDungeonResult_V2':
+      case 'BattleDimensionHoleDungeonResult_V2':
         if (resp.win_lose === 1) {
           const rewards = resp.changed_item_list ? resp.changed_item_list : [];
 

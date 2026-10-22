@@ -33,6 +33,7 @@ module.exports = {
         this.logDungeon(proxy, req, resp);
         break;
       case 'BattleDungeonResult_V2':
+      case 'BattleDimensionHoleDungeonResult_V2':
         this.logDungeonV2(proxy, req, resp);
         break;
       case 'SellRune':
