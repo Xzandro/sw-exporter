@@ -132,6 +132,21 @@ module.exports = {
   getItemV2(rewards) {
     // currently only supports the first item of the rewards list
     const reward = rewards[0];
+    if (!reward) {
+      return { drop: 'Unknown Drop' };
+    }
+    if (reward.info && reward.info.craft_type_id) {
+      const enhancement = this.getEnchantVals(reward.info.craft_type_id, reward.info.craft_type);
+      return {
+        drop: enhancement.drop,
+        grade: enhancement.grade,
+        sell_value: reward.info.sell_value,
+        set: enhancement.set,
+        main_stat: enhancement.type,
+        sub1: enhancement.min,
+        sub2: enhancement.max,
+      };
+    }
     if (reward.view.item_master_id === 1) {
       return { drop: `Unknown Scroll x${reward.view.item_quantity}` };
     }
