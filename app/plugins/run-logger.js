@@ -195,21 +195,50 @@ module.exports = {
   saveToFile(entry, filename, headers, proxy) {
     const csvData = [];
     const self = this;
-    fs.ensureFile(path.join(config.Config.App.filesPath, filename), (err) => {
+    const filePath = path.join(config.Config.App.filesPath, filename);
+    let parseFailed = false;
+    fs.ensureFile(filePath, (err) => {
       if (err) {
         return;
       }
       csv
-        .parseFile(path.join(config.Config.App.filesPath, filename), { ignoreEmpty: true, headers, renameHeaders: true })
+        .parseFile(filePath, { ignoreEmpty: true, headers, renameHeaders: true })
+        .on('error', (e) => {
+          // the existing file does not match the current columns (e.g. created by an older version),
+          // so keep it as a backup and start a new file instead of crashing
+          parseFailed = true;
+          const backupFilename = `${path.parse(filename).name}-backup-${format(new Date(), 'yyyyMMddHHmmss')}.csv`;
+          fs.move(filePath, path.join(config.Config.App.filesPath, backupFilename), (moveErr) => {
+            if (moveErr) {
+              proxy.log({ type: 'error', source: 'plugin', name: self.pluginName, message: `Could not read ${filename}: ${e.message}` });
+              return;
+            }
+            proxy.log({
+              type: 'warning',
+              source: 'plugin',
+              name: self.pluginName,
+              message: `${filename} has an outdated format. It was renamed to ${backupFilename} and a new file was created.`,
+            });
+            self.writeToFile([entry], filePath, filename, headers, proxy);
+          });
+        })
         .on('data', (data) => {
           csvData.push(data);
         })
         .on('end', () => {
+          if (parseFailed) {
+            return;
+          }
           csvData.push(entry);
-          csv.writeToPath(path.join(config.Config.App.filesPath, filename), csvData, { headers }).on('finish', () => {
-            proxy.log({ type: 'success', source: 'plugin', name: self.pluginName, message: `Saved run data to ${filename}` });
-          });
+          self.writeToFile(csvData, filePath, filename, headers, proxy);
         });
+    });
+  },
+
+  writeToFile(csvData, filePath, filename, headers, proxy) {
+    const self = this;
+    csv.writeToPath(filePath, csvData, { headers }).on('finish', () => {
+      proxy.log({ type: 'success', source: 'plugin', name: self.pluginName, message: `Saved run data to ${filename}` });
     });
   },
 
